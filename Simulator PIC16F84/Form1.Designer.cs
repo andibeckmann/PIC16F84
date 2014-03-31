@@ -30,13 +30,11 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.deiMuddaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.feuerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buröToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.schliessenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hilfeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,24 +53,10 @@
             // deiMuddaToolStripMenuItem
             // 
             this.deiMuddaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.feuerToolStripMenuItem,
-            this.buröToolStripMenuItem,
             this.schliessenToolStripMenuItem});
             this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";
             this.deiMuddaToolStripMenuItem.Size = new System.Drawing.Size(70, 19);
             this.deiMuddaToolStripMenuItem.Text = "Simulator";
-            // 
-            // feuerToolStripMenuItem
-            // 
-            this.feuerToolStripMenuItem.Name = "feuerToolStripMenuItem";
-            this.feuerToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
-            this.feuerToolStripMenuItem.Text = "Feuer";
-            // 
-            // buröToolStripMenuItem
-            // 
-            this.buröToolStripMenuItem.Name = "buröToolStripMenuItem";
-            this.buröToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
-            this.buröToolStripMenuItem.Text = "Burö";
             // 
             // schliessenToolStripMenuItem
             // 
@@ -85,8 +69,8 @@
             // 
             this.hilfeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem,
-            this.pDFToolStripMenuItem,
-            this.datenblattPIC16C84ToolStripMenuItem});
+            this.datenblattPIC16C84ToolStripMenuItem,
+            this.projektToolStripMenuItem});
             this.hilfeToolStripMenuItem.Name = "hilfeToolStripMenuItem";
             this.hilfeToolStripMenuItem.Size = new System.Drawing.Size(44, 19);
             this.hilfeToolStripMenuItem.Text = "Hilfe";
@@ -97,18 +81,19 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // pDFToolStripMenuItem
-            // 
-            this.pDFToolStripMenuItem.Name = "pDFToolStripMenuItem";
-            this.pDFToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.pDFToolStripMenuItem.Text = "PDF";
-            // 
             // datenblattPIC16C84ToolStripMenuItem
             // 
             this.datenblattPIC16C84ToolStripMenuItem.Name = "datenblattPIC16C84ToolStripMenuItem";
             this.datenblattPIC16C84ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.datenblattPIC16C84ToolStripMenuItem.Text = "Datenblatt PIC16C84";
             this.datenblattPIC16C84ToolStripMenuItem.Click += new System.EventHandler(this.datenblattPIC16C84ToolStripMenuItem_Click);
+            // 
+            // projektToolStripMenuItem
+            // 
+            this.projektToolStripMenuItem.Name = "projektToolStripMenuItem";
+            this.projektToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.projektToolStripMenuItem.Text = "Projekt Aufgabenstellung";
+            this.projektToolStripMenuItem.Click += new System.EventHandler(this.projektToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -136,11 +121,9 @@
         private System.Windows.Forms.ToolStripMenuItem deiMuddaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hilfeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pDFToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem feuerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem schliessenToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem buröToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem datenblattPIC16C84ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projektToolStripMenuItem;
 
     }
 }

@@ -45,5 +45,23 @@ namespace Simulator_PIC16F84
             Process.Start("Datenblatt_PIC16C84.pdf");
         }
 
+        private void projektToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            byte[] PDF = Properties.Resources.Projekt_Simulator;
+
+            string tempPath = Path.GetTempPath();
+            tempPath += "/Projekt_Simulator.pdf";
+            
+            MemoryStream ms = new MemoryStream(PDF);
+
+            FileStream f = new FileStream(tempPath, FileMode.OpenOrCreate);
+
+            ms.WriteTo(f);
+            f.Close();
+            ms.Close();
+
+            Process.Start(tempPath);
+        }
+
     }
 }
