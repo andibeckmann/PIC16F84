@@ -22,9 +22,5 @@ namespace Simulator_PIC16F84
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("BLALFSDGSRGRDSH");
-        }
     }
 }
