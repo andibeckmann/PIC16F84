@@ -32,35 +32,30 @@ namespace Simulator_PIC16F84
         private void datenblattPIC16C84ToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            byte[] PDF = Properties.Resources.Datenblatt_PIC16C84;
+            OpenPDFResource(Properties.Resources.Datenblatt_PIC16C84, "Datenblatt_PIC16C84");
+        }
+
+        private static void OpenPDFResource(byte[] PDFResource, string fileName)
+        {
+            byte[] PDF = PDFResource;
 
             MemoryStream memoryStream = new MemoryStream(PDF);
 
-            FileStream fileStream = new FileStream("Datenblatt_PIC16C84.pdf", FileMode.OpenOrCreate);
+            string tempPath = Path.GetTempPath();
+            tempPath += "/" + fileName + ".pdf";
+
+            FileStream fileStream = new FileStream(tempPath, FileMode.OpenOrCreate);
 
             memoryStream.WriteTo(fileStream);
             fileStream.Close();
             memoryStream.Close();
 
-            Process.Start("Datenblatt_PIC16C84.pdf");
+            Process.Start(tempPath);
         }
 
         private void projektToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            byte[] PDF = Properties.Resources.Projekt_Simulator;
-
-            string tempPath = Path.GetTempPath();
-            tempPath += "/Projekt_Simulator.pdf";
-            
-            MemoryStream ms = new MemoryStream(PDF);
-
-            FileStream f = new FileStream(tempPath, FileMode.OpenOrCreate);
-
-            ms.WriteTo(f);
-            f.Close();
-            ms.Close();
-
-            Process.Start(tempPath);
+            OpenPDFResource(Properties.Resources.Projekt_Simulator, "Projekt_Simulator");
         }
 
     }
