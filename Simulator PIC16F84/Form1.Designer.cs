@@ -36,6 +36,7 @@
             this.hilfeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,25 +59,25 @@
             this.buröToolStripMenuItem,
             this.schliessenToolStripMenuItem});
             this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";
-            this.deiMuddaToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.deiMuddaToolStripMenuItem.Size = new System.Drawing.Size(70, 19);
             this.deiMuddaToolStripMenuItem.Text = "Simulator";
             // 
             // feuerToolStripMenuItem
             // 
             this.feuerToolStripMenuItem.Name = "feuerToolStripMenuItem";
-            this.feuerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.feuerToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
             this.feuerToolStripMenuItem.Text = "Feuer";
             // 
             // buröToolStripMenuItem
             // 
             this.buröToolStripMenuItem.Name = "buröToolStripMenuItem";
-            this.buröToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.buröToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
             this.buröToolStripMenuItem.Text = "Burö";
             // 
             // schliessenToolStripMenuItem
             // 
             this.schliessenToolStripMenuItem.Name = "schliessenToolStripMenuItem";
-            this.schliessenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.schliessenToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
             this.schliessenToolStripMenuItem.Text = "Schließen";
             this.schliessenToolStripMenuItem.Click += new System.EventHandler(this.schliessenToolStripMenuItem_Click);
             // 
@@ -84,22 +85,30 @@
             // 
             this.hilfeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem,
-            this.pDFToolStripMenuItem});
+            this.pDFToolStripMenuItem,
+            this.datenblattPIC16C84ToolStripMenuItem});
             this.hilfeToolStripMenuItem.Name = "hilfeToolStripMenuItem";
-            this.hilfeToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.hilfeToolStripMenuItem.Size = new System.Drawing.Size(44, 19);
             this.hilfeToolStripMenuItem.Text = "Hilfe";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // pDFToolStripMenuItem
             // 
             this.pDFToolStripMenuItem.Name = "pDFToolStripMenuItem";
-            this.pDFToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.pDFToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.pDFToolStripMenuItem.Text = "PDF";
+            // 
+            // datenblattPIC16C84ToolStripMenuItem
+            // 
+            this.datenblattPIC16C84ToolStripMenuItem.Name = "datenblattPIC16C84ToolStripMenuItem";
+            this.datenblattPIC16C84ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.datenblattPIC16C84ToolStripMenuItem.Text = "Datenblatt PIC16C84";
+            this.datenblattPIC16C84ToolStripMenuItem.Click += new System.EventHandler(this.datenblattPIC16C84ToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -131,6 +140,7 @@
         private System.Windows.Forms.ToolStripMenuItem feuerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem schliessenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buröToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem datenblattPIC16C84ToolStripMenuItem;
 
     }
 }
