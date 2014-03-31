@@ -69,5 +69,15 @@ namespace Simulator_PIC16F84.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
+        /// </summary>
+        internal static byte[] Projekt_Simulator {
+            get {
+                object obj = ResourceManager.GetObject("Projekt_Simulator", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
