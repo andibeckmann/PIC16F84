@@ -57,5 +57,10 @@ namespace Simulator_PIC16F84
             OpenPDFResource(Properties.Resources.Projekt_Simulator, "Projekt_Simulator");
         }
 
+        private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
+        {
+
+        }
+
     }
 }
