@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Simulator_PIC16F84
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
@@ -20,6 +20,11 @@ namespace Simulator_PIC16F84
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void schliessenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
     }
