@@ -30,11 +30,12 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.deiMuddaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.feuerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buröToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hilfeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pDFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.feuerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.beendenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,10 +54,29 @@
             // 
             this.deiMuddaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.feuerToolStripMenuItem,
+            this.buröToolStripMenuItem,
             this.beendenToolStripMenuItem});
             this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";
             this.deiMuddaToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
             this.deiMuddaToolStripMenuItem.Text = "Simulator";
+            // 
+            // feuerToolStripMenuItem
+            // 
+            this.feuerToolStripMenuItem.Name = "feuerToolStripMenuItem";
+            this.feuerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.feuerToolStripMenuItem.Text = "Feuer";
+            // 
+            // beendenToolStripMenuItem
+            // 
+            this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
+            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.beendenToolStripMenuItem.Text = "Schließen";
+            // 
+            // buröToolStripMenuItem
+            // 
+            this.buröToolStripMenuItem.Name = "buröToolStripMenuItem";
+            this.buröToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.buröToolStripMenuItem.Text = "Burö";
             // 
             // hilfeToolStripMenuItem
             // 
@@ -70,26 +90,14 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // pDFToolStripMenuItem
             // 
             this.pDFToolStripMenuItem.Name = "pDFToolStripMenuItem";
-            this.pDFToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pDFToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.pDFToolStripMenuItem.Text = "PDF";
-            // 
-            // feuerToolStripMenuItem
-            // 
-            this.feuerToolStripMenuItem.Name = "feuerToolStripMenuItem";
-            this.feuerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.feuerToolStripMenuItem.Text = "Feuer";
-            // 
-            // beendenToolStripMenuItem
-            // 
-            this.beendenToolStripMenuItem.Name = "beendenToolStripMenuItem";
-            this.beendenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.beendenToolStripMenuItem.Text = "Beenden";
             // 
             // Form1
             // 
@@ -117,6 +125,7 @@
         private System.Windows.Forms.ToolStripMenuItem pDFToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem feuerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem beendenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buröToolStripMenuItem;
 
     }
 }
