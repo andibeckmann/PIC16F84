@@ -34,13 +34,13 @@ namespace Simulator_PIC16F84
 
             byte[] PDF = Properties.Resources.Datenblatt_PIC16C84;
 
-            MemoryStream ms = new MemoryStream(PDF);
+            MemoryStream memoryStream = new MemoryStream(PDF);
 
-            FileStream f = new FileStream("Datenblatt_PIC16C84.pdf", FileMode.OpenOrCreate);
+            FileStream fileStream = new FileStream("Datenblatt_PIC16C84.pdf", FileMode.OpenOrCreate);
 
-            ms.WriteTo(f);
-            f.Close();
-            ms.Close();
+            memoryStream.WriteTo(fileStream);
+            fileStream.Close();
+            memoryStream.Close();
 
             Process.Start("Datenblatt_PIC16C84.pdf");
         }
