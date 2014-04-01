@@ -78,13 +78,13 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // datenblattPIC16C84ToolStripMenuItem
             // 
             this.datenblattPIC16C84ToolStripMenuItem.Name = "datenblattPIC16C84ToolStripMenuItem";
-            this.datenblattPIC16C84ToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.datenblattPIC16C84ToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.datenblattPIC16C84ToolStripMenuItem.Text = "Datenblatt PIC16C84";
             this.datenblattPIC16C84ToolStripMenuItem.Click += new System.EventHandler(this.datenblattPIC16C84ToolStripMenuItem_Click);
             // 
