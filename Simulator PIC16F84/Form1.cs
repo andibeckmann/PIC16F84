@@ -37,18 +37,23 @@ namespace Simulator_PIC16F84
 
         private static void OpenPDFResource(byte[] PDFResource, string fileName)
         {
-            byte[] PDF = PDFResource;
-
-            MemoryStream memoryStream = new MemoryStream(PDF);
+            
 
             string tempPath = Path.GetTempPath();
             tempPath += "/" + fileName + ".pdf";
 
-            FileStream fileStream = new FileStream(tempPath, FileMode.OpenOrCreate);
+            if (!File.Exists(tempPath))
+            {
+                byte[] PDF = PDFResource;
 
-            memoryStream.WriteTo(fileStream);
-            fileStream.Close();
-            memoryStream.Close();
+                MemoryStream memoryStream = new MemoryStream(PDF);
+
+                FileStream fileStream = new FileStream(tempPath, FileMode.OpenOrCreate);
+
+                memoryStream.WriteTo(fileStream);
+                fileStream.Close();
+                memoryStream.Close();
+            }
 
             Process.Start(tempPath);
         }
