@@ -6,8 +6,26 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84
 {
-    class RegisterFileMap
+    public class RegisterFileMap
     {
-        private RegisterByte[] RegisterList = new RegisterByte[255];
+        public RegisterByte[] RegisterList;
+
+        public RegisterFileMap()
+        {
+            RegisterList = new RegisterByte[256];
+            for (int var = 0; var < RegisterList.Length; var++ )
+            {
+                RegisterList[var] = new RegisterByte();
+            }
+	{
+		 
+	}
+        }
+
+        public RegisterByte[] getRegisterList {
+            get { return RegisterList; }
+            set { this.RegisterList = value;}
+        }
+    
     }
 }

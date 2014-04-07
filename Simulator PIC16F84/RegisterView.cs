@@ -12,7 +12,7 @@ namespace Simulator_PIC16F84
 {
     public partial class RegisterView : Form
     {
-        public RegisterView()
+        public RegisterView(RegisterFileMap RegisterMap)
         {
             int sizeOfField = 25;
 
@@ -48,7 +48,7 @@ namespace Simulator_PIC16F84
                     textBox.Name = "Byte" + i * 8 + m; 
                     textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
                     textBox.TabIndex = i * 8 + 8 + m;
-                    textBox.Text = "00";
+                    textBox.Text = RegisterMap.getRegisterList[i*8+m].Value.ToString("X2");
                     textBox.TextChanged += new System.EventHandler(textbox_TextChanged); 
                     this.Controls.Add(textBox);
                 }
@@ -57,8 +57,9 @@ namespace Simulator_PIC16F84
 
         private void textbox_TextChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            return;
         }
+
 
     }
 }
