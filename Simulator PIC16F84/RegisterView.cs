@@ -15,6 +15,51 @@ namespace Simulator_PIC16F84
         public RegisterView()
         {
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.StartPosition = FormStartPosition.Manual;
+            this.AutoScroll = true;
+            this.ControlBox = false;
+            Size max = SystemInformation.MaxWindowTrackSize;
+            this.Size = new System.Drawing.Size(25*9, max.Height);
+
+            int sizeOfField = 25;
+            for(int i = 0; i < 8; i++)
+            {
+                Label label = new Label();
+                label.Location = new System.Drawing.Point(sizeOfField * i+sizeOfField, 4);
+                label.Name = "ByteColumn" + i;
+                label.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
+                label.Text = "0" + i;
+                this.Controls.Add(label);
+            }
+            for(int i = 0; i < 32; i++)
+            {
+                Label label = new Label();
+                label.Location = new System.Drawing.Point(0, sizeOfField * i + sizeOfField + 7);
+                label.Name = "ByteRow" + i;
+                label.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
+                int content = i * 8;
+                label.Text = content.ToString("X2");
+                this.Controls.Add(label);
+                for(int m = 0; m < 8; m++)
+                {
+                    TextBox textBox = new TextBox();
+                    textBox.Location = new System.Drawing.Point(sizeOfField * m + sizeOfField, sizeOfField * i + sizeOfField + 4);
+                    textBox.Name = "Byte" + i * 8 + m; 
+                    textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
+                    textBox.TabIndex = i * 8 + 8 + m;
+                    textBox.Text = "00";
+                    textBox.TextChanged += new System.EventHandler(textbox_TextChanged); 
+                    this.Controls.Add(textBox);
+                }
+            }
+        }
+
+        private void textbox_TextChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

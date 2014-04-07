@@ -17,6 +17,15 @@ namespace Simulator_PIC16F84
         public Main()
         {
             InitializeComponent();
+            IsMdiContainer = true;
+            this.TopMost = true;
+            this.WindowState = FormWindowState.Maximized;
+
+            RegisterView registerView = new RegisterView();
+            // Set the Parent Form of the Child window.
+            registerView.MdiParent = this;
+            // Display the new form.
+            registerView.Show();
         }
 
         private void Form1_Load(object sender, EventArgs e)

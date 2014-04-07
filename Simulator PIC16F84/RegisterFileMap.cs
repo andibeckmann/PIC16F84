@@ -8,6 +8,6 @@ namespace Simulator_PIC16F84
 {
     class RegisterFileMap
     {
-        private RegisterByte[] RegisterFileMap = new RegisterByte[255];
+        private RegisterByte[] RegisterList = new RegisterByte[255];
     }
 }
