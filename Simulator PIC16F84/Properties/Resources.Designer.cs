@@ -63,9 +63,9 @@ namespace Simulator_PIC16F84.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
         /// </summary>
-        internal static byte[] Datenblatt_PIC16C84 {
+        internal static byte[] Datenblatt_PIC16F84 {
             get {
-                object obj = ResourceManager.GetObject("Datenblatt_PIC16C84", resourceCulture);
+                object obj = ResourceManager.GetObject("Datenblatt_PIC16F84", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -85,6 +85,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Resources\Datenblatt PIC16C84.pdf" />
+    <None Include="Resources\Datenblatt_PIC16F84.pdf" />
     <None Include="Resources\Projekt_Simulator.pdf" />
   </ItemGroup>
   <ItemGroup>

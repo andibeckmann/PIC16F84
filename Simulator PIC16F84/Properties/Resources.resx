@@ -118,8 +118,8 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Datenblatt_PIC16C84" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Datenblatt PIC16C84.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Datenblatt_PIC16F84" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Datenblatt_PIC16F84.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Projekt_Simulator" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Projekt_Simulator.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

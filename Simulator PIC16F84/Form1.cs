@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84
 
         private void datenblattPIC16C84ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenPDFResource(Properties.Resources.Datenblatt_PIC16C84, "Datenblatt_PIC16C84");
+            OpenPDFResource(Properties.Resources.Datenblatt_PIC16F84, "Datenblatt_PIC16F84");
         }
 
         private static void OpenPDFResource(byte[] PDFResource, string fileName)
