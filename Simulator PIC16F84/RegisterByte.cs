@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84
 {
-    class RegisterFileMap
+    class RegisterByte
     {
-        private RegisterByte[] RegisterFileMap = new RegisterByte[255];
     }
+
 }
