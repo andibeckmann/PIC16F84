@@ -14,30 +14,28 @@ namespace Simulator_PIC16F84
     {
         public RegisterView()
         {
+            int sizeOfField = 25;
+
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.Manual;
             this.AutoScroll = true;
-            this.ControlBox = false;
             Size max = SystemInformation.MaxWindowTrackSize;
-            this.Size = new System.Drawing.Size(25*9, max.Height);
+            this.Size = new System.Drawing.Size(9*(sizeOfField+6), max.Height);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 
-            int sizeOfField = 25;
             for(int i = 0; i < 8; i++)
             {
                 Label label = new Label();
-                label.Location = new System.Drawing.Point(sizeOfField * i+sizeOfField, 4);
+                label.Location = new System.Drawing.Point(( sizeOfField + 4) * i+sizeOfField, 4);
                 label.Name = "ByteColumn" + i;
-                label.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
+                label.Size = new System.Drawing.Size(sizeOfField, sizeOfField - 6);
                 label.Text = "0" + i;
                 this.Controls.Add(label);
             }
             for(int i = 0; i < 32; i++)
             {
                 Label label = new Label();
-                label.Location = new System.Drawing.Point(0, sizeOfField * i + sizeOfField + 7);
+                label.Location = new System.Drawing.Point(0, sizeOfField * i + sizeOfField + 3);
                 label.Name = "ByteRow" + i;
                 label.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
                 int content = i * 8;
@@ -46,7 +44,7 @@ namespace Simulator_PIC16F84
                 for(int m = 0; m < 8; m++)
                 {
                     TextBox textBox = new TextBox();
-                    textBox.Location = new System.Drawing.Point(sizeOfField * m + sizeOfField, sizeOfField * i + sizeOfField + 4);
+                    textBox.Location = new System.Drawing.Point(( sizeOfField + 4) * m + sizeOfField, sizeOfField * i + sizeOfField);
                     textBox.Name = "Byte" + i * 8 + m; 
                     textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
                     textBox.TabIndex = i * 8 + 8 + m;
@@ -61,5 +59,6 @@ namespace Simulator_PIC16F84
         {
             throw new NotImplementedException();
         }
+
     }
 }
