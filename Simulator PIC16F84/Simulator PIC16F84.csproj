@@ -44,6 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProgramMemoryByte.cs" />
+    <Compile Include="ProgramMemoryMap.cs" />
+    <Compile Include="ProgramMemoryView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgramMemoryView.Designer.cs">
+      <DependentUpon>ProgramMemoryView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Register.cs">
       <SubType>Form</SubType>
     </Compile>

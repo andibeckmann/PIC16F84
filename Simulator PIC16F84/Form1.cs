@@ -28,6 +28,11 @@ namespace Simulator_PIC16F84
             // Display the new form.
             registerView.Show();
 
+            ProgramMemoryMap UserMemorySpace = new ProgramMemoryMap();
+            ProgramMemoryView programMemoryView = new ProgramMemoryView(UserMemorySpace);
+            programMemoryView.MdiParent = this;
+            programMemoryView.Show();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)

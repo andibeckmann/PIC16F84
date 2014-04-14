@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84
 {
-    public class RegisterByte
+    public class ProgramMemoryByte
     {
         private int value;
 
-        public RegisterByte()
+        public ProgramMemoryByte()
         {
             value = 0;
         }
@@ -19,7 +19,5 @@ namespace Simulator_PIC16F84
             get { return value; }
             set { this.value = value; }
         }
-        
     }
-
 }
