@@ -14,6 +14,10 @@ namespace Simulator_PIC16F84
 {
     public partial class Main : Form
     {
+        RegisterFileMap RegisterMap;
+        ProgramMemoryMap UserMemorySpace;
+        ProgramMemoryView ProgramView;
+
         public Main()
         {
             InitializeComponent();
@@ -21,17 +25,15 @@ namespace Simulator_PIC16F84
             this.WindowState = FormWindowState.Maximized;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
-            RegisterFileMap RegisterMap = new RegisterFileMap();
+            RegisterMap = new RegisterFileMap();
             RegisterView registerView = new RegisterView(ref RegisterMap);
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
             // Display the new form.
             registerView.Show();
 
-            ProgramMemoryMap UserMemorySpace = new ProgramMemoryMap();
-            ProgramMemoryView programMemoryView = new ProgramMemoryView(UserMemorySpace);
-            programMemoryView.MdiParent = this;
-            programMemoryView.Show();
+            UserMemorySpace = new ProgramMemoryMap();
+            ProgramView = new ProgramMemoryView(UserMemorySpace);
 
         }
 
@@ -81,6 +83,39 @@ namespace Simulator_PIC16F84
         private void fileSystemWatcher1_Changed(object sender, FileSystemEventArgs e)
         {
 
+        }
+
+        private void programmLadenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog programmLaden = new OpenFileDialog();
+
+            //TODO: Programm Laden Auswahl wieder einfügen
+            //programmLaden.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath) + "\\Programme";
+            //programmLaden.Filter = "lst files (*.lst)|*.lst";
+            //programmLaden.FilterIndex = 1;
+            //programmLaden.RestoreDirectory = false;
+
+            //if (programmLaden.ShowDialog() == DialogResult.OK)
+            //{
+            //    try
+            //    {
+            //        System.IO.StreamReader sr = new System.IO.StreamReader(programmLaden.FileName);
+            //        string fileContent = sr.ReadToEnd();
+            //        sr.Close();
+
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show("Error: Could not read file" + ex.Message);
+            //    }
+            //}
+            String testPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\Programme\\";
+
+            System.IO.StreamReader sr = new System.IO.StreamReader(testPath + "SimTest1.lst");
+            string fileContent = sr.ReadToEnd();
+            sr.Close();
+            ProgramView.loadProgram(fileContent);
+            UserMemorySpace = ProgramView.getBinaryCode();
         }
 
     }

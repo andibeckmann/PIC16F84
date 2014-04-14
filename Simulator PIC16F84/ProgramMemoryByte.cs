@@ -8,14 +8,14 @@ namespace Simulator_PIC16F84
 {
     public class ProgramMemoryByte
     {
-        private int value;
+        private byte value;
 
         public ProgramMemoryByte()
         {
             value = 0;
         }
 
-        public int Value {
+        public byte Value {
             get { return value; }
             set { this.value = value; }
         }

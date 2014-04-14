@@ -35,6 +35,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.programmLadenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +54,7 @@
             // deiMuddaToolStripMenuItem
             // 
             this.deiMuddaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.programmLadenToolStripMenuItem,
             this.schliessenToolStripMenuItem});
             this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";
             this.deiMuddaToolStripMenuItem.Size = new System.Drawing.Size(70, 19);
@@ -61,7 +63,7 @@
             // schliessenToolStripMenuItem
             // 
             this.schliessenToolStripMenuItem.Name = "schliessenToolStripMenuItem";
-            this.schliessenToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.schliessenToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.schliessenToolStripMenuItem.Text = "Schließen";
             this.schliessenToolStripMenuItem.Click += new System.EventHandler(this.schliessenToolStripMenuItem_Click);
             // 
@@ -95,6 +97,13 @@
             this.projektToolStripMenuItem.Text = "Projekt Aufgabenstellung";
             this.projektToolStripMenuItem.Click += new System.EventHandler(this.projektToolStripMenuItem_Click);
             // 
+            // programmLadenToolStripMenuItem
+            // 
+            this.programmLadenToolStripMenuItem.Name = "programmLadenToolStripMenuItem";
+            this.programmLadenToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.programmLadenToolStripMenuItem.Text = "Programm laden";
+            this.programmLadenToolStripMenuItem.Click += new System.EventHandler(this.programmLadenToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -124,6 +133,7 @@
         private System.Windows.Forms.ToolStripMenuItem schliessenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem datenblattPIC16C84ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projektToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem programmLadenToolStripMenuItem;
 
     }
 }
