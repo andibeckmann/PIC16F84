@@ -27,6 +27,7 @@ namespace Simulator_PIC16F84
             programView = splitIntoRows(fileContent);
             programView.RemoveAll(item => item == "");
             extractBinaryCode();
+            FillLinesOfDataGrid();
 
         }
 
@@ -39,7 +40,7 @@ namespace Simulator_PIC16F84
         private void extractBinaryCode ()
         {
             int memoryAdress;
-            byte binaryCode;
+            int binaryCode;
 
             foreach (var item in programView)
             {
@@ -47,13 +48,9 @@ namespace Simulator_PIC16F84
                     continue;
                 else
                 {
-                    if (int.TryParse(item.Substring(0, 4), out memoryAdress))
-                    {
-                        if (byte.TryParse(item.Substring(5, 4), out binaryCode))
-                        {
-                            memoryKopie.ProgramMemory[memoryAdress].Value = binaryCode;
-                        }
-                    }
+                    memoryAdress = Convert.ToInt32(item.Substring(0, 4), 16);
+                    binaryCode = Convert.ToInt32(item.Substring(5, 4), 16);
+                    memoryKopie.ProgramMemory[memoryAdress].Value = binaryCode;
                 }
             } 
         }
@@ -70,10 +67,29 @@ namespace Simulator_PIC16F84
 
         private void FillLinesOfDataGrid()
         {
-            foreach(var item in memoryKopie.ProgramMemory)
-            { 
+            //foreach(var item in memoryKopie.ProgramMemory)
+            //{ 
+            //    DataGridViewRow row = (DataGridViewRow)this.dataGridView1.Rows[0].Clone();
+            //    row.Cells[1].Value = item.Value.ToString("X4");
+            //    this.dataGridView1.Rows.Add(row);
+            //}
+
+            string temp;
+
+            foreach (var item in programView)
+            {
                 DataGridViewRow row = (DataGridViewRow)this.dataGridView1.Rows[0].Clone();
-                row.Cells["Column0"].Value = item;
+                if (item.StartsWith(" ") == false)
+                {
+                    row.Cells[0].Value = item.Substring(0,4);
+                    row.Cells[1].Value = item.Substring(5,4);
+                }
+                temp = item.Substring(9).Trim();
+                row.Cells[2].Value = temp.Substring(0, 5);
+                //temp = temp.Substring(6).Trim();
+                //TODO: Fortsetzen
+
+
                 this.dataGridView1.Rows.Add(row);
             }
         }
