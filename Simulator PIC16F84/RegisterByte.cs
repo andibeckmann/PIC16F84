@@ -8,18 +8,18 @@ namespace Simulator_PIC16F84
 {
     public class RegisterByte
     {
-        private int content;
-        public int Content
+        private int value;
+
+        public RegisterByte()
         {
-            get
-            {
-                return content;
-            }
-            set
-            {
-                content = value;
-            }
+            value = 0;
         }
+
+        public int Value {
+            get { return value; }
+            set { this.value = value;}
+        }
+        
     }
 
 }

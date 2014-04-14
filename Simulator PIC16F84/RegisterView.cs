@@ -12,7 +12,7 @@ namespace Simulator_PIC16F84
 {
     public partial class RegisterView : Form
     {
-        public RegisterView()
+        public RegisterView(RegisterFileMap RegisterMap)
         {
             int sizeOfField = 25;
 
@@ -23,7 +23,7 @@ namespace Simulator_PIC16F84
             this.Size = new System.Drawing.Size(9*(sizeOfField+6), max.Height);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 
-            for (int i = 0; i < 8; i++)
+            for(int i = 0; i < 8; i++)
             {
                 Label label = new Label();
                 label.Location = new System.Drawing.Point(( sizeOfField + 4) * i+sizeOfField, 4);
@@ -32,7 +32,7 @@ namespace Simulator_PIC16F84
                 label.Text = "0" + i;
                 this.Controls.Add(label);
             }
-            for (int i = 0; i < 32; i++)
+            for(int i = 0; i < 32; i++)
             {
                 Label label = new Label();
                 label.Location = new System.Drawing.Point(0, sizeOfField * i + sizeOfField + 3);
@@ -45,10 +45,10 @@ namespace Simulator_PIC16F84
                 {
                     TextBox textBox = new TextBox();
                     textBox.Location = new System.Drawing.Point(( sizeOfField + 4) * m + sizeOfField, sizeOfField * i + sizeOfField);
-                    textBox.Name = "Byte " + i * 8 + m; 
+                    textBox.Name = "Byte" + i * 8 + m; 
                     textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
                     textBox.TabIndex = i * 8 + 8 + m;
-                    textBox.Text = "00";
+                    textBox.Text = RegisterMap.getRegisterList[i*8+m].Value.ToString("X2");
                     textBox.TextChanged += new System.EventHandler(textbox_TextChanged); 
                     this.Controls.Add(textBox);
                 }
@@ -57,14 +57,9 @@ namespace Simulator_PIC16F84
 
         private void textbox_TextChanged(object sender, EventArgs e)
         {
-            TextBox textbox = sender as TextBox;
-
-            if (textbox != null)
-            {
-               string name = textbox.Name;
-               name = name.Substring(5);
-            }
+            return;
         }
+
 
     }
 }
