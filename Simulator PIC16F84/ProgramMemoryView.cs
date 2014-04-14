@@ -68,6 +68,16 @@ namespace Simulator_PIC16F84
             
         }
 
+        private void FillLinesOfDataGrid()
+        {
+            foreach(var item in memoryKopie.ProgramMemory)
+            { 
+                DataGridViewRow row = (DataGridViewRow)this.dataGridView1.Rows[0].Clone();
+                row.Cells["Column0"].Value = item;
+                this.dataGridView1.Rows.Add(row);
+            }
+        }
+
 
     }
 }
