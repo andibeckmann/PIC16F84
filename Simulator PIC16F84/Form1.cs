@@ -22,7 +22,7 @@ namespace Simulator_PIC16F84
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
             RegisterFileMap RegisterMap = new RegisterFileMap();
-            RegisterView registerView = new RegisterView(RegisterMap);
+            RegisterView registerView = new RegisterView(ref RegisterMap);
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
             // Display the new form.

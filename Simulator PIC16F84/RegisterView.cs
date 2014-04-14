@@ -12,8 +12,12 @@ namespace Simulator_PIC16F84
 {
     public partial class RegisterView : Form
     {
-        public RegisterView(RegisterFileMap RegisterMap)
+        RegisterFileMap registerMap;
+
+        public RegisterView(ref RegisterFileMap RegisterMap)
         {
+            this.registerMap = RegisterMap;
+
             int sizeOfField = 25;
 
             InitializeComponent();
@@ -45,7 +49,7 @@ namespace Simulator_PIC16F84
                 {
                     TextBox textBox = new TextBox();
                     textBox.Location = new System.Drawing.Point(( sizeOfField + 4) * m + sizeOfField, sizeOfField * i + sizeOfField);
-                    textBox.Name = "Byte" + i * 8 + m; 
+                    textBox.Name = "Byte " + i * 8 + m; 
                     textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
                     textBox.TabIndex = i * 8 + 8 + m;
                     textBox.Text = RegisterMap.getRegisterList[i*8+m].Value.ToString("X2");
@@ -57,7 +61,22 @@ namespace Simulator_PIC16F84
 
         private void textbox_TextChanged(object sender, EventArgs e)
         {
-            return;
+            TextBox textBox = sender as TextBox;
+
+            if (textBox != null)
+            {
+                var name = textBox.Name;
+                name = name.Substring(5);
+                int id;
+                if (int.TryParse(name, out id))
+                {
+                    int content;
+                    if (int.TryParse(textBox.Text, out content))
+                    {
+                        registerMap.RegisterList[id].Value = content;
+                    }
+                }
+            }
         }
 
 
