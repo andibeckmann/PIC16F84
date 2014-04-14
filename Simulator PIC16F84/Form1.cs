@@ -18,7 +18,6 @@ namespace Simulator_PIC16F84
         {
             InitializeComponent();
             IsMdiContainer = true;
-            this.TopMost = true;
             this.WindowState = FormWindowState.Maximized;
 
             RegisterView registerView = new RegisterView();
