@@ -34,6 +34,8 @@ namespace Simulator_PIC16F84
 
             UserMemorySpace = new ProgramMemoryMap();
             ProgramView = new ProgramMemoryView(UserMemorySpace);
+            ProgramView.MdiParent = this;
+            ProgramView.Show();
 
         }
 
