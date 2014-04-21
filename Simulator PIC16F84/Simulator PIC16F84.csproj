@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProgramCounter.cs" />
+    <Compile Include="ProgramMemoryAddress.cs" />
     <Compile Include="ProgramMemoryByte.cs" />
     <Compile Include="ProgramMemoryMap.cs" />
     <Compile Include="ProgramMemoryView.cs">
@@ -74,6 +76,7 @@
     <Compile Include="RegisterView.Designer.cs">
       <DependentUpon>RegisterView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Stack.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
