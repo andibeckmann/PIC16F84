@@ -56,33 +56,51 @@
             // 
             // Column1
             // 
-            this.Column1.HeaderText = "Programmzeile";
+            this.Column1.Frozen = true;
+            this.Column1.HeaderText = "Zeile";
             this.Column1.Name = "Column1";
+            this.Column1.ToolTipText = "Binärcode-Programmzeile";
+            this.Column1.Width = 35;
             // 
             // Column2
             // 
-            this.Column2.HeaderText = "Instruktion";
+            this.Column2.Frozen = true;
+            this.Column2.HeaderText = "Code";
             this.Column2.Name = "Column2";
+            this.Column2.ToolTipText = "Binärcode-Instruktionen";
+            this.Column2.Width = 35;
             // 
             // Column3
             // 
-            this.Column3.HeaderText = "Dateizeile";
+            this.Column3.Frozen = true;
+            this.Column3.HeaderText = "QZeile";
             this.Column3.Name = "Column3";
+            this.Column3.ToolTipText = "Quellcode-Zeile";
+            this.Column3.Width = 40;
             // 
             // Column4
             // 
-            this.Column4.HeaderText = "Sprungpunkte";
+            this.Column4.Frozen = true;
+            this.Column4.HeaderText = "Punkt";
             this.Column4.Name = "Column4";
+            this.Column4.ToolTipText = "Quellcode-Assemblersprungpunkt";
+            this.Column4.Width = 45;
             // 
             // Column5
             // 
+            this.Column5.Frozen = true;
             this.Column5.HeaderText = "Assemblercode";
             this.Column5.Name = "Column5";
+            this.Column5.ToolTipText = "Quellcode-Assemblerinstruktionen";
+            this.Column5.Width = 150;
             // 
             // Column6
             // 
+            this.Column6.Frozen = true;
             this.Column6.HeaderText = "Kommentar";
             this.Column6.Name = "Column6";
+            this.Column6.ToolTipText = "Quellcode-Assemblerkommentare";
+            this.Column6.Width = 400;
             // 
             // ProgramMemoryView
             // 

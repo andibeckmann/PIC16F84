@@ -67,30 +67,78 @@ namespace Simulator_PIC16F84
 
         private void FillLinesOfDataGrid()
         {
-            //foreach(var item in memoryKopie.ProgramMemory)
-            //{ 
-            //    DataGridViewRow row = (DataGridViewRow)this.dataGridView1.Rows[0].Clone();
-            //    row.Cells[1].Value = item.Value.ToString("X4");
-            //    this.dataGridView1.Rows.Add(row);
-            //}
-
-            string temp;
-
             foreach (var item in programView)
             {
                 DataGridViewRow row = (DataGridViewRow)this.dataGridView1.Rows[0].Clone();
-                if (item.StartsWith(" ") == false)
-                {
-                    row.Cells[0].Value = item.Substring(0,4);
-                    row.Cells[1].Value = item.Substring(5,4);
-                }
-                temp = item.Substring(9).Trim();
-                row.Cells[2].Value = temp.Substring(0, 5);
-                //temp = temp.Substring(6).Trim();
-                //TODO: Fortsetzen
-
-
+                ExtractProcessorCode(item, row);
+                ExtractSourceCode(item, row);
                 this.dataGridView1.Rows.Add(row);
+            }
+        }
+
+        private static void ExtractSourceCode(string item, DataGridViewRow row)
+        {
+            string temp;
+            temp = ExtractSourceCodeLineNumbers(item, row);
+            if (temp.Length > 5)
+            {
+                temp = ExtractJumpPointDesignation(row, temp);
+                temp = ExtractAssemblerCode(row, temp);
+                ExtractComments(row, temp);
+            }
+        }
+
+        private static string ExtractSourceCodeLineNumbers(string item, DataGridViewRow row)
+        {
+            string temp;
+            temp = item.Substring(9).Trim();
+            row.Cells[2].Value = temp.Substring(0, 5);
+            return temp;
+        }
+
+        private static string ExtractJumpPointDesignation(DataGridViewRow row, string temp)
+        {
+            temp = temp.Substring(7);
+            if (temp.StartsWith(" ") == false)
+            {
+                row.Cells[3].Value = temp;
+                return null;
+            }
+            return temp.Substring(8);
+        }
+
+        private static string ExtractAssemblerCode(DataGridViewRow row, string temp)
+        {
+            if (temp == null)
+                return null;
+            temp = temp.Trim();
+            if (temp.Contains(";") == true)
+            {
+                int index = temp.IndexOf(";");
+                if (index > 0)
+                {
+                    row.Cells[4].Value = temp.Substring(0, index);
+                    temp = temp.Substring(index);
+                }
+                return temp;
+            }
+            else
+                row.Cells[4].Value = temp;
+            return null;
+        }
+
+        private static void ExtractComments(DataGridViewRow row, string temp)
+        {
+            if (temp != null )
+                row.Cells[5].Value = temp;
+        }
+
+        private static void ExtractProcessorCode(string item, DataGridViewRow row)
+        {
+            if (item.StartsWith(" ") == false)
+            {
+                row.Cells[0].Value = item.Substring(0, 4);
+                row.Cells[1].Value = item.Substring(5, 4);
             }
         }
 
