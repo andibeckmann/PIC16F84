@@ -108,7 +108,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 375);
             this.Controls.Add(this.dataGridView1);
+            this.Location = new System.Drawing.Point(265, 400);
             this.Name = "ProgramMemoryView";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "ProgramMemoryView";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

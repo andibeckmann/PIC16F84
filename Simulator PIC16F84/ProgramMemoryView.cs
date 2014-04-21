@@ -20,6 +20,8 @@ namespace Simulator_PIC16F84
         {
             this.memoryKopie = UserMemorySpace;
             InitializeComponent();
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+           this.StartPosition = FormStartPosition.Manual;
         }
 
         public void loadProgram(string fileContent)
