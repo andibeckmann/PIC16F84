@@ -48,9 +48,10 @@
             this.Column4,
             this.Column5,
             this.Column6});
-            this.dataGridView1.Location = new System.Drawing.Point(0, 1);
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(822, 376);
+            this.dataGridView1.Size = new System.Drawing.Size(784, 462);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -106,9 +107,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(822, 375);
+            this.ClientSize = new System.Drawing.Size(784, 462);
             this.Controls.Add(this.dataGridView1);
-            this.Location = new System.Drawing.Point(265, 400);
+            this.Location = new System.Drawing.Point(265, 0);
             this.Name = "ProgramMemoryView";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "ProgramMemoryView";
