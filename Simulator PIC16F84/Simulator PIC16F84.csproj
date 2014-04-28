@@ -46,9 +46,11 @@
   <ItemGroup>
     <Compile Include="Instruktionen\ADDLW.cs" />
     <Compile Include="Instruktionen\ADDWF.cs" />
+    <Compile Include="Instruktionen\ANDWF.cs" />
     <Compile Include="Instruktionen\BaseOperation.cs" />
     <Compile Include="Instruktionen\BCF.cs" />
     <Compile Include="Instruktionen\BSF.cs" />
+    <Compile Include="Instruktionen\BTFSC.cs" />
     <Compile Include="Instruktionen\BTFSS.cs" />
     <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />

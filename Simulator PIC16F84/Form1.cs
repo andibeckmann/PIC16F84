@@ -17,7 +17,8 @@ namespace Simulator_PIC16F84
         RegisterFileMap RegisterMap;
         ProgramMemoryMap UserMemorySpace;
         ProgramMemoryView ProgramView;
-        WorkingRegister WorkingRegister;
+        WorkingRegister W;
+        ProgramCounter PC;
 
         public Main()
         {
@@ -41,7 +42,9 @@ namespace Simulator_PIC16F84
             ProgramView.SetDesktopLocation(size.Width + 18, 0);
             ProgramView.Show();
 
-            WorkingRegister = new WorkingRegister(RegisterMap);
+            W = new WorkingRegister(RegisterMap);
+            PC = new ProgramCounter();
+
 
         }
 
@@ -127,7 +130,7 @@ namespace Simulator_PIC16F84
 
             for (int index = 0; index < UserMemorySpace.getLength(); index++ )
             {
-                UserMemorySpace.ProgramMemory[index].DecodeInstruction(WorkingRegister);
+                UserMemorySpace.ProgramMemory[index].DecodeInstruction(W, PC);
             }
         }
 
