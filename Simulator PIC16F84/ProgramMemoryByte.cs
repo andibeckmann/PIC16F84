@@ -23,12 +23,20 @@ namespace Simulator_PIC16F84
 
         public void DecodeInstruction(WorkingRegister WorkingRegister)
         {
-            int literal;
+            int k;
+            int f;
+            int b;
 
             if ((value & (int)0x3E00) == (int)0x3E00)
             {
-                literal = value & (int)0xFF;
-                Addlw AddlwOperation = new Addlw( literal, WorkingRegister );
+                k = value & (int)0xFF;
+                ADDLW AddlwOperation = new ADDLW( k, WorkingRegister );
+            }
+            if ((value & (int)0x1000) == (int)0x1000)
+            {
+                f = value & (int)0x7F;
+                b = value & (int)0x380;
+                BCF AddlwOperation = new BCF(f, b);
             }
 
         }

@@ -7,10 +7,12 @@ using System.Windows.Forms;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    public class Addlw : BaseOperation
+    public class ADDLW : BaseOperation
     {
         //ADDLW             Add Literal and W
-        //Syntax:           0 <= k < 255
+        //--------------------------------------
+        //Syntax:           [label] ADDLW k
+        //Operands:           0 <= k < 255
         //Operation:        (W) + k -> (W)
         //Status Affected:  C, DC, Z
         //Description:      The contents of the W register
@@ -21,7 +23,7 @@ namespace Simulator_PIC16F84.Instruktionen
         private int result;
         private RegisterFileMap Register;
 
-        public Addlw(int k, WorkingRegister W)
+        public ADDLW(int k, WorkingRegister W)
         {
             Register = W.Value.GetRegisterMap();
             result = W.Value.Value + k;
