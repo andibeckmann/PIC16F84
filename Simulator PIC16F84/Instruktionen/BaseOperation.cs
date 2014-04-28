@@ -14,7 +14,7 @@ namespace Simulator_PIC16F84.Instruktionen
         /// <summary>
         /// Register file address (0x00 to 0x7F)
         /// </summary>
-        protected RegisterByte f;
+        protected int f;
 
         /// <summary>
         /// Working register (accumulator)
@@ -24,7 +24,7 @@ namespace Simulator_PIC16F84.Instruktionen
         /// <summary>
         /// /Bit address within an 8-bit file register
         /// </summary>
-        protected RegisterByte b;
+        protected int b;
 
         /// <summary>
         /// Literal field, constant data or label

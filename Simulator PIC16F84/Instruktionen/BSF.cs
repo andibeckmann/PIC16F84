@@ -6,34 +6,34 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    public class BCF : BaseOperation
+    public class BSF : BaseOperation
     {
-        //BCF Bit Clear f
-        //Syntax: [label] BCF f,b
+        //BSF Bit Set f
+        //Syntax: [label] BSF f,b
         //Operands: 0 ≤ f ≤ 127
         //0 ≤ b ≤ 7
-        //Operation: 0 → (f<b>)
+        //Operation: 1 → (f<b>)
         //Status Affected: None
-        //Description: Bit 'b' in register 'f' is cleared
+        //Description: Bit 'b' in register 'f' is set.
 
-        public BCF(int f, int b, WorkingRegister W)
+        public BSF(int f, int b, WorkingRegister W)
         {
             this.f = f;
             this.b = b;
             this.W = W;
 
-            execute();
+            execute();   
         }
 
         private void execute()
         {
             var map = W.Value.GetRegisterMap();
-            map.RegisterList[f].Value = TurnBitOff(map.RegisterList[f].Value, b);
+            map.RegisterList[f].Value = TurnBitOn(map.RegisterList[f].Value, b);
         }
 
-        private static int TurnBitOff(int value, int bitToTurnOff)
+        public static int TurnBitOn(int value, int bitToTurnOn)
         {
-            return (value & ~bitToTurnOff);
+            return (value | bitToTurnOn);
         }
     }
 }
