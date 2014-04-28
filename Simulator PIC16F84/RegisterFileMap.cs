@@ -17,15 +17,18 @@ namespace Simulator_PIC16F84
             {
                 RegisterList[var] = new RegisterByte();
             }
-	{
-		 
-	}
         }
 
         public RegisterByte[] getRegisterList {
             get { return RegisterList; }
             set { this.RegisterList = value;}
         }
+
+        //er.... ???
+        public RegisterByte getStatusRegisterContent()
+        {
+            return RegisterList[3];
+        }        
     
     }
 }

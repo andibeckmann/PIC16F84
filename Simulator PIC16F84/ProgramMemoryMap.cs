@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +16,11 @@ namespace Simulator_PIC16F84
             {
                 ProgramMemory[var] = new ProgramMemoryByte();
             }
+        }
+
+        public int getLength()
+        {
+            return ProgramMemory.Length;
         }
     }
 }

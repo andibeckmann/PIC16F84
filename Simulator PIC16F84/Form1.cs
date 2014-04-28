@@ -17,6 +17,7 @@ namespace Simulator_PIC16F84
         RegisterFileMap RegisterMap;
         ProgramMemoryMap UserMemorySpace;
         ProgramMemoryView ProgramView;
+        WorkingRegister WorkingRegister;
 
         public Main()
         {
@@ -39,6 +40,8 @@ namespace Simulator_PIC16F84
             ProgramView.MdiParent = this;
             ProgramView.SetDesktopLocation(size.Width + 18, 0);
             ProgramView.Show();
+
+            WorkingRegister = new WorkingRegister();
 
         }
 
@@ -121,6 +124,11 @@ namespace Simulator_PIC16F84
             sr.Close();
             ProgramView.loadProgram(fileContent);
             UserMemorySpace = ProgramView.getBinaryCode();
+
+            for (int index = 0; index < UserMemorySpace.getLength(); index++ )
+            {
+                UserMemorySpace.ProgramMemory[index].DecodeInstruction(WorkingRegister);
+            }
         }
 
     }
