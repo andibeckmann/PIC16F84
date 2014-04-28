@@ -29,12 +29,15 @@ namespace Simulator_PIC16F84
             RegisterView registerView = new RegisterView(ref RegisterMap);
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
+            registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
             // Display the new form.
             registerView.Show();
+            var size = registerView.Size;
 
             UserMemorySpace = new ProgramMemoryMap();
             ProgramView = new ProgramMemoryView(UserMemorySpace);
             ProgramView.MdiParent = this;
+            ProgramView.SetDesktopLocation(size.Width + 18, 0);
             ProgramView.Show();
 
         }

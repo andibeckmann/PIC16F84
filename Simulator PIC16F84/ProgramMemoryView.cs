@@ -22,6 +22,16 @@ namespace Simulator_PIC16F84
             InitializeComponent();
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
            this.StartPosition = FormStartPosition.Manual;
+           this.dataGridView1.SelectionChanged += SelectionChangedEvent;
+        }
+
+        private void SelectionChangedEvent(object sender, EventArgs e)
+        {
+            for(int i = 0 ; i < dataGridView1.SelectedCells.Count; i++)
+            {
+                int index = dataGridView1.SelectedCells[i].RowIndex;
+                dataGridView1.Rows[index].Selected = true;
+            }
         }
 
         public void loadProgram(string fileContent)
