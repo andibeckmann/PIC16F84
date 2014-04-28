@@ -22,7 +22,23 @@ namespace Simulator_PIC16F84.Instruktionen
 
         public BTFSC(int file, int b, ProgramCounter PC, WorkingRegister WReg)
         {
+            this.f = file;
+            this.b = b;
+            this.PC = PC;
+            this.W = WReg;
 
+            execute();
         }
+
+        private void execute()
+        {
+            var map = W.Value.GetRegisterMap();
+            if (IsBitSet(map.RegisterList[f].Value, b))
+            {
+                PC.Counter++;
+                NOP Operation = new NOP();
+            }
+        }
+
     }
 }

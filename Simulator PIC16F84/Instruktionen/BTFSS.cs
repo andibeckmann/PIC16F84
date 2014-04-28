@@ -41,10 +41,5 @@ namespace Simulator_PIC16F84.Instruktionen
                 //new NOP();
             }
         }
-
-        private bool IsBitSet(int b, int pos)
-        {
-            return (b & (1 << pos)) != 0;
-        }
     }
 }

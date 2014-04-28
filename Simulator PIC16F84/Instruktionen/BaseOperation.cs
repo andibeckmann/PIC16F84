@@ -65,5 +65,11 @@ namespace Simulator_PIC16F84.Instruktionen
             this.TO = TO;
             this.PD = PD;
         }
+
+        protected bool IsBitSet(int b, int pos)
+        {
+            return (b & (1 << pos)) != 0;
+        }
+
     }
 }

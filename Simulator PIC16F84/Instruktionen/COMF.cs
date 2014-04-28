@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    public class COMF
+    public class COMF : BaseOperation
     {
+
         //COMF Complement f
         //Syntax: [ label ] COMF f,d
         //Operands: 0 ≤ f ≤ 127
@@ -19,9 +20,11 @@ namespace Simulator_PIC16F84.Instruktionen
         //result is stored in W. If ’d’ is 1, the 
         //result is stored back in register ’f’
 
-        public COMF()
-        {
 
+        public COMF(int f, bool d)
+        {
+            this.f = f;
+            this.d = d;
         }
     }
 }
