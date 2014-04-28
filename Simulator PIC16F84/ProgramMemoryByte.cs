@@ -115,11 +115,11 @@ namespace Simulator_PIC16F84
             //    MOVWF Operation = new MOVWF(f);
             //}
 
-            ////NOP Instruktion
-            //if ((value & (int)0x3F9F) == (int)0x0000)
-            //{
-            //    NOP Operation = new NOP();
-            //}
+            //NOP Instruktion
+            if ((value & (int)0x3F9F) == (int)0x0000)
+            {
+                NOP Operation = new NOP();
+            }
 
             ////RLF Instruktion
             //if ((value & (int)0x3F00) == (int)0x0D00)
@@ -197,12 +197,12 @@ namespace Simulator_PIC16F84
             //    ANDLW Operation = new ANDLW(k, W);
             //}
 
-            ////CALL Instruktion
-            //if ((value & (int)0x3800) == (int)0x2000)
-            //{
-            //    k = value & (int)0x7FF;
-            //    CALL Operation = new CALL(k);
-            //}
+            //CALL Instruktion
+            if ((value & (int)0x3800) == (int)0x2000)
+            {
+                k = value & (int)0x7FF;
+                CALL Operation = new CALL(k);
+            }
 
             ////CLRWDT Instruktion
             //if ((value & (int)0xFFFF) == (int)0x0064)
