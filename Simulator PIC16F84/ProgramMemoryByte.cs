@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Simulator_PIC16F84.Instruktionen;
 
 namespace Simulator_PIC16F84
 {

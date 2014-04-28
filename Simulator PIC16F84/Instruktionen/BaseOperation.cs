@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Simulator_PIC16F84
+namespace Simulator_PIC16F84.Instruktionen
 {
     /// <summary>
     /// Instruction Set Basisklasse

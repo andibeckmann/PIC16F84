@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Simulator_PIC16F84
+namespace Simulator_PIC16F84.Instruktionen
 {
     public class Addlw : BaseOperation
     {

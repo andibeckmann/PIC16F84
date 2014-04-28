@@ -44,8 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ADDLW.cs" />
-    <Compile Include="BaseOperation.cs" />
+    <Compile Include="Instruktionen\ADDLW.cs" />
+    <Compile Include="Instruktionen\BaseOperation.cs" />
     <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />
     <Compile Include="ProgramMemoryAddress.cs" />
