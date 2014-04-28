@@ -24,16 +24,25 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  are loaded from PCLATH. CALL is
         //                  a two-cycle instruction.
 
-        public CALL( int k )
+        public CALL( int k, ProgramCounter PC, Stack Stack )
         {
             this.k = k;
+            this.PC = PC;
+            this.Stack = Stack;
 
             execute();
         }
 
     private void execute()
     {
- 	
+        Stack.PushOntoStack(DeriveReturnAddress(PC));
+        PC.Counter = k;   
+        //TODO: PC LATCH Wasauchimmer
+    }
+
+    private int DeriveReturnAddress(ProgramCounter PC)
+    {
+        return PC.Counter++;
     }
     }
 }

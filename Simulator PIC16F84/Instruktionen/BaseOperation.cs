@@ -54,6 +54,11 @@ namespace Simulator_PIC16F84.Instruktionen
         /// </summary>
         protected bool PD;
 
+        /// <summary>
+        /// Stack-Returnadressen des Program Counters
+        /// </summary>
+        protected Stack Stack;
+
         public BaseOperation(int f = 0, WorkingRegister W = null, int b = 0, int k = 0, bool d = true, ProgramCounter PC = null, bool TO = false, bool PD = false)
         {
             this.f = f;
@@ -70,6 +75,8 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             return (b & (1 << pos)) != 0;
         }
+
+        protected abstract void execute();
 
     }
 }

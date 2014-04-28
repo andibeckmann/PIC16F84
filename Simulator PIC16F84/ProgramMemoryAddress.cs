@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84
 {
-    class ProgramMemoryAddress
+    public class ProgramMemoryAddress
     {
         private int value;
 

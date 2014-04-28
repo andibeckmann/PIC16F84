@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84
             set { this.value = value; }
         }
 
-        public void DecodeInstruction(WorkingRegister W, ProgramCounter PC)
+        public void DecodeInstruction(WorkingRegister W, ProgramCounter PC, Stack Stack)
         {
             int k;
             int f;
@@ -201,7 +201,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3800) == (int)0x2000)
             {
                 k = value & (int)0x7FF;
-                CALL Operation = new CALL(k);
+                CALL Operation = new CALL(k, PC, Stack);
             }
 
             ////CLRWDT Instruktion
