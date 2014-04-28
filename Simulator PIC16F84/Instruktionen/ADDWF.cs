@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class ADDWF
-    {
-        public class ADDLW : BaseOperation
+          public class ADDWF : BaseOperation
         {
             //ADDWF             Add W and f
             //--------------------------------------
@@ -25,11 +24,16 @@ namespace Simulator_PIC16F84.Instruktionen
 
             private int result;
             private RegisterFileMap Register;
+            private RegisterByte f;
+            private RegisterByte W;
 
-            public ADDLW(int k, WorkingRegister W)
+            public ADDWF(int file, bool d, WorkingRegister WReg)
             {
-                Register = W.Value.GetRegisterMap();
-                result = W.Value.Value + k;
+                W = WReg.Value;
+                Register = W.GetRegisterMap();
+                f = Register.RegisterList[file];
+
+                result = W.Value + f.Value;
 
                 //Zero-Bit Logik
                 if (result == 0)
@@ -37,21 +41,38 @@ namespace Simulator_PIC16F84.Instruktionen
                 else
                     Register.ResetZeroBit();
 
-                //Digit Carry Logik
-                if ((W.Value.Value & 0x0F) + k > 0x0f)
-                    Register.SetDigitCarryBit();
-                else
-                    Register.ResetDigitCarryBit();
 
                 //Carry-Bit Logik
                 if (result > 0xFF)
                     Register.SetCarryBit();
                 else
                     Register.ResetCarryBit();
-                W.Value.Value = result;
 
-                MessageBox.Show("ADDLW detected! Added k=" + k.ToString() + " to the W-Register. Result: " + W.Value.Value.ToString() + ". Carry-Bit ist auf: " + W.Value.GetRegisterMap().getCarryBit().ToString());
+                MessageBox.Show("ADDWF detected! Added content of register f = " + f.Value.ToString() + " and content of W-Register W = " + W.Value.ToString() + ". Result: " + result.ToString() + ". Desintation-Bit ist auf: " + d.ToString());
+
+                //Unterscheidung Working Reg oder File Reg
+                if (d)
+                {
+                    //Digit Carry Logik
+                    if ((f.Value & 0x0F) + W.Value > 0x0f)
+                        Register.SetDigitCarryBit();
+                    else
+                        Register.ResetDigitCarryBit();
+
+                    //Resultat Ablegen
+                    f.Value = result;
+                }
+                else
+                {
+                    //Digit Carry Logik
+                    if ((W.Value & 0x0F) + f.Value > 0x0f)
+                        Register.SetDigitCarryBit();
+                    else
+                        Register.ResetDigitCarryBit();
+
+                    //Resultat Ablegen
+                    W.Value = result;
+                }
             }
-        }
     }
 }
