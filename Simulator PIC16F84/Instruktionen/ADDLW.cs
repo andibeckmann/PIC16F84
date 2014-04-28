@@ -47,7 +47,7 @@ namespace Simulator_PIC16F84.Instruktionen
                 Register.ResetCarryBit();
             W.Value.Value = result;
 
-            MessageBox.Show("ADDLW detected! Added k=" + k.ToString() +" to the W-Register. Result: " + W.Value.Value.ToString() + ". Carry-Bit ist auf: " + W.Value.GetRegisterMap().getCarryBit().ToString() );
+ //           MessageBox.Show("ADDLW detected! Added k=" + k.ToString() +" to the W-Register. Result: " + W.Value.Value.ToString() + ". Carry-Bit ist auf: " + W.Value.GetRegisterMap().getCarryBit().ToString() );
         }
 
     }
