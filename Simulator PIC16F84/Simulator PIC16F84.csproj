@@ -52,6 +52,8 @@
     <Compile Include="Instruktionen\BSF.cs" />
     <Compile Include="Instruktionen\BTFSC.cs" />
     <Compile Include="Instruktionen\BTFSS.cs" />
+    <Compile Include="Instruktionen\CLRWDT.cs" />
+    <Compile Include="Instruktionen\COMF.cs" />
     <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />
     <Compile Include="ProgramMemoryAddress.cs" />

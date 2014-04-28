@@ -55,12 +55,12 @@ namespace Simulator_PIC16F84
             //    CLRW Operation = new CLRW(W);
             //}
 
-            ////COMF Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0900)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    COMF Operation = new COMF(f, d);
-            //}
+            //COMF Instruktion
+            if ((value & (int)0x3F00) == (int)0x0900)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                COMF Operation = new COMF(f, d);
+            }
 
             ////DECF Instruktion
             //if ((value & (int)0x3F00) == (int)0x0300)
@@ -180,7 +180,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3C00) == (int)0x1C00)
             {
                 ExtractFileRegisterAndBitAddress(out f, out b);
-                BTFSS Operation = new BTFSS(f, b, W);
+                BTFSS Operation = new BTFSS(f, b, PC, W);
             }
 
             //ADDLW Instruktion
@@ -204,11 +204,11 @@ namespace Simulator_PIC16F84
             //    CALL Operation = new CALL(k);
             //}
 
-            ////CLRWDT Instruktion
-            //if ((value & (int)0xFFFF) == (int)0x0064)
-            //{
-            //    CLRWDT Operation = new CLRWDT();
-            //}
+            //CLRWDT Instruktion
+            if ((value & (int)0xFFFF) == (int)0x0064)
+            {
+                CLRWDT Operation = new CLRWDT();
+            }
 
             ////GOTO Instruktion
             //if ((value & (int)0x3800) == (int)0x2800)
