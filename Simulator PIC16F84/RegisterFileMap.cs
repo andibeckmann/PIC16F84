@@ -36,6 +36,11 @@ namespace Simulator_PIC16F84
             RegisterList[3].Value = RegisterList[3].Value | 0x01;
         }
 
+        internal void ResetCarryBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value & 0xFE;
+        }
+
         public bool getCarryBit()
         {
             if ( (RegisterList[3].Value & 0x01) == 0x01)

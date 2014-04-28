@@ -28,6 +28,8 @@ namespace Simulator_PIC16F84
                     registerFileMap.SetCarryBit();
                     value = value % 0x100;
                 }
+                else
+                    registerFileMap.ResetCarryBit();
                 this.value = value;
             }
         }
