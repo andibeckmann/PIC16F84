@@ -54,7 +54,7 @@ namespace Simulator_PIC16F84.Instruktionen
         /// </summary>
         protected bool PD;
 
-        public BaseOperation(RegisterByte f = null, WorkingRegister W = null, RegisterByte b = null, int k = 0, bool d = true, ProgramCounter PC = null, bool TO = false, bool PD = false)
+        public BaseOperation(int f = 0, WorkingRegister W = null, int b = 0, int k = 0, bool d = true, ProgramCounter PC = null, bool TO = false, bool PD = false)
         {
             this.f = f;
             this.W = W;

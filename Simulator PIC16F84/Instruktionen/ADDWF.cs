@@ -24,15 +24,15 @@ namespace Simulator_PIC16F84.Instruktionen
 
             private int result;
             private RegisterFileMap Register;
-            private RegisterByte f;
-            private RegisterByte W;
+            private new RegisterByte f;
+            private new RegisterByte W;
 
             public ADDWF(int file, bool d, WorkingRegister WReg)
             {
                 W = WReg.Value;
                 Register = W.GetRegisterMap();
                 f = Register.RegisterList[file];
-
+                
                 result = W.Value + f.Value;
 
                 //Zero-Bit Logik
