@@ -48,5 +48,41 @@ namespace Simulator_PIC16F84
             else
                 return false;
         }
+
+        internal void SetDigitCarryBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value | 0x02;
+        }
+
+        internal void ResetDigitCarryBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value & 0xFD;
+        }
+
+        public bool getDigitCarryBit()
+        {
+            if ((RegisterList[3].Value & 0x02) == 0x02)
+                return true;
+            else
+                return false;
+        }
+
+        internal void SetZeroBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value | 0x04;
+        }
+
+        internal void ResetZeroBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value & 0xFB;
+        }
+
+        public bool getZeroBit()
+        {
+            if ((RegisterList[3].Value & 0x02) == 0x04)
+                return true;
+            else
+                return false;
+        }
     }
 }

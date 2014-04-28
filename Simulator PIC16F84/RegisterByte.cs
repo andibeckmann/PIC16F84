@@ -24,12 +24,7 @@ namespace Simulator_PIC16F84
                 if (value < 0)
                     throw new ArgumentOutOfRangeException();
                 if (value > 0xFF)
-                {
-                    registerFileMap.SetCarryBit();
                     value = value % 0x100;
-                }
-                else
-                    registerFileMap.ResetCarryBit();
                 this.value = value;
             }
         }
