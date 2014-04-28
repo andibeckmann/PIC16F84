@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Instruktionen\ADDLW.cs" />
     <Compile Include="Instruktionen\BaseOperation.cs" />
+    <Compile Include="Instruktionen\BCF.cs" />
     <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />
     <Compile Include="ProgramMemoryAddress.cs" />
