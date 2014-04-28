@@ -41,7 +41,7 @@ namespace Simulator_PIC16F84
             ProgramView.SetDesktopLocation(size.Width + 18, 0);
             ProgramView.Show();
 
-            WorkingRegister = new WorkingRegister();
+            WorkingRegister = new WorkingRegister(RegisterMap);
 
         }
 

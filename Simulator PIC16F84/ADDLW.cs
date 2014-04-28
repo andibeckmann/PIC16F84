@@ -18,13 +18,14 @@ namespace Simulator_PIC16F84
         //                  and the result is placed in the W
         //                  register.
 
-        public Addlw(int literal, WorkingRegister WorkingRegister)
+        public Addlw(int k, WorkingRegister W)
         {
             int result;
 
-            result = WorkingRegister.Value + literal;
+            result = W.Value.Value + k;
+            W.Value.Value = result;
 
-            MessageBox.Show("ADDLW detected! Added W=" + WorkingRegister.Value.ToString() + " to k=" + literal.ToString());
+            MessageBox.Show("ADDLW detected! Added k=" + k.ToString() +" to the W-Register. Result: " + W.Value.Value.ToString() + ". Carry-Bit ist auf: " + W.Value.GetRegisterMap().getCarryBit().ToString() );
         }
 
     }

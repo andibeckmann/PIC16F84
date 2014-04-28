@@ -15,7 +15,7 @@ namespace Simulator_PIC16F84
             RegisterList = new RegisterByte[256];
             for (int var = 0; var < RegisterList.Length; var++ )
             {
-                RegisterList[var] = new RegisterByte();
+                RegisterList[var] = new RegisterByte(this);
             }
         }
 
@@ -28,7 +28,20 @@ namespace Simulator_PIC16F84
         public RegisterByte getStatusRegisterContent()
         {
             return RegisterList[3];
-        }        
-    
+        }
+
+
+        internal void SetCarryBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value | 0x01;
+        }
+
+        public bool getCarryBit()
+        {
+            if ( (RegisterList[3].Value & 0x01) == 0x01)
+                return true;
+            else
+                return false;
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Simulator_PIC16F84
         /// </summary>
         protected RegisterByte f;
 
-                /// <summary>
+        /// <summary>
         /// Working register (accumulator)
         /// </summary>
         protected WorkingRegister W;

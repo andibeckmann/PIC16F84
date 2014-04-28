@@ -9,14 +9,14 @@ namespace Simulator_PIC16F84
     public class WorkingRegister
     {
 
-        private int value;
+        private RegisterByte value;
 
-        public WorkingRegister()
+        public WorkingRegister(RegisterFileMap RegisterMap)
         {
-            value = 0;
+            value = new RegisterByte(RegisterMap);
         }
 
-        public int Value
+        public RegisterByte Value
         {
             get { return value; }
             set { this.value = value; }
