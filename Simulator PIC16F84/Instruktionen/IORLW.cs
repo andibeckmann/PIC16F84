@@ -18,7 +18,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //The result is placed in the W
         //register.
 
-        public IORLW(int k, WorkingRegister W)
+        public IORLW(sbyte k, WorkingRegister W)
         {
             this.k = k;
             execute(W);

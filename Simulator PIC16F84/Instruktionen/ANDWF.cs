@@ -39,9 +39,9 @@ namespace Simulator_PIC16F84.Instruktionen
 
             //Unterscheidung Working Reg oder File Reg
             if (d)
-                W.Value.GetRegisterMap().RegisterList[f].Value = result;
+                W.Value.GetRegisterMap().RegisterList[f].Value = (sbyte)result;
             else
-                W.Value.Value = result;
+                W.Value.Value = (sbyte)result;
         }
     }
 }

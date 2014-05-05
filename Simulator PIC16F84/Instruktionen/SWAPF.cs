@@ -27,11 +27,11 @@ namespace Simulator_PIC16F84.Instruktionen
 
             if(d)
             {
-                W.Value.GetRegisterMap().getRegisterList[f].Value = result;
+                W.Value.GetRegisterMap().getRegisterList[f].Value = (sbyte) result;
             }
             else
             {
-                W.Value.Value = result;
+                W.Value.Value = (sbyte) result;
             }
         }
 

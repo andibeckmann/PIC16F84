@@ -50,6 +50,11 @@ namespace Simulator_PIC16F84
         {
             return ( ( ( value >> pos ) & 0x1 ) == 0x1 );
         }
+
+        public sbyte FormComplement()
+        {
+            return ((sbyte) ((int) value ^ 0xff));
+        }
     }
 
 }

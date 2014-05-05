@@ -17,7 +17,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //Description:      Move data from W register to
         //                  register 'f'.
 
-        private int content;
+        private sbyte content;
         private RegisterFileMap Register;
 
         public MOVWF(int f, WorkingRegister W)

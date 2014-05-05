@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         public static sbyte TurnBitOn(int value, int bitToTurnOn)
         {
-            return (value | bitToTurnOn);
+            return (sbyte)(value | bitToTurnOn);
         }
     }
 }

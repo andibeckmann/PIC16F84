@@ -73,7 +73,7 @@ namespace Simulator_PIC16F84
                     int content;
                     if (int.TryParse(textBox.Text, out content))
                     {
-                        registerMap.RegisterList[id].Value = content;
+                        registerMap.RegisterList[id].Value = (sbyte) content;
                     }
                 }
             }

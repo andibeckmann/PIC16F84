@@ -18,7 +18,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  into W register. The don’t cares
         //                  will assemble as 0’s.
 
-        public MOVLW(int k, WorkingRegister W)
+        public MOVLW(sbyte k, WorkingRegister W)
         {
             this.k = k;
 

@@ -39,9 +39,9 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             var result = W.Value.GetRegisterMap().RegisterList[f].DecrementRegister();
             if (d)
-                W.Value.GetRegisterMap().RegisterList[f].Value = result;
+                W.Value.GetRegisterMap().RegisterList[f].Value = (sbyte)result;
             else
-                W.Value.Value = result;
+                W.Value.Value = (sbyte)result;
 
             if (result == 0)
             {

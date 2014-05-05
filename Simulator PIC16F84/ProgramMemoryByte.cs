@@ -188,7 +188,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3E00) == (int)0x3E00)
             {
                 k = GetLiteral();
-                ADDLW Operation = new ADDLW(k, W);
+                ADDLW Operation = new ADDLW((sbyte)k, W);
             }
 
             //ANDLW Instruktion
@@ -202,7 +202,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3800) == (int)0x2000)
             {
                 k = value & (int)0x7FF;
-                CALL Operation = new CALL(k, PC, Stack);
+                CALL Operation = new CALL((sbyte)k, PC, Stack);
             }
 
             //CLRWDT Instruktion
@@ -215,21 +215,21 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3800) == (int)0x2800)
             {
                 k = value & (int)0x7FF;
-                GOTO Operation = new GOTO(k, PC);
+                GOTO Operation = new GOTO((sbyte)k, PC);
             }
 
             //IORLW Instruktion
             if ((value & (int)0x3F00) == (int)0x3800)
             {
                 k = GetLiteral();
-                IORLW Operation = new IORLW(k, W);
+                IORLW Operation = new IORLW((sbyte)k, W);
             }
 
             //MOVLW Instruktion
             if ((value & (int)0x3C00) == (int)0x3000)
             {
                 k = GetLiteral();
-                MOVLW Operation = new MOVLW(k, W);
+                MOVLW Operation = new MOVLW((sbyte)k, W);
             }
 
             //RETFIE Instruktion
@@ -242,7 +242,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3C00) == (int)0x3400)
             {
                 k = GetLiteral();
-                RETLW Operation = new RETLW(k, W, PC, Stack);
+                RETLW Operation = new RETLW((sbyte)k, W, PC, Stack);
             }
 
             //RETURN Instruktion
@@ -261,14 +261,14 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3E00) == (int)0x3C00)
             {
                 k = GetLiteral();
-                SUBLW Operation = new SUBLW(k, W);
+                SUBLW Operation = new SUBLW((sbyte)k, W);
             }
 
             //XORLW Instruktion
             if ((value & (int)0x3F00) == (int)0x3A00)
             {
                 k = GetLiteral();
-                XORLW Operation = new XORLW(k, W);
+                XORLW Operation = new XORLW((sbyte)k, W);
             }
         }
 

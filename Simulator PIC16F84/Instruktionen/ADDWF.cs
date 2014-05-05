@@ -59,7 +59,7 @@ namespace Simulator_PIC16F84.Instruktionen
                         W.Value.GetRegisterMap().ResetDigitCarryBit();
 
                     //Resultat Ablegen
-                    W.Value.GetRegisterMap().RegisterList[f].Value = result;
+                    W.Value.GetRegisterMap().RegisterList[f].Value = (sbyte)result;
                 }
                 else
                 {
@@ -70,7 +70,7 @@ namespace Simulator_PIC16F84.Instruktionen
                         W.Value.GetRegisterMap().ResetDigitCarryBit();
 
                     //Resultat Ablegen
-                    W.Value.Value = result;
+                    W.Value.Value = (sbyte)result;
                 }
             }
     }

@@ -22,7 +22,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  PCLATH<4:3>. GOTO i a two-
         //                  cycle instruction.
 
-        public GOTO(int k, ProgramCounter PC)
+        public GOTO(sbyte k, ProgramCounter PC)
         {
             this.k = k;
 
