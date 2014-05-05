@@ -33,7 +33,17 @@ namespace Simulator_PIC16F84
         {
             return registerFileMap;
         }
-        
+
+
+        public void ClearRegister()
+        {
+            value = 0;
+        }
+
+        public int DecrementRegister()
+        {
+            return value--;
+        }
     }
 
 }
