@@ -19,6 +19,7 @@ namespace Simulator_PIC16F84
         ProgramMemoryView ProgramView;
         WorkingRegister W;
         ProgramCounter PC;
+        Stack Stack;
 
         public Main()
         {
@@ -44,6 +45,7 @@ namespace Simulator_PIC16F84
 
             W = new WorkingRegister(RegisterMap);
             PC = new ProgramCounter();
+            Stack = new Stack();
 
 
         }
@@ -130,7 +132,7 @@ namespace Simulator_PIC16F84
 
             for (int index = 0; index < UserMemorySpace.getLength(); index++ )
             {
-                UserMemorySpace.ProgramMemory[index].DecodeInstruction(W, PC);
+                UserMemorySpace.ProgramMemory[index].DecodeInstruction(W, PC, Stack);
             }
         }
 
