@@ -76,12 +76,12 @@ namespace Simulator_PIC16F84
                 DECFSZ Operation = new DECFSZ(f, d, W);
             }
 
-            ////INCF Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0A00)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    INCF Operation = new INCF(f, d);
-            //}
+            //INCF Instruktion
+            if ((value & (int)0x3F00) == (int)0x0A00)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                INCF Operation = new INCF(f, d, W);
+            }
 
             //INCFSZ Instruktion
             if ((value & (int)0x3F00) == (int)0x0F00)

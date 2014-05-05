@@ -63,6 +63,7 @@
     <Compile Include="Instruktionen\GOTO.cs" />
     <Compile Include="Instruktionen\IORLW.cs" />
     <Compile Include="Instruktionen\IORWF.cs" />
+    <Compile Include="Instruktionen\INCF.cs" />
     <Compile Include="Instruktionen\NOP.cs" />
     <Compile Include="Instruktionen\RETFIE.cs" />
     <Compile Include="Instruktionen\RETLW.cs" />
