@@ -59,7 +59,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x0900)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                COMF Operation = new COMF(f, d);
+                COMF Operation = new COMF(f, d, W);
             }
 
             ////DECF Instruktion

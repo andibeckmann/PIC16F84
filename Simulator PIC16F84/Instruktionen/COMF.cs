@@ -21,10 +21,21 @@ namespace Simulator_PIC16F84.Instruktionen
         //result is stored back in register ’f’
 
 
-        public COMF(int f, bool d)
+        public COMF(int f, bool d, WorkingRegister W)
         {
             this.f = f;
             this.d = d;
+
+            var reverseResult = ~f;
+
+            if (d)
+            {
+                W.Value.GetRegisterMap().RegisterList[f].Value = reverseResult;
+            }
+            else
+            {
+                W.Value.Value = reverseResult;
+            }
         }
     }
 }
