@@ -24,18 +24,26 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  The processor is put into SLEEP
         //                  mode with the oscillator stopped.
 
-        public SLEEP(WorkingRegister W)
+        public SLEEP(WorkingRegister W, WatchdogTimer WDT, Prescaler Prescaler)
         {
-            execute(W);
+            execute(W, WDT, Prescaler);
         }
 
-        protected override void execute(WorkingRegister W)
+        private void execute(WorkingRegister W, WatchdogTimer WDT, Prescaler Prescaler)
         {
             W.Value.GetRegisterMap().ResetPowerDownBit();
             W.Value.GetRegisterMap().SetTimeOutBit();
 
-            //TODO: Clear Watchdog Timer and Prescaler
+            WDT.ClearWatchdogTimer();
+            Prescaler.ClearPrescaler();
+
             //TODO: Put processor into SLEEP mode and stop oscillator
+
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Simulator_PIC16F84
     {
         private int timer;
 
-        public WatchdogTimer(RegisterFileMap Register)
+        public WatchdogTimer()
         {
             timer = 0;
         }
