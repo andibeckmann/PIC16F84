@@ -26,7 +26,7 @@ namespace Simulator_PIC16F84.Instruktionen
             PC.Counter = stack.PullFromStack().Value;
         }
 
-        public RETLW(int k, WorkingRegister W, ProgramCounter PC, Stack stack)
+        public RETLW(sbyte k, WorkingRegister W, ProgramCounter PC, Stack stack)
         {
             this.k = k;
 

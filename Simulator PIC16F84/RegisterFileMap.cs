@@ -33,12 +33,12 @@ namespace Simulator_PIC16F84
 
         internal void SetCarryBit()
         {
-            RegisterList[3].Value = RegisterList[3].Value | 0x01;
+            RegisterList[3].Value = (sbyte) (RegisterList[3].Value | 0x01);
         }
 
         internal void ResetCarryBit()
         {
-            RegisterList[3].Value = RegisterList[3].Value & 0xFE;
+            RegisterList[3].Value = (sbyte) (RegisterList[3].Value & 0xFE);
         }
 
         public bool getCarryBit()
@@ -51,12 +51,12 @@ namespace Simulator_PIC16F84
 
         internal void SetDigitCarryBit()
         {
-            RegisterList[3].Value = RegisterList[3].Value | 0x02;
+            RegisterList[3].Value = (sbyte) (RegisterList[3].Value | 0x02);
         }
 
         internal void ResetDigitCarryBit()
         {
-            RegisterList[3].Value = RegisterList[3].Value & 0xFD;
+            RegisterList[3].Value = (sbyte) (RegisterList[3].Value & 0xFD);
         }
 
         public bool getDigitCarryBit()

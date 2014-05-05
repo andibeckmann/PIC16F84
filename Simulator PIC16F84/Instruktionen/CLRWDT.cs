@@ -30,7 +30,13 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             WDT.ClearWatchdogTimer();
             prescaler.ClearPrescaler();
+            //TODO Set TO,PD
             //W.Value.GetRegisterMap().
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
         }
     }
 }

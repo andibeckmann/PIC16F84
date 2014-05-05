@@ -8,7 +8,7 @@ namespace Simulator_PIC16F84
 {
     public class RegisterByte
     {
-        private int value;
+        private sbyte value;
         private RegisterFileMap registerFileMap;
 
         public RegisterByte(RegisterFileMap registerFileMap)
@@ -17,14 +17,10 @@ namespace Simulator_PIC16F84
             value = 0;
         }
 
-        public int Value {
+        public sbyte Value {
             get { return value; }
             set
             {
-                if (value < 0)
-                    throw new ArgumentOutOfRangeException();
-                if (value > 0xFF)
-                    value = value % 0x100;
                 this.value = value;
             }
         }
@@ -42,12 +38,12 @@ namespace Simulator_PIC16F84
 
         public int DecrementRegister()
         {
-            return value--;
+            return value - 1;
         }
 
         public int IncrementRegister()
         {
-            return value++;
+            return value + 1;
         }
 
         public bool IsBitSet(int pos)
