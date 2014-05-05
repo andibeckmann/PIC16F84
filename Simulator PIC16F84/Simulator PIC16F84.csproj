@@ -55,7 +55,16 @@
     <Compile Include="Instruktionen\CLRWDT.cs" />
     <Compile Include="Instruktionen\COMF.cs" />
     <Compile Include="Instruktionen\CALL.cs" />
+    <Compile Include="Instruktionen\DECF.cs" />
+    <Compile Include="Instruktionen\INCFSZ.cs" />
+    <Compile Include="Instruktionen\IORLW.cs" />
+    <Compile Include="Instruktionen\IORWF.cs" />
     <Compile Include="Instruktionen\NOP.cs" />
+    <Compile Include="Instruktionen\RETFIE.cs" />
+    <Compile Include="Instruktionen\RETLW.cs" />
+    <Compile Include="Instruktionen\RETURN.cs" />
+    <Compile Include="Instruktionen\SUBLW.cs" />
+    <Compile Include="Instruktionen\SUBWF.cs" />
     <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />
     <Compile Include="ProgramMemoryAddress.cs" />

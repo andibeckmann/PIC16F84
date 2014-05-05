@@ -62,12 +62,12 @@ namespace Simulator_PIC16F84
                 COMF Operation = new COMF(f, d, W);
             }
 
-            ////DECF Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0300)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    DECF Operation = new DECF(f, d);
-            //}
+            //DECF Instruktion
+            if ((value & (int)0x3F00) == (int)0x0300)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                DECF Operation = new DECF(f, d);
+            }
 
             ////DECFSZ Instruktion
             //if ((value & (int)0x3F00) == (int)0x0B00)
@@ -83,19 +83,19 @@ namespace Simulator_PIC16F84
             //    INCF Operation = new INCF(f, d);
             //}
 
-            ////INCFSZ Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0F00)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    INCFSZ Operation = new INCFSZ(f, d);
-            //}
+            //INCFSZ Instruktion
+            if ((value & (int)0x3F00) == (int)0x0F00)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                INCFSZ Operation = new INCFSZ(f, d);
+            }
 
-            ////IORWF Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0400)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    IORWF Operation = new IORWF(f, d);
-            //}
+            //IORWF Instruktion
+            if ((value & (int)0x3F00) == (int)0x0400)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                IORWF Operation = new IORWF(f, d, W);
+            }
 
             ////MOVF Instruktion
             //if ((value & (int)0x3F00) == (int)0x0800)
@@ -135,12 +135,13 @@ namespace Simulator_PIC16F84
             //    RRF Operation = new RRF(f, d);
             //}
 
-            ////SUBWF Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0200)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    SUBWF Operation = new SUBWF(f, d);
-            //}
+            //SUBWF Instruktion
+            if ((value & (int)0x3F00) == (int)0x0200)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                SUBWF Operation = new SUBWF(f, d, W);
+            }
+
             ////SWAPF Instruktion
             //if ((value & (int)0x3F00) == (int)0x0E00)
             //{
@@ -217,12 +218,12 @@ namespace Simulator_PIC16F84
             //    GOTO Operation = new GOTO(k);
             //}
 
-            ////IORLW Instruktion
-            //if ((value & (int)0x3F00) == (int)0x3800)
-            //{
-            //    k = GetLiteral();
-            //    IORLW Operation = new IORLW(k, W);
-            //}
+            //IORLW Instruktion
+            if ((value & (int)0x3F00) == (int)0x3800)
+            {
+                k = GetLiteral();
+                IORLW Operation = new IORLW(k, W);
+            }
 
             ////MOVLW Instruktion
             //if ((value & (int)0x3C00) == (int)0x3000)
@@ -231,24 +232,24 @@ namespace Simulator_PIC16F84
             //    MOVLW Operation = new MOVLW(k, W);
             //}
 
-            ////RETFIE Instruktion
-            //if ((value & (int)0x3FFF) == (int)0x0009)
-            //{
-            //    RETFIE Operation = new RETFIE();
-            //}
+            //RETFIE Instruktion
+            if ((value & (int)0x3FFF) == (int)0x0009)
+            {
+                RETFIE Operation = new RETFIE();
+            }
 
-            ////RETLW Instruktion
-            //if ((value & (int)0x3C00) == (int)0x3400)
-            //{
-            //    k = GetLiteral();
-            //    RETLW Operation = new RETLW(k);
-            //}
+            //RETLW Instruktion
+            if ((value & (int)0x3C00) == (int)0x3400)
+            {
+                k = GetLiteral();
+                RETLW Operation = new RETLW(k);
+            }
 
-            ////RETURN Instruktion
-            //if ((value & (int)0x3FFF) == (int)0x0008)
-            //{
-            //    RETURN Operation = new RETURN();
-            //}
+            //RETURN Instruktion
+            if ((value & (int)0x3FFF) == (int)0x0008)
+            {
+                RETURN Operation = new RETURN(PC, Stack);
+            }
 
             ////SLEEP Instruktion
             //if ((value & (int)0x3FFF) == (int)0x0063)
@@ -256,12 +257,12 @@ namespace Simulator_PIC16F84
             //    SLEEP Operation = new SLEEP();
             //}
 
-            ////SUBLW Instruktion
-            //if ((value & (int)0x3E00) == (int)0x3C00)
-            //{
-            //    k = GetLiteral();
-            //    SUBLW Operation = new SUBLW(k);
-            //}
+            //SUBLW Instruktion
+            if ((value & (int)0x3E00) == (int)0x3C00)
+            {
+                k = GetLiteral();
+                SUBLW Operation = new SUBLW(k, W);
+            }
 
             ////XORLW Instruktion
             //if ((value & (int)0x3F00) == (int)0x3A00)
