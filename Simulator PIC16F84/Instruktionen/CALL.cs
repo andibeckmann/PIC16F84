@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
             execute(PC, Stack);
         }
 
-    protected void execute(ProgramCounter PC, Stack stack)
+    protected void execute(ProgramCounter PC, Stack Stack)
     {
         Stack.PushOntoStack(DeriveReturnAddress(PC));
         PC.Counter = k;   

@@ -191,12 +191,12 @@ namespace Simulator_PIC16F84
                 ADDLW Operation = new ADDLW(k, W);
             }
 
-            ////ANDLW Instruktion
-            //if ((value & (int)0x3F00) == (int)0x3900)
-            //{
-            //    k = GetLiteral();
-            //    ANDLW Operation = new ANDLW(k, W);
-            //}
+            //ANDLW Instruktion
+            if ((value & (int)0x3F00) == (int)0x3900)
+            {
+                k = GetLiteral();
+                ANDLW Operation = new ANDLW(k, W);
+            }
 
             //CALL Instruktion
             if ((value & (int)0x3800) == (int)0x2000)

@@ -21,5 +21,10 @@ namespace Simulator_PIC16F84
             get { return counter.Value; }
             set { this.counter.Value = value; }
         }
+
+        public void InkrementPC()
+        {
+            counter.Value++;
+        }
     }
 }

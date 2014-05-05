@@ -134,9 +134,9 @@ namespace Simulator_PIC16F84
             ProgramView.loadProgram(fileContent);
             UserMemorySpace = ProgramView.getBinaryCode();
 
-            for (int index = 0; index < UserMemorySpace.getLength(); index++ )
+            for (; PC.Counter < UserMemorySpace.getLength(); PC.InkrementPC() )
             {
-                UserMemorySpace.ProgramMemory[index].DecodeInstruction(W, PC, Stack, WDT, Prescaler);
+                UserMemorySpace.ProgramMemory[PC.Counter].DecodeInstruction(W, PC, Stack, WDT, Prescaler);
             }
         }
 
