@@ -33,6 +33,9 @@ namespace Simulator_PIC16F84
         {
             return registerFileMap;
         }
+<<<<<<< origin/master
+        
+=======
 
 
         public void ClearRegister()
@@ -49,6 +52,7 @@ namespace Simulator_PIC16F84
         {
             return value++;
         }
+>>>>>>> local
     }
 
 }

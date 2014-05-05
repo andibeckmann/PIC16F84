@@ -32,7 +32,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute()
         {
-
+            PC.Counter = k;
         }
     }
 }

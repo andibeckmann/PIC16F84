@@ -84,5 +84,26 @@ namespace Simulator_PIC16F84
             else
                 return false;
         }
+
+        public void SetPowerDownBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value | 0x08;
+        }
+
+        public void ResetPowerDownBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value & 0xF7;
+        }
+
+        public void SetTimeOutBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value | 0x10;
+        }
+
+        public void ResetTimeOutBit()
+        {
+            RegisterList[3].Value = RegisterList[3].Value & 0xEF;
+        }
     }
+ 
 }
