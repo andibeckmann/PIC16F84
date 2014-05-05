@@ -208,7 +208,7 @@ namespace Simulator_PIC16F84
             //CLRWDT Instruktion
             if ((value & (int)0xFFFF) == (int)0x0064)
             {
-                CLRWDT Operation = new CLRWDT(W);
+                CLRWDT Operation = new CLRWDT(W, WDT, prescaler);
             }
 
             //GOTO Instruktion
