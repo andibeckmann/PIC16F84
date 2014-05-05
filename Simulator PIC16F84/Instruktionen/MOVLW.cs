@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class MOVLW : BaseOperation
+    public class MOVLW : BaseOperation
     {
         //MOVLW              Move Literal to W
         //--------------------------------------
@@ -21,12 +21,11 @@ namespace Simulator_PIC16F84.Instruktionen
         public MOVLW(int k, WorkingRegister W)
         {
             this.k = k;
-            this.W = W;
 
-            execute();
+            execute(W);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
             W.Value.Value = k;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class DECFSZ : BaseOperation
+    public class DECFSZ : BaseOperation
     {
         //DECFSZ            Decrement f, Skip if 0
         //--------------------------------------
@@ -26,23 +26,20 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  then a NOP is executed instead,
         //                  making it a 2TCY instruction.
 
-        private RegisterFileMap Register;
-        private int result;
 
-        public DECFSZ(int f, bool d, WorkingRegister W)
+        public DECFSZ(int f, bool d, WorkingRegister W, ProgramCounter PC)
         {
             this.f = f;
-            this.W = W;
             this.d = d;
-            this.Register = W.Value.GetRegisterMap();
-            execute();
+
+            execute(W, PC);
         }
 
-        protected override void execute()
+        protected void execute(WorkingRegister W, ProgramCounter PC)
         {
-            result = Register.RegisterList[f].DecrementRegister();
+            var result = W.Value.GetRegisterMap().RegisterList[f].DecrementRegister();
             if (d)
-                Register.RegisterList[f].Value = result;
+                W.Value.GetRegisterMap().RegisterList[f].Value = result;
             else
                 W.Value.Value = result;
 
@@ -55,5 +52,10 @@ namespace Simulator_PIC16F84.Instruktionen
 
 
 
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

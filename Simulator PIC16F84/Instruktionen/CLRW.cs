@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class CLRW : BaseOperation
+    public class CLRW : BaseOperation
     {
         //CLRW              Clear W
         //--------------------------------------
@@ -20,15 +20,14 @@ namespace Simulator_PIC16F84.Instruktionen
 
         public CLRW(WorkingRegister W)
         {
-            this.W = W;
 
-            execute();
+            execute(W);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
-            this.W.ClearWorkingRegister();
-            this.W.Value.GetRegisterMap().SetZeroBit();
+            W.ClearWorkingRegister();
+            W.Value.GetRegisterMap().SetZeroBit();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class RETURN : BaseOperation
+    public class RETURN : BaseOperation
     {
         //RETURN Return from Subroutine
         //Syntax: [ label ] RETURN
@@ -26,9 +26,14 @@ namespace Simulator_PIC16F84.Instruktionen
             execute(PC);
         }
 
-        protected override void execute(ProgramCounter PC)
+        protected void execute(ProgramCounter PC)
         {
             PC.Counter = Stack.PullFromStack().Value;
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -73,7 +73,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x0B00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                DECFSZ Operation = new DECFSZ(f, d, W);
+                DECFSZ Operation = new DECFSZ(f, d, W, PC);
             }
 
             //INCF Instruktion
@@ -112,7 +112,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F80) == (int)0x0080)
             {
                 f = value & (int)0x7F;
-                MOVWF Operation = new MOVWF(f);
+                MOVWF Operation = new MOVWF(f, W);
             }
 
             //NOP Instruktion
@@ -254,7 +254,7 @@ namespace Simulator_PIC16F84
             //SLEEP Instruktion
             if ((value & (int)0x3FFF) == (int)0x0063)
             {
-                SLEEP Operation = new SLEEP();
+                SLEEP Operation = new SLEEP(W);
             }
 
             //SUBLW Instruktion

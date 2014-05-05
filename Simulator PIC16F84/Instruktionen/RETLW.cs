@@ -19,7 +19,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //counter is loaded from the top of
         //the stack (the return address).
         //This is a two-cycle instruction.
-        protected override void execute(WorkingRegister W, ProgramCounter PC, Stack stack)
+        protected void execute(WorkingRegister W, ProgramCounter PC, Stack stack)
         {
             W.Value.Value = k;
 
@@ -31,6 +31,11 @@ namespace Simulator_PIC16F84.Instruktionen
             this.k = k;
 
             execute(W, PC, stack);
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
         }
     }
 }

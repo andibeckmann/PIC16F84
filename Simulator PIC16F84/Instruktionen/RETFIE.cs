@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class RETFIE : BaseOperation
+    public class RETFIE : BaseOperation
     {
         //RETFIE Return from Interrupt
         //Syntax: [ label ] RETFIE
@@ -19,10 +19,15 @@ namespace Simulator_PIC16F84.Instruktionen
             execute(PC, stack);
         }
 
-        protected override void execute(ProgramCounter PC, Stack stack)
+        protected void execute(ProgramCounter PC, Stack stack)
         {
             PC.Counter = stack.PullFromStack().Value;
             //TODO set GIE = 1;
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
         }
     }
 }

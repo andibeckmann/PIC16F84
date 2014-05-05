@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class GOTO : BaseOperation
+    public class GOTO : BaseOperation
     {
         //GOTO              Unconditional Branch
         //--------------------------------------
@@ -25,14 +25,18 @@ namespace Simulator_PIC16F84.Instruktionen
         public GOTO(int k, ProgramCounter PC)
         {
             this.k = k;
-            this.PC = PC;
 
-            execute();
+            execute(PC);
         }
 
-        protected override void execute()
+        protected void execute(ProgramCounter PC)
         {
             PC.Counter = k;
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class CLRF : BaseOperation
+    public class CLRF : BaseOperation
     {
         //CLRF              Clear f
         //--------------------------------------
@@ -18,20 +18,17 @@ namespace Simulator_PIC16F84.Instruktionen
         //Description:      The contents of register 'f' are
         //                  cleared and the Z bit is set.
 
-        private RegisterFileMap Register;
 
         public CLRF(int f, WorkingRegister W)
         {
             this.f = f;
-            this.W = W;
-            this.Register = W.Value.GetRegisterMap();
-            execute();
+            execute(W);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
-            this.Register.RegisterList[f].ClearRegister();
-            this.Register.SetZeroBit();
+            W.Value.GetRegisterMap().RegisterList[f].ClearRegister();
+            W.Value.GetRegisterMap().SetZeroBit();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class INCFSZ : BaseOperation
+    public class INCFSZ : BaseOperation
     {
         //INCFSZ Increment f, Skip if 0
         //Syntax: [ label ] INCFSZ f,d
@@ -33,7 +33,7 @@ namespace Simulator_PIC16F84.Instruktionen
             execute(W, PC);
         }
 
-        protected override void execute(WorkingRegister W, ProgramCounter PC)
+        protected void execute(WorkingRegister W, ProgramCounter PC)
         {
             var result = W.Value.GetRegisterMap().getRegisterList[f].Value + 1;
 
@@ -50,6 +50,11 @@ namespace Simulator_PIC16F84.Instruktionen
                 PC.Counter++;
                 new NOP();
             }
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
         }
     }
 }

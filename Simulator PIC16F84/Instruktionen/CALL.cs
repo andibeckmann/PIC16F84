@@ -27,13 +27,11 @@ namespace Simulator_PIC16F84.Instruktionen
         public CALL( int k, ProgramCounter PC, Stack Stack )
         {
             this.k = k;
-            this.PC = PC;
-            this.Stack = Stack;
 
-            execute();
+            execute(PC, Stack);
         }
 
-    protected override void execute()
+    protected void execute(ProgramCounter PC, Stack stack)
     {
         Stack.PushOntoStack(DeriveReturnAddress(PC));
         PC.Counter = k;   
@@ -43,6 +41,11 @@ namespace Simulator_PIC16F84.Instruktionen
     private int DeriveReturnAddress(ProgramCounter PC)
     {
         return PC.Counter++;
+    }
+
+    protected override void execute(WorkingRegister W)
+    {
+        throw new NotImplementedException();
     }
     }
 }

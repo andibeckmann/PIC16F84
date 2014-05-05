@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class MOVF : BaseOperation
+    public class MOVF : BaseOperation
     {
         //MOVF              Move f,d
         //--------------------------------------
@@ -23,30 +23,26 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  d = 1 is useful to test a file register,
         //                  since status flag Z is affected.
 
-        private int content;
-        private RegisterFileMap Register;
 
         public MOVF(int f, bool d, WorkingRegister W)
         {
             this.f = f;
             this.d = d;
-            this.W = W;
-            Register = W.Value.GetRegisterMap();
 
-            execute();
+            execute(W);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
-            content = Register.RegisterList[f].Value;
+            var content = W.Value.GetRegisterMap().RegisterList[f].Value;
 
             if (d)
-                Register.RegisterList[f].Value = content;
+                W.Value.GetRegisterMap().RegisterList[f].Value = content;
             else
                 W.Value.Value = content;
 
             if (content == 0)
-                Register.SetZeroBit();
+                W.Value.GetRegisterMap().SetZeroBit();
         }
     }
 }

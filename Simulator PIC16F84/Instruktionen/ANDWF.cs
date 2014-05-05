@@ -20,34 +20,28 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  the W register. If 'd' is 1, the result
         //                  is stored back in register 'f'.
 
-        private int result;
-        private RegisterFileMap Register;
-        private new RegisterByte f;
-        private new RegisterByte W;
-
-        public ANDWF(int file, bool d, WorkingRegister WReg)
+        public ANDWF(int f, bool d, WorkingRegister W)
         {
-            this.W = WReg.Value;
-            this.Register = W.GetRegisterMap();
-            this.f = Register.RegisterList[file];
-            execute();
+            this.d = d;
+            this.f = f;
+            execute(W);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
-            this.result = W.Value & f.Value;
+            var result = W.Value.Value & W.Value.GetRegisterMap().getRegisterList[f].Value;
 
             //Zero-Bit Logik
             if (result == 0)
-                Register.SetZeroBit();
+                W.Value.GetRegisterMap().SetZeroBit();
             else
-                Register.ResetZeroBit();
+                W.Value.GetRegisterMap().ResetZeroBit();
 
             //Unterscheidung Working Reg oder File Reg
             if (d)
-                f.Value = result;
+                W.Value.GetRegisterMap().RegisterList[f].Value = result;
             else
-                W.Value = result;
+                W.Value.Value = result;
         }
     }
 }

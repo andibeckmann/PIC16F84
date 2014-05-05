@@ -28,7 +28,7 @@ namespace Simulator_PIC16F84.Instruktionen
             execute(PC); 
         }
 
-        protected override void execute(ProgramCounter PC)
+        protected void execute(ProgramCounter PC)
         {
             var map = W.Value.GetRegisterMap();
             if( IsBitSet(map.RegisterList[f].Value, b))
@@ -36,6 +36,11 @@ namespace Simulator_PIC16F84.Instruktionen
                 PC.Counter++;
                 new NOP();
             }
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            throw new NotImplementedException();
         }
     }
 }

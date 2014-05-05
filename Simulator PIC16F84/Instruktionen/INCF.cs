@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class INCF : BaseOperation
+    public class INCF : BaseOperation
     {
         //INCF              Increment f
         //--------------------------------------
@@ -20,29 +20,25 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  is placed in the W register. If 'd' is
         //                  1, the result is placed back in register 'f'.
 
-        private int result;
-        private RegisterFileMap Register;
 
         public INCF(int f, bool d, WorkingRegister W)
         {
             this.f = f;
             this.d = d;
-            this.W = W;
-            Register = W.Value.GetRegisterMap();
 
-            execute();
+            execute(W);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
-            result = Register.RegisterList[f].IncrementRegister();
+            var result = W.Value.GetRegisterMap().RegisterList[f].IncrementRegister();
 
             if (d)
-                Register.RegisterList[f].Value = result;
+                W.Value.GetRegisterMap().RegisterList[f].Value = result;
             else
                 W.Value.Value = result;
             if( result == 0 )
-                Register.SetZeroBit();
+                W.Value.GetRegisterMap().SetZeroBit();
         }
     }
 }

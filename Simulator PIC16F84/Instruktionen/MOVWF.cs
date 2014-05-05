@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    class MOVWF : BaseOperation
+    public class MOVWF : BaseOperation
     {
         //MOVWF             Move W to f
         //--------------------------------------
@@ -23,16 +23,14 @@ namespace Simulator_PIC16F84.Instruktionen
         public MOVWF(int f, WorkingRegister W)
         {
             this.f = f;
-            this.W = W;
-            Register = W.Value.GetRegisterMap();
 
-            execute();
+            execute(W);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
             content = W.Value.Value;
-            Register.RegisterList[f].Value = content;
+            W.Value.GetRegisterMap().getRegisterList[f].Value = content;
         }
     }
 }
