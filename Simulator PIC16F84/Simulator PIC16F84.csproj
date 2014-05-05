@@ -52,9 +52,13 @@
     <Compile Include="Instruktionen\BSF.cs" />
     <Compile Include="Instruktionen\BTFSC.cs" />
     <Compile Include="Instruktionen\BTFSS.cs" />
+    <Compile Include="Instruktionen\CLRF.cs" />
+    <Compile Include="Instruktionen\CLRW.cs" />
     <Compile Include="Instruktionen\CLRWDT.cs" />
     <Compile Include="Instruktionen\COMF.cs" />
     <Compile Include="Instruktionen\CALL.cs" />
+    <Compile Include="Instruktionen\DECFSZ.cs" />
+    <Compile Include="Instruktionen\GOTO.cs" />
     <Compile Include="Instruktionen\NOP.cs" />
     <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />

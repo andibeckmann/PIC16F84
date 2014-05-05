@@ -42,18 +42,18 @@ namespace Simulator_PIC16F84
                 ANDWF Operation = new ANDWF(f, d, W);
             }
 
-            ////CLRF Instruktion
-            //if ((value & (int)0x3F80) == (int)0x0180)
-            //{
-            //    f = value & (int)0x7F;
-            //    CLRF Operation = new CLRF(f);
-            //}
+            //CLRF Instruktion
+            if ((value & (int)0x3F80) == (int)0x0180)
+            {
+                f = value & (int)0x7F;
+                CLRF Operation = new CLRF(f, W);
+            }
 
-            ////CLRW Instruktion
-            //if ((value & (int)0x3F80) == (int)0x0100)
-            //{
-            //    CLRW Operation = new CLRW(W);
-            //}
+            //CLRW Instruktion
+            if ((value & (int)0x3F80) == (int)0x0100)
+            {
+                CLRW Operation = new CLRW(W);
+            }
 
             //COMF Instruktion
             if ((value & (int)0x3F00) == (int)0x0900)
@@ -69,12 +69,12 @@ namespace Simulator_PIC16F84
             //    DECF Operation = new DECF(f, d);
             //}
 
-            ////DECFSZ Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0B00)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    DECFSZ Operation = new DECFSZ(f, d);
-            //}
+            //DECFSZ Instruktion
+            if ((value & (int)0x3F00) == (int)0x0B00)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                DECFSZ Operation = new DECFSZ(f, d, W);
+            }
 
             ////INCF Instruktion
             //if ((value & (int)0x3F00) == (int)0x0A00)
@@ -210,12 +210,12 @@ namespace Simulator_PIC16F84
                 CLRWDT Operation = new CLRWDT();
             }
 
-            ////GOTO Instruktion
-            //if ((value & (int)0x3800) == (int)0x2800)
-            //{
-            //    k = value & (int)0x7FF;
-            //    GOTO Operation = new GOTO(k);
-            //}
+            //GOTO Instruktion
+            if ((value & (int)0x3800) == (int)0x2800)
+            {
+                k = value & (int)0x7FF;
+                GOTO Operation = new GOTO(k, ProgramCounter PC);
+            }
 
             ////IORLW Instruktion
             //if ((value & (int)0x3F00) == (int)0x3800)
