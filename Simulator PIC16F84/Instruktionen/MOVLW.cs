@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Simulator_PIC16F84.Instruktionen
+{
+    class MOVLW : BaseOperation
+    {
+        //MOVLW              Move Literal to W
+        //--------------------------------------
+        //Syntax:           [label] MOVLW k
+        //Operands:         0 <= k <= 255
+        //Operation:        k -> (W)
+        //Status Affected:  None
+        //Description:      The eight-bit literal ’k’ is loaded
+        //                  into W register. The don’t cares
+        //                  will assemble as 0’s.
+
+        public MOVLW(int k, WorkingRegister W)
+        {
+            this.k = k;
+            this.W = W;
+
+            execute();
+        }
+
+        protected override void execute()
+        {
+            W.Value.Value = k;
+        }
+    }
+}
