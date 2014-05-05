@@ -79,6 +79,7 @@
     <Compile Include="Instruktionen\SWAPF.cs" />
     <Compile Include="Instruktionen\XORLW.cs" />
     <Compile Include="Instruktionen\XORWF.cs" />
+    <Compile Include="Prescaler.cs" />
     <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />
     <Compile Include="ProgramMemoryAddress.cs" />
@@ -113,6 +114,7 @@
       <DependentUpon>RegisterView.cs</DependentUpon>
     </Compile>
     <Compile Include="Stack.cs" />
+    <Compile Include="WatchdogTimer.cs" />
     <Compile Include="WorkingRegister.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

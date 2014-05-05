@@ -49,6 +49,11 @@ namespace Simulator_PIC16F84
         {
             return value++;
         }
+
+        public bool IsBitSet(int pos)
+        {
+            return ( ( ( value >> pos ) & 0x1 ) == 0x1 );
+        }
     }
 
 }

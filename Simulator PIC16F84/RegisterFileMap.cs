@@ -104,6 +104,10 @@ namespace Simulator_PIC16F84
         {
             RegisterList[3].Value = RegisterList[3].Value & 0xEF;
         }
+
+        
+        
+      
     }
  
 }
