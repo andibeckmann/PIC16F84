@@ -21,5 +21,10 @@ namespace Simulator_PIC16F84
             get { return value; }
             set { this.value = value; }
         }
+
+        public void ClearWorkingRegister()
+        {
+            value.ClearRegister();
+        }
     }
 }

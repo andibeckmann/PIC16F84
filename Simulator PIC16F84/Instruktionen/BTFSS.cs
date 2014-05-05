@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
             execute(); 
         }
 
-        private void execute()
+        protected override void execute()
         {
             var map = W.Value.GetRegisterMap();
             if( IsBitSet(map.RegisterList[f].Value, b))

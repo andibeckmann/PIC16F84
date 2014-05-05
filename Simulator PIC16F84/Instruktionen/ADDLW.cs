@@ -25,9 +25,16 @@ namespace Simulator_PIC16F84.Instruktionen
 
         public ADDLW(int k, WorkingRegister W)
         {
-            Register = W.Value.GetRegisterMap();
-            result = W.Value.Value + k;
+            this.k = k;
+            this.W = W;
+            this.Register = W.Value.GetRegisterMap();
+            this.result = W.Value.Value + k;
 
+            execute();
+        }
+
+        protected override void execute()
+        {
             //Zero-Bit Logik
             if (result == 0)
                 Register.SetZeroBit();
@@ -40,14 +47,14 @@ namespace Simulator_PIC16F84.Instruktionen
             else
                 Register.ResetDigitCarryBit();
 
-             //Carry-Bit Logik
+            //Carry-Bit Logik
             if (result > 0xFF)
                 Register.SetCarryBit();
             else
                 Register.ResetCarryBit();
             W.Value.Value = result;
 
- //           MessageBox.Show("ADDLW detected! Added k=" + k.ToString() +" to the W-Register. Result: " + W.Value.Value.ToString() + ". Carry-Bit ist auf: " + W.Value.GetRegisterMap().getCarryBit().ToString() );
+            //           MessageBox.Show("ADDLW detected! Added k=" + k.ToString() +" to the W-Register. Result: " + W.Value.Value.ToString() + ". Carry-Bit ist auf: " + W.Value.GetRegisterMap().getCarryBit().ToString() );
         }
 
     }

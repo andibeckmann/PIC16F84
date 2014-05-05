@@ -27,11 +27,15 @@ namespace Simulator_PIC16F84.Instruktionen
 
         public ANDWF(int file, bool d, WorkingRegister WReg)
         {
-            W = WReg.Value;
-            Register = W.GetRegisterMap();
-            f = Register.RegisterList[file];
+            this.W = WReg.Value;
+            this.Register = W.GetRegisterMap();
+            this.f = Register.RegisterList[file];
+            execute();
+        }
 
-            result = W.Value & f.Value;
+        protected override void execute()
+        {
+            this.result = W.Value & f.Value;
 
             //Zero-Bit Logik
             if (result == 0)

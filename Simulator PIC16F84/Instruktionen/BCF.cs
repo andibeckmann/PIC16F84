@@ -25,7 +25,7 @@ namespace Simulator_PIC16F84.Instruktionen
             execute();
         }
 
-        private void execute()
+        protected override void execute()
         {
             var map = W.Value.GetRegisterMap();
             map.RegisterList[f].Value = TurnBitOff(map.RegisterList[f].Value, b);
