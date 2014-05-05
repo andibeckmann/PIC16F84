@@ -32,7 +32,12 @@ namespace Simulator_PIC16F84.Instruktionen
                 W = WReg.Value;
                 Register = W.GetRegisterMap();
                 f = Register.RegisterList[file];
-                
+
+                execute();
+            }
+
+            protected override void execute()
+            {
                 result = W.Value + f.Value;
 
                 //Zero-Bit Logik
@@ -48,7 +53,7 @@ namespace Simulator_PIC16F84.Instruktionen
                 else
                     Register.ResetCarryBit();
 
-//                MessageBox.Show("ADDWF detected! Added content of register f = " + f.Value.ToString() + " and content of W-Register W = " + W.Value.ToString() + ". Result: " + result.ToString() + ". Destintation-Bit ist auf: " + d.ToString());
+                //                MessageBox.Show("ADDWF detected! Added content of register f = " + f.Value.ToString() + " and content of W-Register W = " + W.Value.ToString() + ". Result: " + result.ToString() + ". Destintation-Bit ist auf: " + d.ToString());
 
                 //Unterscheidung Working Reg oder File Reg
                 if (d)

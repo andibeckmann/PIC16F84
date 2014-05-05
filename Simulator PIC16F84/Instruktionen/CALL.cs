@@ -33,7 +33,7 @@ namespace Simulator_PIC16F84.Instruktionen
             execute();
         }
 
-    private void execute()
+    protected override void execute()
     {
         Stack.PushOntoStack(DeriveReturnAddress(PC));
         PC.Counter = k;   
