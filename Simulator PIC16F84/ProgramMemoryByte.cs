@@ -214,7 +214,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3800) == (int)0x2800)
             {
                 k = value & (int)0x7FF;
-                GOTO Operation = new GOTO(k, ProgramCounter PC);
+                GOTO Operation = new GOTO(k, PC);
             }
 
             ////IORLW Instruktion
