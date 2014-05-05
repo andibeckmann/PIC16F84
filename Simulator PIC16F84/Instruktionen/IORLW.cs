@@ -21,11 +21,13 @@ namespace Simulator_PIC16F84.Instruktionen
         public IORLW(int k, WorkingRegister W)
         {
             this.k = k;
-            execute();
+            execute(W);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
+            W.Value.GetRegisterMap().SetZeroBit();
+
             W.Value.Value |= k;
         }
 

@@ -66,7 +66,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x0300)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                DECF Operation = new DECF(f, d);
+                DECF Operation = new DECF(f, d, W);
             }
 
             //DECFSZ Instruktion
@@ -87,7 +87,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x0F00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                INCFSZ Operation = new INCFSZ(f, d);
+                INCFSZ Operation = new INCFSZ(f, d, W , PC);
             }
 
             //IORWF Instruktion
@@ -142,19 +142,19 @@ namespace Simulator_PIC16F84
                 SUBWF Operation = new SUBWF(f, d, W);
             }
 
-            ////SWAPF Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0E00)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    SWAPF Operation = new SWAPF(f, d);
-            //}
+            //SWAPF Instruktion
+            if ((value & (int)0x3F00) == (int)0x0E00)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                SWAPF Operation = new SWAPF(f, d, W);
+            }
 
-            ////XORWF Instruktion
-            //if ((value & (int)0x3F00) == (int)0x0600)
-            //{
-            //    ExtractFileRegisterAndDestinationBit(out f, out d);
-            //    XOWRF Operation = new XORWF(f, d);
-            //}
+            //XORWF Instruktion
+            if ((value & (int)0x3F00) == (int)0x0600)
+            {
+                ExtractFileRegisterAndDestinationBit(out f, out d);
+                XORWF Operation = new XORWF(f, d, W);
+            }
 
             //BCF Instruktion
             if ((value & (int)0x3C00) == (int)0x1000)
@@ -208,7 +208,7 @@ namespace Simulator_PIC16F84
             //CLRWDT Instruktion
             if ((value & (int)0xFFFF) == (int)0x0064)
             {
-                CLRWDT Operation = new CLRWDT();
+                CLRWDT Operation = new CLRWDT(W);
             }
 
             //GOTO Instruktion
@@ -235,14 +235,14 @@ namespace Simulator_PIC16F84
             //RETFIE Instruktion
             if ((value & (int)0x3FFF) == (int)0x0009)
             {
-                RETFIE Operation = new RETFIE();
+                RETFIE Operation = new RETFIE(PC, Stack);
             }
 
             //RETLW Instruktion
             if ((value & (int)0x3C00) == (int)0x3400)
             {
                 k = GetLiteral();
-                RETLW Operation = new RETLW(k);
+                RETLW Operation = new RETLW(k, W, PC, Stack);
             }
 
             //RETURN Instruktion

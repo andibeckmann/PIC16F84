@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
-    public class CLRWDT
+    public class CLRWDT : BaseOperation
     {
         //CLRWDT Clear Watchdog Timer
         //Syntax: [ label ] CLRWDT
@@ -21,9 +21,14 @@ namespace Simulator_PIC16F84.Instruktionen
         //prescaler of the WDT. Status bits 
         //TO and PD are set.
 
-        public CLRWDT()
+        public CLRWDT(WorkingRegister W)
         {
-            //TODO
+            execute(W);
+        }
+
+        protected override void execute(WorkingRegister W)
+        {
+            //W.Value.GetRegisterMap().
         }
     }
 }

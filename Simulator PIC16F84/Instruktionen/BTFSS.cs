@@ -19,26 +19,22 @@ namespace Simulator_PIC16F84.Instruktionen
         //If Bit 'b' is '1', then the next instruction is discarded 
         //and a NOP is executed instead, making this a 2TCY instruction.
 
-        private ProgramCounter PC;
-
         public BTFSS(int f, int b, ProgramCounter PC, WorkingRegister W)
         {
             this.f = f;
             this.b = b;
             this.W = W;
-            this.PC = PC;
 
-            execute(); 
+            execute(PC); 
         }
 
-        protected override void execute()
+        protected override void execute(ProgramCounter PC)
         {
             var map = W.Value.GetRegisterMap();
             if( IsBitSet(map.RegisterList[f].Value, b))
             {
-                //TODO
                 PC.Counter++;
-                //new NOP();
+                new NOP();
             }
         }
     }

@@ -10,25 +10,27 @@ namespace Simulator_PIC16F84.Instruktionen
     {
         //RETLW Return with Literal in W
         //Syntax: [ label ] RETLW k
-        //Operands: 0 £ k £ 255
-        //Operation: k ® (W);
-        //TOS ® PC
+        //Operands: 0 < k < 255
+        //Operation: k -> (W);
+        //TOS -> PC
         //Status Affected: None
         //Description: The W register is loaded with the
         //eight-bit literal 'k'. The program
         //counter is loaded from the top of
         //the stack (the return address).
         //This is a two-cycle instruction.
-        protected override void execute()
+        protected override void execute(WorkingRegister W, ProgramCounter PC, Stack stack)
         {
-            //TODO
+            W.Value.Value = k;
+
+            PC.Counter = stack.PullFromStack().Value;
         }
 
-        public RETLW(int k)
+        public RETLW(int k, WorkingRegister W, ProgramCounter PC, Stack stack)
         {
             this.k = k;
 
-            execute();
+            execute(W, PC, stack);
         }
     }
 }

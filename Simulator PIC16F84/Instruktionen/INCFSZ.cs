@@ -25,17 +25,31 @@ namespace Simulator_PIC16F84.Instruktionen
         //a NOP is executed instead, making
         //it a 2TCY instruction.
 
-        public INCFSZ(int f, bool d)
+        public INCFSZ(int f, bool d, WorkingRegister W, ProgramCounter PC)
         {
             this.f = f;
             this.d = d;
 
-            execute();
+            execute(W, PC);
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W, ProgramCounter PC)
         {
-            
+            var result = W.Value.GetRegisterMap().getRegisterList[f].Value + 1;
+
+            if (d)
+            {
+                W.Value.GetRegisterMap().getRegisterList[f].Value = result;   
+            }
+            else
+            {
+                W.Value.Value = result;
+            }
+            if(result == 0)
+            {
+                PC.Counter++;
+                new NOP();
+            }
         }
     }
 }

@@ -20,6 +20,10 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W)
         {
+            W.Value.GetRegisterMap().SetCarryBit();
+            W.Value.GetRegisterMap().SetDigitCarryBit();
+            W.Value.GetRegisterMap().SetZeroBit();
+
             W.Value.Value = k - W.Value.Value;
         }
 

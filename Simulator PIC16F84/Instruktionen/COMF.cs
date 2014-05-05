@@ -26,12 +26,13 @@ namespace Simulator_PIC16F84.Instruktionen
             this.f = f;
             this.d = d;
 
-            execute();
+            execute(W);
 
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
+            W.Value.GetRegisterMap().SetZeroBit();
 
             var reverseResult = ~(W.Value.GetRegisterMap().RegisterList[f].Value);
 

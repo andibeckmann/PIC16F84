@@ -20,15 +20,13 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             this.f = f;
             this.b = b;
-            this.W = W;
 
-            execute();   
+            execute(W);   
         }
 
-        protected override void execute()
+        protected override void execute(WorkingRegister W)
         {
-            var map = W.Value.GetRegisterMap();
-            map.RegisterList[f].Value = TurnBitOn(map.RegisterList[f].Value, b);
+            W.Value.GetRegisterMap().RegisterList[f].Value = TurnBitOn(W.Value.GetRegisterMap().RegisterList[f].Value, b);
         }
 
         public static int TurnBitOn(int value, int bitToTurnOn)

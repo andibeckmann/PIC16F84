@@ -14,14 +14,15 @@ namespace Simulator_PIC16F84.Instruktionen
         //Operation: TOS -> PC,
         //1 -> GIE
         //Status Affected: None
-        public RETFIE()
+        public RETFIE(ProgramCounter PC, Stack stack)
         {
-
+            execute(PC, stack);
         }
 
-        protected override void execute()
+        protected override void execute(ProgramCounter PC, Stack stack)
         {
-            throw new NotImplementedException();
+            PC.Counter = stack.PullFromStack().Value;
+            //TODO set GIE = 1;
         }
     }
 }

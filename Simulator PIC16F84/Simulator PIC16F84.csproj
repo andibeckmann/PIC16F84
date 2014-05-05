@@ -69,6 +69,8 @@
     <Compile Include="Instruktionen\RETURN.cs" />
     <Compile Include="Instruktionen\SUBLW.cs" />
     <Compile Include="Instruktionen\SUBWF.cs" />
+    <Compile Include="Instruktionen\SWAPF.cs" />
+    <Compile Include="Instruktionen\XORWF.cs" />
     <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />
     <Compile Include="ProgramMemoryAddress.cs" />
