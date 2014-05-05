@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84
             set { this.value = value; }
         }
 
-        public void DecodeInstruction(WorkingRegister W, ProgramCounter PC, Stack Stack)
+        public void DecodeInstruction(WorkingRegister W, ProgramCounter PC, Stack Stack, WatchdogTimer WDT, Prescaler Prescaler)
         {
             int k;
             int f;
@@ -254,7 +254,7 @@ namespace Simulator_PIC16F84
             //SLEEP Instruktion
             if ((value & (int)0x3FFF) == (int)0x0063)
             {
-                SLEEP Operation = new SLEEP(W);
+                SLEEP Operation = new SLEEP(W, WDT, Prescaler);
             }
 
             //SUBLW Instruktion

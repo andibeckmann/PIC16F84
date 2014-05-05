@@ -20,6 +20,8 @@ namespace Simulator_PIC16F84
         WorkingRegister W;
         ProgramCounter PC;
         Stack Stack;
+        WatchdogTimer WDT;
+        Prescaler Prescaler;
 
         public Main()
         {
@@ -46,6 +48,8 @@ namespace Simulator_PIC16F84
             W = new WorkingRegister(RegisterMap);
             PC = new ProgramCounter();
             Stack = new Stack();
+            WDT = new WatchdogTimer();
+            Prescaler = new Prescaler();
 
 
         }
@@ -132,7 +136,7 @@ namespace Simulator_PIC16F84
 
             for (int index = 0; index < UserMemorySpace.getLength(); index++ )
             {
-                UserMemorySpace.ProgramMemory[index].DecodeInstruction(W, PC, Stack);
+                UserMemorySpace.ProgramMemory[index].DecodeInstruction(W, PC, Stack, WDT, Prescaler);
             }
         }
 
