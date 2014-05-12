@@ -35,7 +35,7 @@ namespace Simulator_PIC16F84.Instruktionen
             var map = W.Value.GetRegisterMap();
             if (IsBitSet(map.RegisterList[f].Value, b))
             {
-                PC.Counter++;
+                PC.Counter.Value++;
                 NOP Operation = new NOP();
             }
         }

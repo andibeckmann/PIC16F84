@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(ProgramCounter PC)
         {
-            PC.Counter = k;
+            PC.Counter.Value = k;
 
             //TODO: PCLATH - siehe Beschreibung, wurde hier noch komplett ignoriert
         }

@@ -15,7 +15,7 @@ namespace Simulator_PIC16F84
             RegisterList = new RegisterByte[256];
             for (int var = 0; var < RegisterList.Length; var++ )
             {
-                RegisterList[var] = new RegisterByte(this);
+                RegisterList[var] = new RegisterByte(this,var);
             }
         }
 

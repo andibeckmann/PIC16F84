@@ -34,13 +34,13 @@ namespace Simulator_PIC16F84.Instruktionen
     protected void execute(ProgramCounter PC, Stack Stack)
     {
         Stack.PushOntoStack(DeriveReturnAddress(PC));
-        PC.Counter = k;   
+        PC.Counter.Value = k;   
         //TODO: PC LATCH Wasauchimmer
     }
 
     private int DeriveReturnAddress(ProgramCounter PC)
     {
-        return PC.Counter++;
+        return PC.Counter.Value++;
     }
 
     protected override void execute(WorkingRegister W)

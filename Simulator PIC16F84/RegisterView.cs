@@ -14,6 +14,7 @@ namespace Simulator_PIC16F84
     {
         RegisterFileMap registerMap;
 
+
         public RegisterView(ref RegisterFileMap RegisterMap)
         {
             this.registerMap = RegisterMap;
@@ -26,6 +27,8 @@ namespace Simulator_PIC16F84
             Size max = SystemInformation.MaxWindowTrackSize;
             this.Size = new System.Drawing.Size(9*(sizeOfField+6), max.Height);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+
+            AddEventToRegister();
 
             for(int i = 0; i < 8; i++)
             {
@@ -79,6 +82,46 @@ namespace Simulator_PIC16F84
             }
         }
 
+        private void RegisterContentChanged(object sender, int index)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate { RegisterContentChanged(sender, index); });
+            }
+            else
+            {
+                var textBoxArray = this.Controls.Find("Byte " + index, true);
+                textBoxArray[0].Text = registerMap.getRegisterList[index].Value.ToString("X2");
+                textBoxArray[0].BackColor = Color.Red;
+            }
+        }
 
+        private void AddEventToRegister()
+        {
+            for(int i = 0 ; i < registerMap.getRegisterList.Length; i++ )
+            {
+                registerMap.getRegisterList[i].RegisterChanged += new EventHandler<int>(this.RegisterContentChanged);
+            }
+        }
+
+
+
+        public void ClearColors()
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate { ClearColors(); });
+            }
+            else
+            {
+                for (int i = 0; i < this.Controls.Count; i++ )
+                {
+                    if (this.Controls[i].GetType() == typeof(TextBox))
+                    {
+                        this.Controls[i].BackColor = Color.White;
+                    }
+                }
+            }
+        }
     }
 }

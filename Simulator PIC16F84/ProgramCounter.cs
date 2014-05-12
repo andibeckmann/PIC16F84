@@ -16,15 +16,20 @@ namespace Simulator_PIC16F84
             counter = new ProgramMemoryAddress(0);
         }
 
-        public int Counter
+        public ProgramMemoryAddress Counter
         {
-            get { return counter.Value; }
-            set { this.counter.Value = value; }
+            get { return counter; }
+            set { this.counter = value; }
         }
 
         public void InkrementPC()
         {
             counter.Value++;
+        }
+
+        public void Clear()
+        {
+            counter.Value = 0;
         }
     }
 }

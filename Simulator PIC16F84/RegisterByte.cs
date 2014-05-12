@@ -10,18 +10,27 @@ namespace Simulator_PIC16F84
     {
         private sbyte value;
         private RegisterFileMap registerFileMap;
+        private int index;
 
-        public RegisterByte(RegisterFileMap registerFileMap)
+        public event EventHandler<int> RegisterChanged;
+
+        public RegisterByte(RegisterFileMap registerFileMap, int index)
         {
             this.registerFileMap = registerFileMap;
             value = 0;
+            this.index = index;
         }
 
         public sbyte Value {
             get { return value; }
             set
             {
-                this.value = value;
+                if (value != this.value)
+                {
+                    this.value = value;
+                    if (this.RegisterChanged != null)
+                        this.RegisterChanged(this, index);
+                }
             }
         }
 

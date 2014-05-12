@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(ProgramCounter PC, Stack stack)
         {
-            PC.Counter = stack.PullFromStack().Value;
+            PC.Counter.Value = stack.PullFromStack().Value;
             //TODO set GIE = 1;
         }
 

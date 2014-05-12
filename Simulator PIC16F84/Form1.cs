@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Timers;
 
 namespace Simulator_PIC16F84
 {
@@ -22,6 +23,8 @@ namespace Simulator_PIC16F84
         Stack Stack;
         WatchdogTimer WDT;
         Prescaler Prescaler;
+        RegisterView registerView;
+        System.Timers.Timer crystalFrequency; 
 
         public Main()
         {
@@ -31,7 +34,7 @@ namespace Simulator_PIC16F84
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
             RegisterMap = new RegisterFileMap();
-            RegisterView registerView = new RegisterView(ref RegisterMap);
+            registerView = new RegisterView(ref RegisterMap);
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
             registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
@@ -50,6 +53,8 @@ namespace Simulator_PIC16F84
             Stack = new Stack();
             WDT = new WatchdogTimer();
             Prescaler = new Prescaler();
+            crystalFrequency = new System.Timers.Timer(10);
+            crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
 
 
         }
@@ -133,11 +138,38 @@ namespace Simulator_PIC16F84
             sr.Close();
             ProgramView.loadProgram(fileContent);
             UserMemorySpace = ProgramView.getBinaryCode();
+            PC.Clear();
 
-            for (; PC.Counter < UserMemorySpace.getLength(); PC.InkrementPC() )
+            crystalFrequency.Start();
+
+        }
+
+        private void ExecuteCycle(object source, ElapsedEventArgs e)
+        {
+            var index = FindRowForPC(PC.Counter.Value);
+            this.registerView.ClearColors();
+            this.ProgramView.dataGridView1.ClearSelection();
+            this.ProgramView.dataGridView1.Rows[index].Selected = true;
+            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(W, PC, Stack, WDT, Prescaler);
+            PC.InkrementPC();
+        }
+
+        private int FindRowForPC(int counter)
+        {
+            int rowIndex = 0;
+            foreach (DataGridViewRow row in this.ProgramView.dataGridView1.Rows)
             {
-                UserMemorySpace.ProgramMemory[PC.Counter].DecodeInstruction(W, PC, Stack, WDT, Prescaler);
+                if(row.Cells[0].Value == null)
+                {
+                    continue;
+                }
+                if (row.Cells[0].Value.ToString().Equals(counter.ToString("X4")))
+                {
+                    rowIndex = row.Index;
+                    break;
+                }
             }
+            return rowIndex;
         }
 
     }

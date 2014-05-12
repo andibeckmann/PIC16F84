@@ -39,8 +39,14 @@ namespace Simulator_PIC16F84
             programView = splitIntoRows(fileContent);
             programView.RemoveAll(item => item == "");
             extractBinaryCode();
+            ClearDataGrid();
             FillLinesOfDataGrid();
 
+        }
+
+        private void ClearDataGrid()
+        {
+            this.dataGridView1.Rows.Clear();
         }
 
         private List<string> splitIntoRows(string fileContent)
