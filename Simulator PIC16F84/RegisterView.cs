@@ -14,7 +14,6 @@ namespace Simulator_PIC16F84
     {
         RegisterFileMap registerMap;
 
-
         public RegisterView(ref RegisterFileMap RegisterMap)
         {
             this.registerMap = RegisterMap;

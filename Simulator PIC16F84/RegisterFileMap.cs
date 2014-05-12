@@ -9,14 +9,36 @@ namespace Simulator_PIC16F84
     public class RegisterFileMap
     {
         private RegisterByte[] RegisterList;
+        private int[] MappingArray;
 
         public RegisterFileMap()
         {
+            fillMappingArray();
             RegisterList = new RegisterByte[256];
             for (int var = 0; var < RegisterList.Length; var++ )
             {
                 RegisterList[var] = new RegisterByte(var);
             }
+        }
+
+        private void fillMappingArray()
+        {
+            MappingArray = new int[256];
+            for (int index = 0; index < 128; index++)
+            {
+                    MappingArray[index] = index;
+                if (mappingCondition(index))
+                    MappingArray[index + 128] = index;
+                else
+                    MappingArray[index + 128] = index + 128;
+            }
+        }
+
+        private bool mappingCondition(int index)
+        {
+            if (index == 129 || index == 133 || index == 134 || index == 136 || index == 137 )
+                return false;
+            return true;
         }
 
         public RegisterByte[] getRegisterList {
