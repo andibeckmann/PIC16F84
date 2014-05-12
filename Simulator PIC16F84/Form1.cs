@@ -192,8 +192,10 @@ namespace Simulator_PIC16F84
         {
             crystalFrequency.Stop();
             PC.Clear();
-            registerView.ClearRegister();
             SetSelection(0);
+            RegisterMap.ClearRegister();
+            RegisterMap.Init();
+            registerView.ClearColors();
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)

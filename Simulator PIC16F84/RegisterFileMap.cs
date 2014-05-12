@@ -19,6 +19,7 @@ namespace Simulator_PIC16F84
             {
                 RegisterList[var] = new RegisterByte(var);
             }
+            Init();
         }
 
         private void fillMappingArray()
@@ -137,7 +138,22 @@ namespace Simulator_PIC16F84
             RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xEF);
         }
 
-        
+        public void Init()
+        {
+            this.getRegister(3).Value = 24;     //03h
+            this.getRegister(129).Value = 255;   //81h
+            this.getRegister(131).Value = 24;   //83h
+            this.getRegister(133).Value = 31;   //85h
+            this.getRegister(134).Value = 255;   //86h
+        }
+
+        public void ClearRegister()
+        {
+            foreach (var registerByte in RegisterList)
+            {
+                registerByte.Value = 0;
+            }
+        }
         
       
     }

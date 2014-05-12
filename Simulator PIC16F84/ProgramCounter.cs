@@ -20,6 +20,7 @@ namespace Simulator_PIC16F84
         {
             get { return counter; }
             set { this.counter = value; }
+            //TODO write in to Reg 02h
         }
 
         public void InkrementPC()

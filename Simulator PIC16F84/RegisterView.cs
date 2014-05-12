@@ -127,13 +127,5 @@ namespace Simulator_PIC16F84
                 }
             }
         }
-
-        public void ClearRegister()
-        {
-            foreach (var registerByte in registerMap.getRegisterList)
-            {
-                registerByte.ClearRegister();
-            }
-        }
     }
 }
