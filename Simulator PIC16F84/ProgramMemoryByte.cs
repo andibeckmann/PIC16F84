@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84
             set { this.value = value; }
         }
 
-        public void DecodeInstruction(WorkingRegister W, ProgramCounter PC, Stack Stack, WatchdogTimer WDT, Prescaler Prescaler)
+        public void DecodeInstruction(RegisterFileMap Reg, WorkingRegister W, ProgramCounter PC, Stack Stack, WatchdogTimer WDT, Prescaler Prescaler)
         {
             int k;
             int f;
@@ -32,69 +32,69 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x0700)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                ADDWF Operation = new ADDWF(f, d, W);
+                ADDWF Operation = new ADDWF(f, d, W, Reg);
             }
 
             //ANDWF Instruktion
             if ((value & (int)0x3F00) == (int)0x0500)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                ANDWF Operation = new ANDWF(f, d, W);
+                ANDWF Operation = new ANDWF(f, d, W, Reg);
             }
 
             //CLRF Instruktion
             if ((value & (int)0x3F80) == (int)0x0180)
             {
                 f = value & (int)0x7F;
-                CLRF Operation = new CLRF(f, W);
+                CLRF Operation = new CLRF(f, Reg);
             }
 
             //CLRW Instruktion
             if ((value & (int)0x3F80) == (int)0x0100)
             {
-                CLRW Operation = new CLRW(W);
+                CLRW Operation = new CLRW(W, Reg);
             }
 
             //COMF Instruktion
             if ((value & (int)0x3F00) == (int)0x0900)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                COMF Operation = new COMF(f, d, W);
+                COMF Operation = new COMF(f, d, W, Reg);
             }
 
             //DECF Instruktion
             if ((value & (int)0x3F00) == (int)0x0300)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                DECF Operation = new DECF(f, d, W);
+                DECF Operation = new DECF(f, d, W, Reg);
             }
 
             //DECFSZ Instruktion
             if ((value & (int)0x3F00) == (int)0x0B00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                DECFSZ Operation = new DECFSZ(f, d, W, PC);
+                DECFSZ Operation = new DECFSZ(f, d, W, Reg, PC);
             }
 
             //INCF Instruktion
             if ((value & (int)0x3F00) == (int)0x0A00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                INCF Operation = new INCF(f, d, W);
+                INCF Operation = new INCF(f, d, W, Reg);
             }
 
             //INCFSZ Instruktion
             if ((value & (int)0x3F00) == (int)0x0F00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                INCFSZ Operation = new INCFSZ(f, d, W , PC);
+                INCFSZ Operation = new INCFSZ(f, d, W , Reg, PC);
             }
 
             //IORWF Instruktion
             if ((value & (int)0x3F00) == (int)0x0400)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                IORWF Operation = new IORWF(f, d, W);
+                IORWF Operation = new IORWF(f, d, W, Reg);
             }
 
             //MOVF Instruktion
@@ -105,14 +105,14 @@ namespace Simulator_PIC16F84
                     d = true;
                 else
                     d = false;
-                MOVF Operation = new MOVF(f, d, W);
+                MOVF Operation = new MOVF(f, d, W, Reg);
             }
 
             //MOVWF Instruktion
             if ((value & (int)0x3F80) == (int)0x0080)
             {
                 f = value & (int)0x7F;
-                MOVWF Operation = new MOVWF(f, W);
+                MOVWF Operation = new MOVWF(f, W, Reg);
             }
 
             //NOP Instruktion
@@ -125,70 +125,70 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x0D00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                RLF Operation = new RLF(f, d, W);
+                RLF Operation = new RLF(f, d, W, Reg);
             }
 
             //RRF Instruktion
             if ((value & (int)0x3F00) == (int)0x0C00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                RRF Operation = new RRF(f, d, W);
+                RRF Operation = new RRF(f, d, W, Reg);
             }
 
             //SUBWF Instruktion
             if ((value & (int)0x3F00) == (int)0x0200)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                SUBWF Operation = new SUBWF(f, d, W);
+                SUBWF Operation = new SUBWF(f, d, W, Reg);
             }
 
             //SWAPF Instruktion
             if ((value & (int)0x3F00) == (int)0x0E00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                SWAPF Operation = new SWAPF(f, d, W);
+                SWAPF Operation = new SWAPF(f, d, W, Reg);
             }
 
             //XORWF Instruktion
             if ((value & (int)0x3F00) == (int)0x0600)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                XORWF Operation = new XORWF(f, d, W);
+                XORWF Operation = new XORWF(f, d, W, Reg);
             }
 
             //BCF Instruktion
             if ((value & (int)0x3C00) == (int)0x1000)
             {
                 ExtractFileRegisterAndBitAddress(out f, out b);
-                BCF Operation = new BCF(f, b, W);
+                BCF Operation = new BCF(f, b, Reg);
             }
 
             //BSF Instruktion
             if ((value & (int)0x3C00) == (int)0x1400)
             {
                 ExtractFileRegisterAndBitAddress(out f, out b);
-                BSF Operation = new BSF(f, b, W);
+                BSF Operation = new BSF(f, b, Reg);
             }
 
             //BTFSC Instruktion
             if ((value & (int)0x3C00) == (int)0x1800)
             {
                 ExtractFileRegisterAndBitAddress(out f, out b);
-                BTFSC Operation = new BTFSC(f, b, PC, W);
+                BTFSC Operation = new BTFSC(f, b, PC, Reg);
             }
 
             //BTFSS Instruktion
             if ((value & (int)0x3C00) == (int)0x1C00)
             {
                 ExtractFileRegisterAndBitAddress(out f, out b);
-                BTFSS Operation = new BTFSS(f, b, PC, W);
+                BTFSS Operation = new BTFSS(f, b, PC, Reg);
             }
 
             //ADDLW Instruktion
             if ((value & (int)0x3E00) == (int)0x3E00)
             {
                 k = GetLiteral();
-                ADDLW Operation = new ADDLW((byte)k, W);
+                ADDLW Operation = new ADDLW((byte)k, W, Reg);
             }
 
             //ANDLW Instruktion
@@ -222,7 +222,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x3800)
             {
                 k = GetLiteral();
-                IORLW Operation = new IORLW((byte)k, W);
+                IORLW Operation = new IORLW((byte)k, W, Reg);
             }
 
             //MOVLW Instruktion
@@ -254,21 +254,21 @@ namespace Simulator_PIC16F84
             //SLEEP Instruktion
             if ((value & (int)0x3FFF) == (int)0x0063)
             {
-                SLEEP Operation = new SLEEP(W, WDT, Prescaler);
+                SLEEP Operation = new SLEEP(W, Reg, WDT, Prescaler);
             }
 
             //SUBLW Instruktion
             if ((value & (int)0x3E00) == (int)0x3C00)
             {
                 k = GetLiteral();
-                SUBLW Operation = new SUBLW((byte)k, W);
+                SUBLW Operation = new SUBLW((byte)k, W, Reg);
             }
 
             //XORLW Instruktion
             if ((value & (int)0x3F00) == (int)0x3A00)
             {
                 k = GetLiteral();
-                XORLW Operation = new XORLW((byte)k, W);
+                XORLW Operation = new XORLW((byte)k, W, Reg);
             }
         }
 

@@ -20,23 +20,23 @@ namespace Simulator_PIC16F84.Instruktionen
         //the result is placed back in
         //register 'f'.
 
-        public IORWF(int f, bool d, WorkingRegister W)
+        public IORWF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
 
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().SetZeroBit();
+           Reg.SetZeroBit();
 
-            var result = W.Value.Value | W.Value.GetRegisterMap().RegisterList[f].Value;
+            var result = W.Value.Value | Reg.getRegisterList[f].Value;
  
             if(d)
             {
-                W.Value.GetRegisterMap().RegisterList[f].Value = (byte)result;
+                Reg.getRegisterList[f].Value = (byte)result;
             }
             else
             {

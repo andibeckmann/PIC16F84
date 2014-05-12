@@ -21,33 +21,33 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  register.
 
 
-        public ADDLW(byte k, WorkingRegister W)
+        public ADDLW(byte k, WorkingRegister W, RegisterFileMap Reg)
         {
             this.k = k;
 
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             var result = W.Value.Value + k;
             //Zero-Bit Logik
             if (result == 0)
-                W.Value.GetRegisterMap().SetZeroBit();
+                Reg.SetZeroBit();
             else
-                W.Value.GetRegisterMap().ResetZeroBit();
+               Reg.ResetZeroBit();
 
             //Digit Carry Logik
             if ((W.Value.Value & 0x0F) + k > 0x0f)
-                W.Value.GetRegisterMap().SetDigitCarryBit();
+                Reg.SetDigitCarryBit();
             else
-                W.Value.GetRegisterMap().ResetDigitCarryBit();
+                Reg.ResetDigitCarryBit();
 
             //Carry-Bit Logik
             if (result > 0xFF)
-                W.Value.GetRegisterMap().SetCarryBit();
+                Reg.SetCarryBit();
             else
-                W.Value.GetRegisterMap().ResetCarryBit();
+                Reg.ResetCarryBit();
             W.Value.Value = (byte)result;
         }
 

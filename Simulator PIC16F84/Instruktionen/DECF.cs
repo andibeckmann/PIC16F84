@@ -19,23 +19,23 @@ namespace Simulator_PIC16F84.Instruktionen
         //result is stored in W. If ’d’ is 1, the 
         //result is stored back in register ’f’
 
-        public DECF(int f, bool d, WorkingRegister W)
+        public DECF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
 
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().SetZeroBit();
+           Reg.SetZeroBit();
 
-            var result = W.Value.GetRegisterMap().RegisterList[f].Value--;
+            var result = Reg.getRegisterList[f].Value--;
 
             if (d)
             {
-                W.Value.GetRegisterMap().RegisterList[f].Value = result;
+               Reg.getRegisterList[f].Value = result;
             }
             else
             {

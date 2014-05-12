@@ -24,25 +24,25 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  since status flag Z is affected.
 
 
-        public MOVF(int f, bool d, WorkingRegister W)
+        public MOVF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
 
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var content = W.Value.GetRegisterMap().RegisterList[f].Value;
+            var content = Reg.getRegisterList[f].Value;
 
             if (d)
-                W.Value.GetRegisterMap().RegisterList[f].Value = content;
+               Reg.getRegisterList[f].Value = content;
             else
                 W.Value.Value = content;
 
             if (content == 0)
-                W.Value.GetRegisterMap().SetZeroBit();
+                Reg.SetZeroBit();
         }
     }
 }

@@ -77,7 +77,7 @@ namespace Simulator_PIC16F84
                     try
                     {
                         content = Convert.ToInt32(textBox.Text, 16);
-                        registerMap.RegisterList[id].Value = (byte)content;
+                        registerMap.getRegisterList[id].Value = (byte)content;
                     }
                     catch
                     {
@@ -131,7 +131,7 @@ namespace Simulator_PIC16F84
 
         public void ClearRegister()
         {
-            foreach (var registerByte in registerMap.RegisterList)
+            foreach (var registerByte in registerMap.getRegisterList)
             {
                 registerByte.ClearRegister();
             }

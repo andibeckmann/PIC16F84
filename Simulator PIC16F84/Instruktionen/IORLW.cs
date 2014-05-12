@@ -18,15 +18,15 @@ namespace Simulator_PIC16F84.Instruktionen
         //The result is placed in the W
         //register.
 
-        public IORLW(byte k, WorkingRegister W)
+        public IORLW(byte k, WorkingRegister W, RegisterFileMap Reg)
         {
             this.k = k;
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().SetZeroBit();
+            Reg.SetZeroBit();
 
             W.Value.Value |= k;
         }

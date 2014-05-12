@@ -10,15 +10,13 @@ namespace Simulator_PIC16F84
     {
         private byte value;
         private int index;
-        private RegisterFileMap registerFileMap;
 
         public event EventHandler<int> RegisterChanged;
 
-        public RegisterByte(ref RegisterFileMap registerFileMap, int index)
+        public RegisterByte(int index)
         {
             value = 0;
             this.index = index;
-            this.registerFileMap = registerFileMap;
         }
 
         public byte Value {
@@ -32,12 +30,6 @@ namespace Simulator_PIC16F84
                     }
             }
         }
-
-        public RegisterFileMap GetRegisterMap()
-        {
-            return registerFileMap;
-        }
-
 
         public void ClearRegister()
         {

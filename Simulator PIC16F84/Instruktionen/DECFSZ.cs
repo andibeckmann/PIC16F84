@@ -27,19 +27,19 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  making it a 2TCY instruction.
 
 
-        public DECFSZ(int f, bool d, WorkingRegister W, ProgramCounter PC)
+        public DECFSZ(int f, bool d, WorkingRegister W, RegisterFileMap Reg, ProgramCounter PC)
         {
             this.f = f;
             this.d = d;
 
-            execute(W, PC);
+            execute(W, Reg, PC);
         }
 
-        protected void execute(WorkingRegister W, ProgramCounter PC)
+        protected void execute(WorkingRegister W, RegisterFileMap Reg, ProgramCounter PC)
         {
-            var result = W.Value.GetRegisterMap().RegisterList[f].DecrementRegister();
+            var result = Reg.getRegisterList[f].DecrementRegister();
             if (d)
-                W.Value.GetRegisterMap().RegisterList[f].Value = (byte)result;
+                Reg.getRegisterList[f].Value = (byte)result;
             else
                 W.Value.Value = (byte)result;
 
@@ -53,7 +53,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
 
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             throw new NotImplementedException();
         }

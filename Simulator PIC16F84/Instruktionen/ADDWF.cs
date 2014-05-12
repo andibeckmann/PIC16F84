@@ -22,52 +22,50 @@ namespace Simulator_PIC16F84.Instruktionen
             //                  1, the result is stored back in
             //                  register 'f'.
 
-            public ADDWF(int file, bool d, WorkingRegister W)
+            public ADDWF(int file, bool d, WorkingRegister W, RegisterFileMap Reg)
             {
                 this.f = f;
                 this.d = d;
 
-                execute(W);
+                execute(W, Reg);
             }
 
-            protected override void execute(WorkingRegister W)
+            protected override void execute(WorkingRegister W, RegisterFileMap Reg)
             {
-                var result = W.Value.Value + W.Value.GetRegisterMap().RegisterList[f].Value;
+                var result = W.Value.Value + Reg.getRegisterList[f].Value;
 
                 //Zero-Bit Logik
                 if (result == 0)
-                    W.Value.GetRegisterMap().SetZeroBit();
+                   Reg.SetZeroBit();
                 else
-                    W.Value.GetRegisterMap().ResetZeroBit();
+                    Reg.ResetZeroBit();
 
 
                 //Carry-Bit Logik
                 if (result > 0xFF)
-                    W.Value.GetRegisterMap().SetCarryBit();
+                    Reg.SetCarryBit();
                 else
-                    W.Value.GetRegisterMap().ResetCarryBit();
-
-                //                MessageBox.Show("ADDWF detected! Added content of register f = " + f.Value.ToString() + " and content of W-Register W = " + W.Value.ToString() + ". Result: " + result.ToString() + ". Destintation-Bit ist auf: " + d.ToString());
+                    Reg.ResetCarryBit();
 
                 //Unterscheidung Working Reg oder File Reg
                 if (d)
                 {
                     //Digit Carry Logik
-                    if ((W.Value.GetRegisterMap().RegisterList[f].Value & 0x0F) + W.Value.Value > 0x0f)
-                        W.Value.GetRegisterMap().SetDigitCarryBit();
+                    if ((Reg.getRegisterList[f].Value & 0x0F) + W.Value.Value > 0x0f)
+                        Reg.SetDigitCarryBit();
                     else
-                        W.Value.GetRegisterMap().ResetDigitCarryBit();
+                       Reg.ResetDigitCarryBit();
 
                     //Resultat Ablegen
-                    W.Value.GetRegisterMap().RegisterList[f].Value = (byte)result;
+                   Reg.getRegisterList[f].Value = (byte)result;
                 }
                 else
                 {
                     //Digit Carry Logik
-                    if ((W.Value.Value & 0x0F) + W.Value.GetRegisterMap().RegisterList[f].Value > 0x0f)
-                        W.Value.GetRegisterMap().SetDigitCarryBit();
+                    if ((W.Value.Value & 0x0F) + Reg.getRegisterList[f].Value > 0x0f)
+                       Reg.SetDigitCarryBit();
                     else
-                        W.Value.GetRegisterMap().ResetDigitCarryBit();
+                       Reg.ResetDigitCarryBit();
 
                     //Resultat Ablegen
                     W.Value.Value = (byte)result;

@@ -19,15 +19,15 @@ namespace Simulator_PIC16F84.Instruktionen
         //0, the result is stored in the W
         //register. If 'd' is 1, the result is
         //stored back in register 'f'.
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().SetZeroBit();
+            Reg.SetZeroBit();
 
-            var result = W.Value.Value ^ W.Value.GetRegisterMap().getRegisterList[f].Value;
+            var result = W.Value.Value ^ Reg.getRegisterList[f].Value;
 
             if(d)
             {
-                W.Value.GetRegisterMap().getRegisterList[f].Value = (byte) result;
+                Reg.getRegisterList[f].Value = (byte) result;
             }
             else
             {
@@ -35,12 +35,12 @@ namespace Simulator_PIC16F84.Instruktionen
             }
         }
 
-        public XORWF(int f, bool d, WorkingRegister W)
+        public XORWF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
 
-            execute(W);
+            execute(W, Reg);
         }
     }
 }

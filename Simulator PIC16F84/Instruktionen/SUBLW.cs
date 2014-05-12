@@ -18,20 +18,20 @@ namespace Simulator_PIC16F84.Instruktionen
         //eight-bit literal 'k'. The result is
         //placed in the W register.
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().SetCarryBit();
-            W.Value.GetRegisterMap().SetDigitCarryBit();
-            W.Value.GetRegisterMap().SetZeroBit();
+            Reg.SetCarryBit();
+            Reg.SetDigitCarryBit();
+           Reg.SetZeroBit();
 
             W.Value.Value = (byte) ((int)k - (int)W.Value.Value);
         }
 
-        public SUBLW(byte k, WorkingRegister W)
+        public SUBLW(byte k, WorkingRegister W, RegisterFileMap Reg)
         {
             this.k = k;
 
-            execute(W);
+            execute(W, Reg);
         }
     }
 }

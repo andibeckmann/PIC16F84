@@ -76,7 +76,7 @@ namespace Simulator_PIC16F84.Instruktionen
             return (b & (1 << pos)) != 0;
         }
 
-        protected abstract void execute(WorkingRegister W);
+        protected abstract void execute(WorkingRegister W, RegisterFileMap Reg);
 
     }
 }

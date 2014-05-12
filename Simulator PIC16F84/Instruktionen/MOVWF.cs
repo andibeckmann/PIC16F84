@@ -18,19 +18,18 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  register 'f'.
 
         private byte content;
-        private RegisterFileMap Register;
 
-        public MOVWF(int f, WorkingRegister W)
+        public MOVWF(int f, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
 
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             content = W.Value.Value;
-            W.Value.GetRegisterMap().getRegisterList[f].Value = content;
+            Reg.getRegisterList[f].Value = content;
         }
     }
 }

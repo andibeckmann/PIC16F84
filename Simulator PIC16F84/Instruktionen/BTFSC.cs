@@ -20,20 +20,17 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  is executed instead, making this a
         //                  2TCY instruction
 
-        public BTFSC(int file, int b, ProgramCounter PC, WorkingRegister W)
+        public BTFSC(int file, int b, ProgramCounter PC, RegisterFileMap Reg)
         {
             this.f = file;
             this.b = b;
-            this.PC = PC;
-            this.W = W;
 
-            execute(PC);
+            execute(Reg, PC);
         }
 
-        protected void execute(ProgramCounter PC)
+        protected void execute(RegisterFileMap Reg, ProgramCounter PC)
         {
-            var map = W.Value.GetRegisterMap();
-            if (IsBitSet(map.RegisterList[f].Value, b))
+            if (IsBitSet(Reg.getRegisterList[f].Value, b))
             {
                 PC.Counter.Value++;
                 NOP Operation = new NOP();
@@ -41,7 +38,7 @@ namespace Simulator_PIC16F84.Instruktionen
         }
 
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             throw new NotImplementedException();
         }

@@ -141,7 +141,6 @@ namespace Simulator_PIC16F84
             UserMemorySpace = ProgramView.getBinaryCode();
             PC.Clear();
 
-            crystalFrequency.Start();
 
         }
 
@@ -149,8 +148,14 @@ namespace Simulator_PIC16F84
         {
             var index = FindRowForPC(PC.Counter.Value);
             this.registerView.ClearColors();
+<<<<<<< origin/master
             SetSelection(index);
+            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(W, PC, Stack, WDT, Prescaler);
+=======
+            this.ProgramView.dataGridView1.ClearSelection();
+            this.ProgramView.dataGridView1.Rows[index].Selected = true;
             UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction( RegisterMap, W, PC, Stack, WDT, Prescaler);
+>>>>>>> local
             PC.InkrementPC();
         }
 

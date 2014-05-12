@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
             PC.Counter.Value = Stack.PullFromStack().Value;
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             throw new NotImplementedException();
         }

@@ -19,16 +19,21 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  cleared and the Z bit is set.
 
 
-        public CLRF(int f, WorkingRegister W)
+        public CLRF(int f, RegisterFileMap Reg)
         {
             this.f = f;
-            execute(W);
+            execute(Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected void execute(RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().RegisterList[f].ClearRegister();
-            W.Value.GetRegisterMap().SetZeroBit();
+            Reg.getRegisterList[f].ClearRegister();
+            Reg.SetZeroBit();
+        }
+
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
+        {
+            throw new NotImplementedException();
         }
     }
 }

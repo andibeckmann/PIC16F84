@@ -21,24 +21,24 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  1, the result is placed back in register 'f'.
 
 
-        public INCF(int f, bool d, WorkingRegister W)
+        public INCF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
 
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = W.Value.GetRegisterMap().RegisterList[f].IncrementRegister();
+            var result = Reg.getRegisterList[f].IncrementRegister();
 
             if (d)
-                W.Value.GetRegisterMap().RegisterList[f].Value = (byte)result;
+                Reg.getRegisterList[f].Value = (byte)result;
             else
                 W.Value.Value = (byte)result;
             if( result == 0 )
-                W.Value.GetRegisterMap().SetZeroBit();
+                Reg.SetZeroBit();
         }
     }
 }

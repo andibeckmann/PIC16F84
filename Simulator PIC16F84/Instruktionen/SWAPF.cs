@@ -20,14 +20,14 @@ namespace Simulator_PIC16F84.Instruktionen
         //0, the result is placed in W register.
         //If 'd' is 1, the result is placed in
         //register 'f'.
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var fileRegister = W.Value.GetRegisterMap().getRegisterList[f].Value;
+            var fileRegister = Reg.getRegisterList[f].Value;
             var result = ((fileRegister >> 4) & 0x0f) | ((fileRegister << 4) & 0xf0);
 
             if(d)
             {
-                W.Value.GetRegisterMap().getRegisterList[f].Value = (byte) result;
+                Reg.getRegisterList[f].Value = (byte) result;
             }
             else
             {
@@ -35,12 +35,12 @@ namespace Simulator_PIC16F84.Instruktionen
             }
         }
 
-        public SWAPF(int f, bool d, WorkingRegister W)
+        public SWAPF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
 
-            execute(W);
+            execute(W, Reg);
         }
     }
 }

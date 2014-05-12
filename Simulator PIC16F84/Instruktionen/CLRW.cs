@@ -18,16 +18,16 @@ namespace Simulator_PIC16F84.Instruktionen
         //Description:      W register is cleared. Zero bit (Z)
         //                  is set.
 
-        public CLRW(WorkingRegister W)
+        public CLRW(WorkingRegister W, RegisterFileMap Reg)
         {
 
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             W.ClearWorkingRegister();
-            W.Value.GetRegisterMap().SetZeroBit();
+            Reg.SetZeroBit();
         }
     }
 }

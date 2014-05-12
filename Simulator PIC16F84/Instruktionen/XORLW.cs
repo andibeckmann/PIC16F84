@@ -21,21 +21,21 @@ namespace Simulator_PIC16F84.Instruktionen
 
         private int result;
 
-        public XORLW(byte k, WorkingRegister W)
+        public XORLW(byte k, WorkingRegister W, RegisterFileMap Reg)
         {
             this.k = k;
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             result = W.Value.Value ^ k;
             W.Value.Value = (byte) result;
 
             if (result == 0)
-                W.Value.GetRegisterMap().SetZeroBit();
+                Reg.SetZeroBit();
             else
-                W.Value.GetRegisterMap().ResetZeroBit();
+                Reg.ResetZeroBit();
         }
     }
 }

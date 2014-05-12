@@ -25,7 +25,7 @@ namespace Simulator_PIC16F84.Instruktionen
             //TODO set GIE = 1;
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             throw new NotImplementedException();
         }

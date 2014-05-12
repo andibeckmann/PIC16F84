@@ -23,22 +23,20 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  in register ’f’.
 
         private int content;
-        private RegisterFileMap Register;
         private bool CarryReminder;
 
-        public RLF(int f, bool d, WorkingRegister W)
+        public RLF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
             CarryReminder = false;
-            Register = W.Value.GetRegisterMap();
 
-            execute(W);
+            execute(W, Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            content = Register.RegisterList[f].Value;
+            content = Reg.getRegisterList[f].Value;
             var temp = content;
             if ((temp & 0x80) == 0x80)
             {
@@ -48,14 +46,14 @@ namespace Simulator_PIC16F84.Instruktionen
             content = content<<1;
             content = content & 0xFF;
 
-            if (Register.getCarryBit())
+            if (Reg.getCarryBit())
             {
                 content = content | 0x01;
             }
 
             if (d)
             {
-                W.Value.GetRegisterMap().RegisterList[f].Value = Convert.ToByte(content);
+                Reg.getRegisterList[f].Value = Convert.ToByte(content);
             }
             else
             {
@@ -64,11 +62,11 @@ namespace Simulator_PIC16F84.Instruktionen
 
             if (CarryReminder)
             {
-                W.Value.GetRegisterMap().SetCarryBit();
+                Reg.SetCarryBit();
             }
             else
             {
-                W.Value.GetRegisterMap().ResetCarryBit();
+                Reg.ResetCarryBit();
             }
 
         }

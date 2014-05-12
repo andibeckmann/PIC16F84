@@ -16,22 +16,28 @@ namespace Simulator_PIC16F84.Instruktionen
         //Status Affected: None
         //Description: Bit 'b' in register 'f' is set.
 
-        public BSF(int f, int b, WorkingRegister W)
+        public BSF(int f, int b, RegisterFileMap Reg)
         {
             this.f = f;
             this.b = b;
 
-            execute(W);   
+            execute(Reg);   
         }
 
-        protected override void execute(WorkingRegister W)
+        private void execute(RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().RegisterList[f].Value = TurnBitOn(W.Value.GetRegisterMap().RegisterList[f].Value, b);
+            Reg.getRegisterList[f].Value = TurnBitOn(Reg.getRegisterList[f].Value, b);
         }
 
         public static byte TurnBitOn(int value, int bitToTurnOn)
         {
             return (byte)(value | bitToTurnOn);
         }
+
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

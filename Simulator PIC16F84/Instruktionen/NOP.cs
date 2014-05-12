@@ -18,12 +18,12 @@ namespace Simulator_PIC16F84.Instruktionen
 
         public NOP()
         {
-            execute(null);
+            execute(null, null);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-
+           ;
         }
     }
 }

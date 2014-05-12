@@ -36,7 +36,7 @@ namespace Simulator_PIC16F84.Instruktionen
             //TODO: PCLATH - siehe Beschreibung, wurde hier noch komplett ignoriert
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             throw new NotImplementedException();
         }

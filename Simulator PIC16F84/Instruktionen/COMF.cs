@@ -21,24 +21,24 @@ namespace Simulator_PIC16F84.Instruktionen
         //result is stored back in register ’f’
 
 
-        public COMF(int f, bool d, WorkingRegister W)
+        public COMF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
 
-            execute(W);
+            execute(W, Reg);
 
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().SetZeroBit();
+            Reg.SetZeroBit();
 
-            var reverseResult = ~(W.Value.GetRegisterMap().RegisterList[f].Value);
+            var reverseResult = ~(Reg.getRegisterList[f].Value);
 
             if (d)
             {
-                W.Value.GetRegisterMap().RegisterList[f].Value = (byte)reverseResult;
+                Reg.getRegisterList[f].Value = (byte)reverseResult;
             }
             else
             {

@@ -27,9 +27,14 @@ namespace Simulator_PIC16F84.Instruktionen
             execute(W);
         }
 
-        protected override void execute(WorkingRegister W)
+        private void execute(WorkingRegister W)
         {
             W.Value.Value = (byte) (W.Value.Value & k);
+        }
+
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Simulator_PIC16F84.Instruktionen
             //W.Value.GetRegisterMap().
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             throw new NotImplementedException();
         }

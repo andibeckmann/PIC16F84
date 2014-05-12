@@ -16,22 +16,28 @@ namespace Simulator_PIC16F84.Instruktionen
         //Status Affected: None
         //Description: Bit 'b' in register 'f' is cleared
 
-        public BCF(int f, int b, WorkingRegister W)
+        public BCF(int f, int b, RegisterFileMap Reg)
         {
             this.f = f;
             this.b = b;
 
-            execute(W);
+            execute(Reg);
         }
 
-        protected override void execute(WorkingRegister W)
+        protected void execute(RegisterFileMap Reg)
         {
-            W.Value.GetRegisterMap().RegisterList[f].Value = (byte) TurnBitOff(W.Value.GetRegisterMap().RegisterList[f].Value, b);
+            Reg.getRegisterList[f].Value = (byte) TurnBitOff(Reg.getRegisterList[f].Value, b);
         }
 
         private static int TurnBitOff(int value, int bitToTurnOff)
         {
             return (value & ~bitToTurnOff);
         }
+
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -20,13 +20,13 @@ namespace Simulator_PIC16F84.Instruktionen
         //If 'd' is 1, the result is stored
         //back in register 'f'.
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = W.Value.GetRegisterMap().RegisterList[f].Value - W.Value.Value;
+            var result = Reg.getRegisterList[f].Value - W.Value.Value;
 
             if(d)
             {
-                W.Value.GetRegisterMap().RegisterList[f].Value = (byte) result;
+                Reg.getRegisterList[f].Value = (byte) result;
             }
             else
             {
@@ -34,12 +34,12 @@ namespace Simulator_PIC16F84.Instruktionen
             }
         }
 
-        public SUBWF(int f, bool d, WorkingRegister W)
+        public SUBWF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
         {
             this.f = f;
             this.d = d;
 
-            execute(W);
+            execute(W, Reg);
         }
     }
 }

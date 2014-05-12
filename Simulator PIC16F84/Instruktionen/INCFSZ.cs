@@ -25,21 +25,21 @@ namespace Simulator_PIC16F84.Instruktionen
         //a NOP is executed instead, making
         //it a 2TCY instruction.
 
-        public INCFSZ(int f, bool d, WorkingRegister W, ProgramCounter PC)
+        public INCFSZ(int f, bool d, WorkingRegister W, RegisterFileMap Reg, ProgramCounter PC)
         {
             this.f = f;
             this.d = d;
 
-            execute(W, PC);
+            execute(W, Reg, PC);
         }
 
-        protected void execute(WorkingRegister W, ProgramCounter PC)
+        protected void execute(WorkingRegister W, RegisterFileMap Reg, ProgramCounter PC)
         {
-            var result = (byte) (W.Value.GetRegisterMap().getRegisterList[f].Value + 1);
+            var result = (byte) (Reg.getRegisterList[f].Value + 1);
 
             if (d)
             {
-                W.Value.GetRegisterMap().getRegisterList[f].Value = result;   
+                Reg.getRegisterList[f].Value = result;   
             }
             else
             {
@@ -52,7 +52,7 @@ namespace Simulator_PIC16F84.Instruktionen
             }
         }
 
-        protected override void execute(WorkingRegister W)
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             throw new NotImplementedException();
         }
