@@ -30,12 +30,17 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.deiMuddaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.programmLadenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.schliessenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hilfeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.programmLadenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.anweisungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.einzelschrittToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unterbrechenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +48,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deiMuddaToolStripMenuItem,
-            this.hilfeToolStripMenuItem});
+            this.hilfeToolStripMenuItem,
+            this.anweisungenToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
@@ -59,6 +65,13 @@
             this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";
             this.deiMuddaToolStripMenuItem.Size = new System.Drawing.Size(70, 19);
             this.deiMuddaToolStripMenuItem.Text = "Simulator";
+            // 
+            // programmLadenToolStripMenuItem
+            // 
+            this.programmLadenToolStripMenuItem.Name = "programmLadenToolStripMenuItem";
+            this.programmLadenToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.programmLadenToolStripMenuItem.Text = "Programm laden";
+            this.programmLadenToolStripMenuItem.Click += new System.EventHandler(this.programmLadenToolStripMenuItem_Click);
             // 
             // schliessenToolStripMenuItem
             // 
@@ -80,6 +93,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.aboutToolStripMenuItem.Text = "About";
             // 
@@ -97,12 +111,48 @@
             this.projektToolStripMenuItem.Text = "Projekt Aufgabenstellung";
             this.projektToolStripMenuItem.Click += new System.EventHandler(this.projektToolStripMenuItem_Click);
             // 
-            // programmLadenToolStripMenuItem
+            // anweisungenToolStripMenuItem
             // 
-            this.programmLadenToolStripMenuItem.Name = "programmLadenToolStripMenuItem";
-            this.programmLadenToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.programmLadenToolStripMenuItem.Text = "Programm laden";
-            this.programmLadenToolStripMenuItem.Click += new System.EventHandler(this.programmLadenToolStripMenuItem_Click);
+            this.anweisungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startToolStripMenuItem,
+            this.resetToolStripMenuItem,
+            this.einzelschrittToolStripMenuItem,
+            this.unterbrechenToolStripMenuItem});
+            this.anweisungenToolStripMenuItem.Name = "anweisungenToolStripMenuItem";
+            this.anweisungenToolStripMenuItem.Size = new System.Drawing.Size(91, 19);
+            this.anweisungenToolStripMenuItem.Text = "Anweisungen";
+            // 
+            // startToolStripMenuItem
+            // 
+            this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+            this.startToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.startToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+            // 
+            // resetToolStripMenuItem
+            // 
+            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            this.resetToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.resetToolStripMenuItem.Text = "Zurücksetzen";
+            this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
+            // 
+            // einzelschrittToolStripMenuItem
+            // 
+            this.einzelschrittToolStripMenuItem.Name = "einzelschrittToolStripMenuItem";
+            this.einzelschrittToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
+            this.einzelschrittToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.einzelschrittToolStripMenuItem.Text = "Einzelschritt";
+            this.einzelschrittToolStripMenuItem.Click += new System.EventHandler(this.einzelschrittToolStripMenuItem_Click);
+            // 
+            // unterbrechenToolStripMenuItem
+            // 
+            this.unterbrechenToolStripMenuItem.Name = "unterbrechenToolStripMenuItem";
+            this.unterbrechenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.unterbrechenToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.unterbrechenToolStripMenuItem.Text = "Unterbrechen";
+            this.unterbrechenToolStripMenuItem.Click += new System.EventHandler(this.unterbrechenToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -134,6 +184,11 @@
         private System.Windows.Forms.ToolStripMenuItem datenblattPIC16C84ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projektToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem programmLadenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem anweisungenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem einzelschrittToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unterbrechenToolStripMenuItem;
 
     }
 }

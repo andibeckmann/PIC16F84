@@ -29,6 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
         public RLF(int f, bool d, WorkingRegister W)
         {
             this.f = f;
+            this.d = d;
             CarryReminder = false;
             Register = W.Value.GetRegisterMap();
 
@@ -38,24 +39,37 @@ namespace Simulator_PIC16F84.Instruktionen
         protected override void execute(WorkingRegister W)
         {
             content = Register.RegisterList[f].Value;
-            if ( (content & 0x80) == 0x80 )
+            var temp = content;
+            if ((temp & 0x80) == 0x80)
+            {
                 CarryReminder = true;
+            }
 
             content = content<<1;
             content = content & 0xFF;
 
             if (Register.getCarryBit())
-                content += 1;
+            {
+                content = content | 0x01;
+            }
 
             if (d)
-                W.Value.GetRegisterMap().RegisterList[f].Value = (sbyte)content;
+            {
+                W.Value.GetRegisterMap().RegisterList[f].Value = Convert.ToByte(content);
+            }
             else
-                W.Value.Value = (sbyte)content;
+            {
+                W.Value.Value = (byte)content;
+            }
 
             if (CarryReminder)
+            {
                 W.Value.GetRegisterMap().SetCarryBit();
+            }
             else
+            {
                 W.Value.GetRegisterMap().ResetCarryBit();
+            }
 
         }
     }

@@ -74,9 +74,14 @@ namespace Simulator_PIC16F84
                 if (int.TryParse(name, out id))
                 {
                     int content;
-                    if (int.TryParse(textBox.Text, out content))
+                    try
                     {
-                        registerMap.RegisterList[id].Value = (sbyte) content;
+                        content = Convert.ToInt32(textBox.Text, 16);
+                        registerMap.RegisterList[id].Value = (byte)content;
+                    }
+                    catch
+                    {
+                        // TODO
                     }
                 }
             }
@@ -121,6 +126,14 @@ namespace Simulator_PIC16F84
                         this.Controls[i].BackColor = Color.White;
                     }
                 }
+            }
+        }
+
+        public void ClearRegister()
+        {
+            foreach (var registerByte in registerMap.RegisterList)
+            {
+                registerByte.ClearRegister();
             }
         }
     }

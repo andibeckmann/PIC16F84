@@ -8,29 +8,28 @@ namespace Simulator_PIC16F84
 {
     public class RegisterByte
     {
-        private sbyte value;
-        private RegisterFileMap registerFileMap;
+        private byte value;
         private int index;
+        private RegisterFileMap registerFileMap;
 
         public event EventHandler<int> RegisterChanged;
 
-        public RegisterByte(RegisterFileMap registerFileMap, int index)
+        public RegisterByte(ref RegisterFileMap registerFileMap, int index)
         {
-            this.registerFileMap = registerFileMap;
             value = 0;
             this.index = index;
+            this.registerFileMap = registerFileMap;
         }
 
-        public sbyte Value {
+        public byte Value {
             get { return value; }
             set
             {
-                if (value != this.value)
-                {
                     this.value = value;
                     if (this.RegisterChanged != null)
+                    {
                         this.RegisterChanged(this, index);
-                }
+                    }
             }
         }
 
@@ -60,9 +59,9 @@ namespace Simulator_PIC16F84
             return ( ( ( value >> pos ) & 0x1 ) == 0x1 );
         }
 
-        public sbyte FormComplement()
+        public byte FormComplement()
         {
-            return ((sbyte) ((int) value ^ 0xff));
+            return ((byte) ((int) value ^ 0xff));
         }
     }
 

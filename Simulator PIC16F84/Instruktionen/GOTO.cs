@@ -22,7 +22,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  PCLATH<4:3>. GOTO i a two-
         //                  cycle instruction.
 
-        public GOTO(sbyte k, ProgramCounter PC)
+        public GOTO(byte k, ProgramCounter PC)
         {
             this.k = k;
 
@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(ProgramCounter PC)
         {
-            PC.Counter.Value = k;
+            PC.Counter.Value = k - 1;
 
             //TODO: PCLATH - siehe Beschreibung, wurde hier noch komplett ignoriert
         }

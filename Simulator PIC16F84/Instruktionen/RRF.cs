@@ -48,9 +48,9 @@ namespace Simulator_PIC16F84.Instruktionen
                 content += 0x80;
 
             if (d)
-                W.Value.GetRegisterMap().RegisterList[f].Value = (sbyte)content;
+                W.Value.GetRegisterMap().RegisterList[f].Value = (byte)content;
             else
-                W.Value.Value = (sbyte)content;
+                W.Value.Value = (byte)content;
 
             if (CarryReminder)
                 W.Value.GetRegisterMap().SetCarryBit();

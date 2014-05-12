@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
         /// <summary>
         /// Literal field, constant data or label
         /// </summary>
-        protected sbyte k;
+        protected byte k;
 
         /// <summary>
         /// Destination select;
@@ -59,7 +59,7 @@ namespace Simulator_PIC16F84.Instruktionen
         /// </summary>
         protected Stack Stack;
 
-        public BaseOperation(int f = 0, WorkingRegister W = null, int b = 0, sbyte k = 0, bool d = true, ProgramCounter PC = null, bool TO = false, bool PD = false)
+        public BaseOperation(int f = 0, WorkingRegister W = null, int b = 0, byte k = 0, bool d = true, ProgramCounter PC = null, bool TO = false, bool PD = false)
         {
             this.f = f;
             this.W = W;

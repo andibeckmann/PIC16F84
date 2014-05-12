@@ -26,7 +26,13 @@ namespace Simulator_PIC16F84
 
         public ProgramMemoryAddress PullFromStack()
         {
-            return StackAddresses[0];
+            var topOfStack = StackAddresses[0];
+            for (int i = 0; i < 7; i++ )
+            {
+                StackAddresses[i] = StackAddresses[i + 1];
+            }
+            StackAddresses[7].Value = 0; 
+            return topOfStack;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Simulator_PIC16F84
 
         public WorkingRegister(RegisterFileMap RegisterMap)
         {
-            value = new RegisterByte(RegisterMap,0);
+            value = new RegisterByte(ref RegisterMap,0);
         }
 
         public RegisterByte Value

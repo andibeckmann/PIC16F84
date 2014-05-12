@@ -133,14 +133,13 @@ namespace Simulator_PIC16F84
             //}
             String testPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\Programme\\";
 
-            System.IO.StreamReader sr = new System.IO.StreamReader(testPath + "SimTest1.lst");
+            System.IO.StreamReader sr = new System.IO.StreamReader(testPath + "SimTest2.lst");
             string fileContent = sr.ReadToEnd();
             sr.Close();
             ProgramView.loadProgram(fileContent);
             UserMemorySpace = ProgramView.getBinaryCode();
             PC.Clear();
 
-            crystalFrequency.Start();
 
         }
 
@@ -148,10 +147,23 @@ namespace Simulator_PIC16F84
         {
             var index = FindRowForPC(PC.Counter.Value);
             this.registerView.ClearColors();
-            this.ProgramView.dataGridView1.ClearSelection();
-            this.ProgramView.dataGridView1.Rows[index].Selected = true;
+            SetSelection(index);
             UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(W, PC, Stack, WDT, Prescaler);
             PC.InkrementPC();
+        }
+
+        private void SetSelection(int index)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate { SetSelection(index); });
+            }
+            else
+            {
+                this.ProgramView.dataGridView1.ClearSelection();
+                this.ProgramView.dataGridView1.Rows[index].Selected = true;
+                this.ProgramView.dataGridView1.CurrentCell = this.ProgramView.dataGridView1[0, index];
+            }
         }
 
         private int FindRowForPC(int counter)
@@ -170,6 +182,29 @@ namespace Simulator_PIC16F84
                 }
             }
             return rowIndex;
+        }
+
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            crystalFrequency.Start();
+        }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            crystalFrequency.Stop();
+            PC.Clear();
+            registerView.ClearRegister();
+            SetSelection(0);
+        }
+
+        private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            crystalFrequency.Stop();
+        }
+
+        private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExecuteCycle(null, null);
         }
 
     }

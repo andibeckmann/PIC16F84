@@ -34,9 +34,9 @@ namespace Simulator_PIC16F84.Instruktionen
             var result = W.Value.GetRegisterMap().RegisterList[f].IncrementRegister();
 
             if (d)
-                W.Value.GetRegisterMap().RegisterList[f].Value = (sbyte)result;
+                W.Value.GetRegisterMap().RegisterList[f].Value = (byte)result;
             else
-                W.Value.Value = (sbyte)result;
+                W.Value.Value = (byte)result;
             if( result == 0 )
                 W.Value.GetRegisterMap().SetZeroBit();
         }

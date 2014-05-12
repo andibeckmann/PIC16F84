@@ -15,7 +15,7 @@ namespace Simulator_PIC16F84
             RegisterList = new RegisterByte[256];
             for (int var = 0; var < RegisterList.Length; var++ )
             {
-                RegisterList[var] = new RegisterByte(this,var);
+                RegisterList[var] = new RegisterByte(ref this,var);
             }
         }
 
@@ -33,12 +33,12 @@ namespace Simulator_PIC16F84
 
         internal void SetCarryBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value | 0x01);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x01);
         }
 
         internal void ResetCarryBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value & 0xFE);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xFE);
         }
 
         public bool getCarryBit()
@@ -51,12 +51,12 @@ namespace Simulator_PIC16F84
 
         internal void SetDigitCarryBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value | 0x02);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x02);
         }
 
         internal void ResetDigitCarryBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value & 0xFD);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xFD);
         }
 
         public bool getDigitCarryBit()
@@ -69,12 +69,12 @@ namespace Simulator_PIC16F84
 
         internal void SetZeroBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value | 0x04);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x04);
         }
 
         internal void ResetZeroBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value & 0xFB);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xFB);
         }
 
         public bool getZeroBit()
@@ -87,22 +87,22 @@ namespace Simulator_PIC16F84
 
         public void SetPowerDownBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value | 0x08);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x08);
         }
 
         public void ResetPowerDownBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value & 0xF7);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xF7);
         }
 
         public void SetTimeOutBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value | 0x10);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x10);
         }
 
         public void ResetTimeOutBit()
         {
-            RegisterList[3].Value = (sbyte) (RegisterList[3].Value & 0xEF);
+            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xEF);
         }
 
         

@@ -24,10 +24,10 @@ namespace Simulator_PIC16F84.Instruktionen
             W.Value.GetRegisterMap().SetDigitCarryBit();
             W.Value.GetRegisterMap().SetZeroBit();
 
-            W.Value.Value = (sbyte) ((int)k - (int)W.Value.Value);
+            W.Value.Value = (byte) ((int)k - (int)W.Value.Value);
         }
 
-        public SUBLW(sbyte k, WorkingRegister W)
+        public SUBLW(byte k, WorkingRegister W)
         {
             this.k = k;
 

@@ -35,15 +35,15 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(WorkingRegister W, ProgramCounter PC)
         {
-            var result = W.Value.GetRegisterMap().getRegisterList[f].Value + 1;
+            var result = (byte) (W.Value.GetRegisterMap().getRegisterList[f].Value + 1);
 
             if (d)
             {
-                W.Value.GetRegisterMap().getRegisterList[f].Value = (sbyte)result;   
+                W.Value.GetRegisterMap().getRegisterList[f].Value = result;   
             }
             else
             {
-                W.Value.Value = (sbyte)result;
+                W.Value.Value = result;
             }
             if(result == 0)
             {

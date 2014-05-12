@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  register.
 
 
-        public ADDLW(sbyte k, WorkingRegister W)
+        public ADDLW(byte k, WorkingRegister W)
         {
             this.k = k;
 
@@ -48,7 +48,7 @@ namespace Simulator_PIC16F84.Instruktionen
                 W.Value.GetRegisterMap().SetCarryBit();
             else
                 W.Value.GetRegisterMap().ResetCarryBit();
-            W.Value.Value = (sbyte)result;
+            W.Value.Value = (byte)result;
         }
 
     }

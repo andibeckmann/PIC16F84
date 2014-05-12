@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W)
         {
-            W.Value.Value = (sbyte) (W.Value.Value & k);
+            W.Value.Value = (byte) (W.Value.Value & k);
         }
     }
 }

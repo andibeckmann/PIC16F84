@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         private int result;
 
-        public XORLW(sbyte k, WorkingRegister W)
+        public XORLW(byte k, WorkingRegister W)
         {
             this.k = k;
             execute(W);
@@ -30,7 +30,7 @@ namespace Simulator_PIC16F84.Instruktionen
         protected override void execute(WorkingRegister W)
         {
             result = W.Value.Value ^ k;
-            W.Value.Value = (sbyte) result;
+            W.Value.Value = (byte) result;
 
             if (result == 0)
                 W.Value.GetRegisterMap().SetZeroBit();

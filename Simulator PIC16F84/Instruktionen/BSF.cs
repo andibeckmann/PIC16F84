@@ -29,9 +29,9 @@ namespace Simulator_PIC16F84.Instruktionen
             W.Value.GetRegisterMap().RegisterList[f].Value = TurnBitOn(W.Value.GetRegisterMap().RegisterList[f].Value, b);
         }
 
-        public static sbyte TurnBitOn(int value, int bitToTurnOn)
+        public static byte TurnBitOn(int value, int bitToTurnOn)
         {
-            return (sbyte)(value | bitToTurnOn);
+            return (byte)(value | bitToTurnOn);
         }
     }
 }
