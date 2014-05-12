@@ -26,7 +26,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(RegisterFileMap Reg)
         {
-            Reg.getRegisterList[f].Value = (byte) TurnBitOff(Reg.getRegisterList[f].Value, b);
+            Reg.getRegister(f).Value = (byte) TurnBitOff(Reg.getRegister(f).Value, b);
         }
 
         private static int TurnBitOff(int value, int bitToTurnOff)

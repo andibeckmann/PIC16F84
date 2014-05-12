@@ -23,11 +23,11 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             Reg.SetZeroBit();
 
-            var result = W.Value.Value ^ Reg.getRegisterList[f].Value;
+            var result = W.Value.Value ^ Reg.getRegister(f).Value;
 
             if(d)
             {
-                Reg.getRegisterList[f].Value = (byte) result;
+                Reg.getRegister(f).Value = (byte) result;
             }
             else
             {

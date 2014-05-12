@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = W.Value.Value & Reg.getRegisterList[f].Value;
+            var result = W.Value.Value & Reg.getRegister(f).Value;
 
             //Zero-Bit Logik
             if (result == 0)
@@ -39,7 +39,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
             //Unterscheidung Working Reg oder File Reg
             if (d)
-                Reg.getRegisterList[f].Value = (byte)result;
+                Reg.getRegister(f).Value = (byte)result;
             else
                 W.Value.Value = (byte)result;
         }

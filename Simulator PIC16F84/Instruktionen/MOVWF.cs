@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             content = W.Value.Value;
-            Reg.getRegisterList[f].Value = content;
+            Reg.getRegister(f).Value = content;
         }
     }
 }

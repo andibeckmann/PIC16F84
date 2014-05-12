@@ -54,7 +54,7 @@ namespace Simulator_PIC16F84
                     textBox.Name = "Byte " + (i * 8 + m); 
                     textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
                     textBox.TabIndex = i * 8 + 8 + m;
-                    textBox.Text = RegisterMap.getRegisterList[i*8+m].Value.ToString("X2");
+                    textBox.Text = RegisterMap.getRegister(i*8+m).Value.ToString("X2");
                     textBox.TextChanged += new System.EventHandler(textbox_TextChanged); 
                     this.Controls.Add(textBox);
                 }
@@ -76,7 +76,7 @@ namespace Simulator_PIC16F84
                     try
                     {
                         content = Convert.ToInt32(textBox.Text, 16);
-                        registerMap.getRegisterList[id].Value = (byte)content;
+                        registerMap.getRegister(id).Value = (byte)content;
                     }
                     catch
                     {
@@ -95,7 +95,7 @@ namespace Simulator_PIC16F84
             else
             {
                 var textBoxArray = this.Controls.Find("Byte " + index, true);
-                textBoxArray[0].Text = registerMap.getRegisterList[index].Value.ToString("X2");
+                textBoxArray[0].Text = registerMap.getRegister(index).Value.ToString("X2");
                 textBoxArray[0].BackColor = Color.Red;
             }
         }
@@ -104,7 +104,7 @@ namespace Simulator_PIC16F84
         {
             for(int i = 0 ; i < registerMap.getRegisterList.Length; i++ )
             {
-                registerMap.getRegisterList[i].RegisterChanged += new EventHandler<int>(this.RegisterContentChanged);
+                registerMap.getRegister(i).RegisterChanged += new EventHandler<int>(this.RegisterContentChanged);
             }
         }
 

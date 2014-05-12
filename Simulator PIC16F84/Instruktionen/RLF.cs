@@ -36,7 +36,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            content = Reg.getRegisterList[f].Value;
+            content = Reg.getRegister(f).Value;
             var temp = content;
             if ((temp & 0x80) == 0x80)
             {
@@ -53,7 +53,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
             if (d)
             {
-                Reg.getRegisterList[f].Value = Convert.ToByte(content);
+                Reg.getRegister(f).Value = Convert.ToByte(content);
             }
             else
             {

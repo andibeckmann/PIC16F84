@@ -31,10 +31,10 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = Reg.getRegisterList[f].IncrementRegister();
+            var result = Reg.getRegister(f).IncrementRegister();
 
             if (d)
-                Reg.getRegisterList[f].Value = (byte)result;
+                Reg.getRegister(f).Value = (byte)result;
             else
                 W.Value.Value = (byte)result;
             if( result == 0 )

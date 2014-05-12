@@ -46,7 +46,17 @@ namespace Simulator_PIC16F84
             set { this.RegisterList = value;}
         }
 
-        //er.... ???
+        /// <summary>
+        /// Gibt ein Register anhand des Index zurück
+        /// </summary>
+        /// <param name="index">Gibt die Speicherzelle des Byte an</param>
+        /// <returns>gewählte Speicherzelle</returns>
+        public RegisterByte getRegister(int index)
+        {
+            index = MappingArray[index];
+            return this.RegisterList[index];
+        }
+
         public RegisterByte getStatusRegisterContent()
         {
             return RegisterList[3];

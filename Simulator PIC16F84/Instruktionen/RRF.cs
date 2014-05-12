@@ -35,7 +35,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            content = Reg.getRegisterList[f].Value;
+            content = Reg.getRegister(f).Value;
             if ( (content & 0x1) == 0x1 )
                 CarryReminder = true;
 
@@ -46,7 +46,7 @@ namespace Simulator_PIC16F84.Instruktionen
                 content += 0x80;
 
             if (d)
-                Reg.getRegisterList[f].Value = (byte)content;
+                Reg.getRegister(f).Value = (byte)content;
             else
                 W.Value.Value = (byte)content;
 

@@ -140,9 +140,6 @@ namespace Simulator_PIC16F84
             ProgramView.loadProgram(fileContent);
             UserMemorySpace = ProgramView.getBinaryCode();
             PC.Clear();
-
-            crystalFrequency.Start();
-
         }
 
         private void ExecuteCycle(object source, ElapsedEventArgs e)

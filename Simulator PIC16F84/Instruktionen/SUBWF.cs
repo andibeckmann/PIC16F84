@@ -22,11 +22,11 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = Reg.getRegisterList[f].Value - W.Value.Value;
+            var result = Reg.getRegister(f).Value - W.Value.Value;
 
             if(d)
             {
-                Reg.getRegisterList[f].Value = (byte) result;
+                Reg.getRegister(f).Value = (byte) result;
             }
             else
             {
