@@ -31,6 +31,7 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.BreakPoints = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,6 +45,7 @@
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.BreakPoints,
             this.Column1,
             this.Column2,
             this.Column3,
@@ -55,27 +57,31 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(784, 462);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // BreakPoints
+            // 
+            this.BreakPoints.HeaderText = "Stop";
+            this.BreakPoints.Name = "BreakPoints";
+            this.BreakPoints.ReadOnly = true;
+            this.BreakPoints.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.BreakPoints.Width = 35;
             // 
             // Column1
             // 
-            this.Column1.Frozen = true;
             this.Column1.HeaderText = "Zeile";
             this.Column1.Name = "Column1";
             this.Column1.ToolTipText = "Binärcode-Programmzeile";
-            this.Column1.Width = 35;
+            this.Column1.Width = 40;
             // 
             // Column2
             // 
-            this.Column2.Frozen = true;
             this.Column2.HeaderText = "Code";
             this.Column2.Name = "Column2";
             this.Column2.ToolTipText = "Binärcode-Instruktionen";
-            this.Column2.Width = 35;
+            this.Column2.Width = 40;
             // 
             // Column3
             // 
-            this.Column3.Frozen = true;
             this.Column3.HeaderText = "QZeile";
             this.Column3.Name = "Column3";
             this.Column3.ToolTipText = "Quellcode-Zeile";
@@ -83,15 +89,12 @@
             // 
             // Column4
             // 
-            this.Column4.Frozen = true;
             this.Column4.HeaderText = "Punkt";
             this.Column4.Name = "Column4";
             this.Column4.ToolTipText = "Quellcode-Assemblersprungpunkt";
-            this.Column4.Width = 45;
             // 
             // Column5
             // 
-            this.Column5.Frozen = true;
             this.Column5.HeaderText = "Assemblercode";
             this.Column5.Name = "Column5";
             this.Column5.ToolTipText = "Quellcode-Assemblerinstruktionen";
@@ -99,11 +102,10 @@
             // 
             // Column6
             // 
-            this.Column6.Frozen = true;
             this.Column6.HeaderText = "Kommentar";
             this.Column6.Name = "Column6";
             this.Column6.ToolTipText = "Quellcode-Assemblerkommentare";
-            this.Column6.Width = 400;
+            this.Column6.Width = 335;
             // 
             // ProgramMemoryView
             // 
@@ -123,6 +125,7 @@
         #endregion
 
         public System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BreakPoints;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;

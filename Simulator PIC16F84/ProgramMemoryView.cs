@@ -16,21 +16,49 @@ namespace Simulator_PIC16F84
         private List<string> programView = new List<string>();
         ProgramMemoryMap memoryKopie;
 
-        public ProgramMemoryView(ProgramMemoryMap UserMemorySpace)
+        public EventHandler<int> HandleBreakpoint;
+
+        public ProgramMemoryView(ProgramMemoryMap UserMemorySpace, Main MainView)
         {
             this.memoryKopie = UserMemorySpace;
             InitializeComponent();
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
            this.StartPosition = FormStartPosition.Manual;
            this.dataGridView1.SelectionChanged += SelectionChangedEvent;
+           this.dataGridView1.CellDoubleClick += HandleBreakPoints;
+           HandleBreakpoint += MainView.HandleBreakpoint;
         }
 
         private void SelectionChangedEvent(object sender, EventArgs e)
         {
-            for(int i = 0 ; i < dataGridView1.SelectedCells.Count; i++)
+            var index = dataGridView1.CurrentCell.RowIndex;
+            if (index != -1)
             {
-                int index = dataGridView1.SelectedCells[i].RowIndex;
                 dataGridView1.Rows[index].Selected = true;
+            }
+        }
+
+        private void HandleBreakPoints(object sender, EventArgs e)
+        {
+            var index = dataGridView1.CurrentCell.RowIndex;
+            if (dataGridView1.CurrentCell.ColumnIndex.Equals(0) && dataGridView1.CurrentCell.RowIndex != -1)
+            {
+                if (dataGridView1[1, index].Value != null)
+                {
+                    var counter = int.Parse(dataGridView1[1, index].Value.ToString());
+                    if (this.HandleBreakpoint != null)
+                    {
+                        this.HandleBreakpoint(this, index);
+                    }
+                    if (dataGridView1[0, index].Style.BackColor == Color.Red)
+                    {
+                        dataGridView1[0, index].Style.BackColor = Color.White;
+                    }
+                    else
+                    {
+                        dataGridView1[0, index].Style.BackColor = Color.Red;
+                    }
+                }
             }
         }
 
@@ -78,11 +106,6 @@ namespace Simulator_PIC16F84
             return memoryKopie;
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            
-        }
-
         private void FillLinesOfDataGrid()
         {
             foreach (var item in programView)
@@ -119,7 +142,7 @@ namespace Simulator_PIC16F84
             temp = temp.Substring(7);
             if (temp.StartsWith(" ") == false)
             {
-                row.Cells[3].Value = temp;
+                row.Cells[4].Value = temp;
                 return null;
             }
             return temp.Substring(8);
@@ -135,28 +158,28 @@ namespace Simulator_PIC16F84
                 int index = temp.IndexOf(";");
                 if (index > 0)
                 {
-                    row.Cells[4].Value = temp.Substring(0, index);
+                    row.Cells[5].Value = temp.Substring(0, index);
                     temp = temp.Substring(index);
                 }
                 return temp;
             }
             else
-                row.Cells[4].Value = temp;
+                row.Cells[5].Value = temp;
             return null;
         }
 
         private static void ExtractComments(DataGridViewRow row, string temp)
         {
             if (temp != null )
-                row.Cells[5].Value = temp;
+                row.Cells[6].Value = temp;
         }
 
         private static void ExtractProcessorCode(string item, DataGridViewRow row)
         {
             if (item.StartsWith(" ") == false)
             {
-                row.Cells[0].Value = item.Substring(0, 4);
-                row.Cells[1].Value = item.Substring(5, 4);
+                row.Cells[1].Value = item.Substring(0, 4);
+                row.Cells[2].Value = item.Substring(5, 4);
             }
         }
 

@@ -127,7 +127,7 @@
             this.startToolStripMenuItem.Name = "startToolStripMenuItem";
             this.startToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
             this.startToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.startToolStripMenuItem.Text = "Start";
+            this.startToolStripMenuItem.Text = "Start / Weiter";
             this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
             // 
             // resetToolStripMenuItem

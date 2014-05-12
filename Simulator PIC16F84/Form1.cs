@@ -24,7 +24,8 @@ namespace Simulator_PIC16F84
         WatchdogTimer WDT;
         Prescaler Prescaler;
         RegisterView registerView;
-        System.Timers.Timer crystalFrequency; 
+        System.Timers.Timer crystalFrequency;
+        List<int> breakPoints;
 
         public Main()
         {
@@ -43,7 +44,7 @@ namespace Simulator_PIC16F84
             var size = registerView.Size;
 
             UserMemorySpace = new ProgramMemoryMap();
-            ProgramView = new ProgramMemoryView(UserMemorySpace);
+            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
             ProgramView.MdiParent = this;
             ProgramView.SetDesktopLocation(size.Width + 18, 0);
             ProgramView.Show();
@@ -53,6 +54,7 @@ namespace Simulator_PIC16F84
             Stack = new Stack();
             WDT = new WatchdogTimer();
             Prescaler = new Prescaler();
+            breakPoints = new List<int>();
             crystalFrequency = new System.Timers.Timer(10);
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
 
@@ -147,6 +149,11 @@ namespace Simulator_PIC16F84
             var index = FindRowForPC(PC.Counter.Value);
             this.registerView.ClearColors();
             SetSelection(index);
+            if(breakPoints.Contains(index))
+            {
+                crystalFrequency.Stop();
+                return;
+            }
             UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction( RegisterMap, W, PC, Stack, WDT, Prescaler);
             PC.InkrementPC();
         }
@@ -159,9 +166,9 @@ namespace Simulator_PIC16F84
             }
             else
             {
+                this.ProgramView.dataGridView1.CurrentCell = this.ProgramView.dataGridView1[0, index];
                 this.ProgramView.dataGridView1.ClearSelection();
                 this.ProgramView.dataGridView1.Rows[index].Selected = true;
-                this.ProgramView.dataGridView1.CurrentCell = this.ProgramView.dataGridView1[0, index];
             }
         }
 
@@ -170,11 +177,11 @@ namespace Simulator_PIC16F84
             int rowIndex = 0;
             foreach (DataGridViewRow row in this.ProgramView.dataGridView1.Rows)
             {
-                if(row.Cells[0].Value == null)
+                if(row.Cells[1].Value == null)
                 {
                     continue;
                 }
-                if (row.Cells[0].Value.ToString().Equals(counter.ToString("X4")))
+                if (row.Cells[1].Value.ToString().Equals(counter.ToString("X4")))
                 {
                     rowIndex = row.Index;
                     break;
@@ -183,8 +190,22 @@ namespace Simulator_PIC16F84
             return rowIndex;
         }
 
+        public void HandleBreakpoint(object sender, int index)
+        {
+            if(breakPoints.Contains(index))
+            {
+                breakPoints.Remove(index);
+            }
+            else
+            {
+                breakPoints.Add(index);
+            }
+        }
+
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack, WDT, Prescaler);
+            PC.InkrementPC();
             crystalFrequency.Start();
         }
 
