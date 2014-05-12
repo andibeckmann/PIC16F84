@@ -45,7 +45,7 @@ namespace Simulator_PIC16F84
             {
                 if (dataGridView1[1, index].Value != null)
                 {
-                    var counter = int.Parse(dataGridView1[1, index].Value.ToString());
+                    var counter = int.Parse(dataGridView1[1, index].Value.ToString(), System.Globalization.NumberStyles.HexNumber);
                     if (this.HandleBreakpoint != null)
                     {
                         this.HandleBreakpoint(this, index);
