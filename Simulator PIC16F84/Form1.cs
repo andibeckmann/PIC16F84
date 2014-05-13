@@ -26,6 +26,7 @@ namespace Simulator_PIC16F84
         RegisterView registerView;
         System.Timers.Timer crystalFrequency;
         List<int> breakPoints;
+        bool breakPointStop;
 
         public Main()
         {
@@ -147,14 +148,19 @@ namespace Simulator_PIC16F84
         private void ExecuteCycle(object source, ElapsedEventArgs e)
         {
             var index = FindRowForPC(PC.Counter.Value);
-            this.registerView.ClearColors();
-            SetSelection(index);
             if(breakPoints.Contains(index))
             {
                 crystalFrequency.Stop();
                 return;
             }
-            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction( RegisterMap, W, PC, Stack, WDT, Prescaler);
+            ExecuteSingleCycle(index);
+        }
+
+        private void ExecuteSingleCycle(int index)
+        {
+            this.registerView.ClearColors();
+            SetSelection(index);
+            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack, WDT, Prescaler);
             PC.InkrementPC();
         }
 
@@ -204,8 +210,8 @@ namespace Simulator_PIC16F84
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack, WDT, Prescaler);
-            PC.InkrementPC();
+            var index = FindRowForPC(PC.Counter.Value);
+            ExecuteSingleCycle(index);
             crystalFrequency.Start();
         }
 
@@ -226,7 +232,8 @@ namespace Simulator_PIC16F84
 
         private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ExecuteCycle(null, null);
+            var index = FindRowForPC(PC.Counter.Value);
+            ExecuteSingleCycle(index);
         }
 
     }
