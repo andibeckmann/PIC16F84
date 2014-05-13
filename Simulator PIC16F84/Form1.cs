@@ -26,7 +26,6 @@ namespace Simulator_PIC16F84
         RegisterView registerView;
         System.Timers.Timer crystalFrequency;
         List<int> breakPoints;
-        bool breakPointStop;
 
         public Main()
         {
@@ -36,7 +35,7 @@ namespace Simulator_PIC16F84
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
             RegisterMap = new RegisterFileMap();
-            registerView = new RegisterView(ref RegisterMap);
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.MappingArray);
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
             registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };

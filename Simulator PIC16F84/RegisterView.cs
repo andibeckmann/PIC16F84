@@ -13,8 +13,9 @@ namespace Simulator_PIC16F84
     public partial class RegisterView : Form
     {
         RegisterFileMap registerMap;
+        int[] mappingArray;
 
-        public RegisterView(ref RegisterFileMap RegisterMap)
+        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray)
         {
             this.registerMap = RegisterMap;
 
@@ -27,6 +28,7 @@ namespace Simulator_PIC16F84
             this.Size = new System.Drawing.Size(9*(sizeOfField+6), max.Height);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 
+            this.mappingArray = mappingArray;
             AddEventToRegister();
 
             for(int i = 0; i < 8; i++)
@@ -94,9 +96,15 @@ namespace Simulator_PIC16F84
             }
             else
             {
-                var textBoxArray = this.Controls.Find("Byte " + index, true);
-                textBoxArray[0].Text = registerMap.getRegister(index).Value.ToString("X2");
-                textBoxArray[0].BackColor = Color.Red;
+                for (int i = 0; i < mappingArray.Length; i++)
+                {
+                    if (mappingArray[i] == index)
+                    {
+                        var textBoxArray = this.Controls.Find("Byte " + i, true);
+                        textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
+                        textBoxArray[0].BackColor = Color.Red;
+                    }
+                }
             }
         }
 

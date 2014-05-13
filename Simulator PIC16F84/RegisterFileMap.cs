@@ -9,7 +9,7 @@ namespace Simulator_PIC16F84
     public class RegisterFileMap
     {
         private RegisterByte[] RegisterList;
-        private int[] MappingArray;
+        public int[] MappingArray;
 
         public RegisterFileMap()
         {
