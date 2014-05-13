@@ -158,9 +158,9 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
-            SetSelection(index);
             UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack, WDT, Prescaler);
             PC.InkrementPC();
+            SetSelection(index);
         }
 
         private void SetSelection(int index)
