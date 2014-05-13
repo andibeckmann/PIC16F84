@@ -44,7 +44,11 @@ namespace Simulator_PIC16F84
 
         private RegisterByte readINDFReg()
         {
-            return getRegister(getFSRReg());
+            var address = getFSRReg();
+            if (address == 0)
+                return RegisterList[0];
+            else
+                return getRegister(address);
         }
 
         private int getFSRReg()

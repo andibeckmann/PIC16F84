@@ -9,23 +9,32 @@ namespace Simulator_PIC16F84
     public class ProgramCounter
     {
         private ProgramMemoryAddress counter;
+        private RegisterFileMap Reg;
 
 
-        public ProgramCounter()
+        public ProgramCounter(RegisterFileMap _reg)
         {
-            counter = new ProgramMemoryAddress(0);
+            this.counter = new ProgramMemoryAddress(0);
+            this.Reg = _reg;
         }
 
         public ProgramMemoryAddress Counter
         {
             get { return counter; }
-            set { this.counter = value; }
-            //TODO write in to Reg 02h
+            set {   this.counter = value;
+                    this.Reg.getRegister(0x02).Value = getLower8Bits();
+            }
+        }
+
+        public byte getLower8Bits()
+        {
+            return (byte)(Counter.Value & 0xFF);
         }
 
         public void InkrementPC()
         {
-            counter.Value++;
+            Counter.Value++;
+            this.Reg.getRegister(0x02).Value = getLower8Bits();
         }
 
         public void Clear()

@@ -50,7 +50,7 @@ namespace Simulator_PIC16F84
             ProgramView.Show();
 
             W = new WorkingRegister(RegisterMap);
-            PC = new ProgramCounter();
+            PC = new ProgramCounter(RegisterMap);
             Stack = new Stack();
             WDT = new WatchdogTimer();
             Prescaler = new Prescaler();
