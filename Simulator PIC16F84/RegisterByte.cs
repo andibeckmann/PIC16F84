@@ -55,6 +55,7 @@ namespace Simulator_PIC16F84
         {
             return ((byte) ((int) value ^ 0xff));
         }
+
     }
 
 }

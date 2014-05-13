@@ -25,21 +25,31 @@ namespace Simulator_PIC16F84
         private void fillMappingArray()
         {
             MappingArray = new int[256];
-            for (int index = 0; index < 128; index++)
+            for (int index = 0; index < 255; index++)
             {
                     MappingArray[index] = index;
-                if (mappingCondition(index))
-                    MappingArray[index + 128] = index;
-                else
-                    MappingArray[index + 128] = index + 128;
             }
+            FillMappingArrayExceptions();
         }
 
-        private bool mappingCondition(int index)
+        private void FillMappingArrayExceptions()
         {
-            if (index == 129 || index == 133 || index == 134 || index == 136 || index == 137 )
-                return false;
-            return true;
+            MappingArray[0x80] = 0x00;
+            MappingArray[0x82] = 0x02;
+            MappingArray[0x83] = 0x03;
+            MappingArray[0x84] = 0x04;
+            MappingArray[0x8A] = 0x0A;
+            MappingArray[0x8B] = 0x0B;
+        }
+
+        private RegisterByte readINDFReg()
+        {
+            return getRegister(getFSRReg());
+        }
+
+        private int getFSRReg()
+        {
+            return RegisterList[0x04].Value;
         }
 
         public RegisterByte[] getRegisterList {
@@ -54,7 +64,12 @@ namespace Simulator_PIC16F84
         /// <returns>gewählte Speicherzelle</returns>
         public RegisterByte getRegister(int index)
         {
-            index = MappingArray[index];
+            if (index == 0)
+                return readINDFReg();
+            if (isRegisterBankSelectBitSet())
+                index = MappingArray[index + 0x80];
+            else
+                index = MappingArray[index];
             return this.RegisterList[index];
         }
 
@@ -140,11 +155,14 @@ namespace Simulator_PIC16F84
 
         public void Init()
         {
-            this.getRegister(3).Value = 24;     //03h
-            this.getRegister(129).Value = 255;   //81h
-            this.getRegister(131).Value = 24;   //83h
-            this.getRegister(133).Value = 31;   //85h
-            this.getRegister(134).Value = 255;   //86h
+            this.getRegister(0x02).Value = 0x00; 
+            this.getRegister(0x03).Value = 0x18;
+            this.getRegister(0x0A).Value = 0x00;
+            this.getRegister(0x0B).Value = 0x00;
+            this.getRegister(0x81).Value = 0xFF;
+            this.getRegister(0x85).Value = 0x1F;
+            this.getRegister(0x86).Value = 0xFF;
+            this.getRegister(0x88).Value = 0x00;
         }
 
         public void ClearRegister()
@@ -153,6 +171,14 @@ namespace Simulator_PIC16F84
             {
                 registerByte.Value = 0;
             }
+        }
+
+        public bool isRegisterBankSelectBitSet()
+        {
+            if ((RegisterList[3].Value & 0x20) == 0x20)
+                return true;
+            else
+                return false;
         }
         
       

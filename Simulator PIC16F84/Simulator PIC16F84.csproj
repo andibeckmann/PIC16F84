@@ -115,6 +115,7 @@
       <DependentUpon>RegisterView.cs</DependentUpon>
     </Compile>
     <Compile Include="Stack.cs" />
+    <Compile Include="TMR0.cs" />
     <Compile Include="WatchdogTimer.cs" />
     <Compile Include="WorkingRegister.cs" />
     <EmbeddedResource Include="Form1.resx">
