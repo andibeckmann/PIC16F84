@@ -101,8 +101,11 @@ namespace Simulator_PIC16F84
                     if (mappingArray[i] == index)
                     {
                         var textBoxArray = this.Controls.Find("Byte " + i, true);
-                        textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
-                        textBoxArray[0].BackColor = Color.Red;
+                        if (textBoxArray.Length > 0)
+                        {
+                            textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
+                            textBoxArray[0].BackColor = Color.Red;
+                        }
                     }
                 }
             }

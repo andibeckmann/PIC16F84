@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
+using System.Text.RegularExpressions;
 
 namespace Simulator_PIC16F84
 {
@@ -130,8 +131,10 @@ namespace Simulator_PIC16F84
 
         private void textBoxSlider_Changed(object sender, System.EventArgs e)
         {
-            if (this.textBoxSlider.Text != "" && int.Parse(this.textBoxSlider.Text) <= frequencySlider.Maximum && int.Parse(this.textBoxSlider.Text) >= frequencySlider.Minimum){
-            Frequency = int.Parse(this.textBoxSlider.Text);
+            var resultString = Regex.Match(this.textBoxSlider.Text, @"\d+").Value;
+            if (this.textBoxSlider.Text != "" && int.Parse(resultString) <= frequencySlider.Maximum && int.Parse(resultString) >= frequencySlider.Minimum)
+            {
+                Frequency = int.Parse(resultString);
             frequencySlider.Value = Frequency;
             }
         }
