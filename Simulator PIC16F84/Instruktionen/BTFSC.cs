@@ -20,7 +20,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  is executed instead, making this a
         //                  2TCY instruction
 
-        public BTFSC(int file, int b, ProgramCounter PC, RegisterFileMap Reg)
+        public BTFSC(int file, int b, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
         {
             this.f = file;
             this.b = b;
@@ -33,7 +33,7 @@ namespace Simulator_PIC16F84.Instruktionen
             if (IsBitSet(Reg.getRegister(f).Value, b))
             {
                 PC.Counter.Value++;
-                NOP Operation = new NOP();
+                NOP Operation = new NOP(Reg);
             }
         }
 

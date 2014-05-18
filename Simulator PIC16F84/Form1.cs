@@ -22,6 +22,7 @@ namespace Simulator_PIC16F84
         ProgramCounter PC;
         Stack Stack;
         WatchdogTimer WDT;
+        //TMR0 Timer0;
         Prescaler Prescaler;
         RegisterView registerView;
         System.Timers.Timer crystalFrequency;
@@ -53,6 +54,8 @@ namespace Simulator_PIC16F84
             PC = new ProgramCounter(RegisterMap);
             Stack = new Stack();
             WDT = new WatchdogTimer();
+            //Timer0 = new TMR0();
+            //Timer0.TimerChanged += RegisterMap.RegisterContentChanged;
             Prescaler = new Prescaler();
             breakPoints = new List<int>();
             crystalFrequency = new System.Timers.Timer(10);

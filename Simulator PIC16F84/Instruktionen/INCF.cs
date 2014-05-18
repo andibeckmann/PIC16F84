@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  1, the result is placed back in register 'f'.
 
 
-        public INCF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
+        public INCF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.d = d;

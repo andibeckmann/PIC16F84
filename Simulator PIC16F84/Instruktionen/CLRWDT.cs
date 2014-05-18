@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //prescaler of the WDT. Status bits 
         //TO and PD are set.
 
-        public CLRWDT(WorkingRegister W, WatchdogTimer WDT, Prescaler prescaler)
+        public CLRWDT(WorkingRegister W, WatchdogTimer WDT, Prescaler prescaler, RegisterFileMap Reg) : base(Reg)
         {
             execute(W, WDT, prescaler);
         }

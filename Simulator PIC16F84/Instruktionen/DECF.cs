@@ -19,7 +19,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //result is stored in W. If ’d’ is 1, the 
         //result is stored back in register ’f’
 
-        public DECF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
+        public DECF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.d = d;

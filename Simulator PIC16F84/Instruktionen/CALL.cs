@@ -24,7 +24,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  are loaded from PCLATH. CALL is
         //                  a two-cycle instruction.
 
-        public CALL( byte k, ProgramCounter PC, Stack Stack )
+        public CALL( byte k, ProgramCounter PC, Stack Stack, RegisterFileMap Reg ) : base(Reg)
         {
             this.k = k;
 

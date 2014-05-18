@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         private int result;
 
-        public XORLW(byte k, WorkingRegister W, RegisterFileMap Reg)
+        public XORLW(byte k, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.k = k;
             execute(W, Reg);

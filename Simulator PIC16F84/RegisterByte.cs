@@ -13,6 +13,8 @@ namespace Simulator_PIC16F84
 
         public event EventHandler<int> RegisterChanged;
 
+        public int Index { get; set; }
+
         public RegisterByte(int index)
         {
             value = 0;

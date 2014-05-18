@@ -35,7 +35,7 @@ namespace Simulator_PIC16F84.Instruktionen
             }
         }
 
-        public SWAPF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
+        public SWAPF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.d = d;

@@ -118,7 +118,7 @@ namespace Simulator_PIC16F84
             //NOP Instruktion
             if ((value & (int)0x3F9F) == (int)0x0000)
             {
-                NOP Operation = new NOP();
+                NOP Operation = new NOP(Reg);
             }
 
             //RLF Instruktion
@@ -195,27 +195,27 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x3900)
             {
                 k = GetLiteral();
-                ANDLW Operation = new ANDLW(k, W);
+                ANDLW Operation = new ANDLW(k, W, Reg);
             }
 
             //CALL Instruktion
             if ((value & (int)0x3800) == (int)0x2000)
             {
                 k = value & (int)0x7FF;
-                CALL Operation = new CALL((byte)k, PC, Stack);
+                CALL Operation = new CALL((byte)k, PC, Stack, Reg);
             }
 
             //CLRWDT Instruktion
             if ((value & (int)0xFFFF) == (int)0x0064)
             {
-                CLRWDT Operation = new CLRWDT(W, WDT, Prescaler);
+                CLRWDT Operation = new CLRWDT(W, WDT, Prescaler, Reg);
             }
 
             //GOTO Instruktion
             if ((value & (int)0x3800) == (int)0x2800)
             {
                 k = value & (int)0x7FF;
-                GOTO Operation = new GOTO((byte)k, PC);
+                GOTO Operation = new GOTO((byte)k, PC, Reg);
             }
 
             //IORLW Instruktion
@@ -229,26 +229,26 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3C00) == (int)0x3000)
             {
                 k = GetLiteral();
-                MOVLW Operation = new MOVLW((byte)k, W);
+                MOVLW Operation = new MOVLW((byte)k, W, Reg);
             }
 
             //RETFIE Instruktion
             if ((value & (int)0x3FFF) == (int)0x0009)
             {
-                RETFIE Operation = new RETFIE(PC, Stack);
+                RETFIE Operation = new RETFIE(PC, Stack, Reg);
             }
 
             //RETLW Instruktion
             if ((value & (int)0x3C00) == (int)0x3400)
             {
                 k = GetLiteral();
-                RETLW Operation = new RETLW((byte)k, W, PC, Stack);
+                RETLW Operation = new RETLW((byte)k, W, PC, Stack, Reg);
             }
 
             //RETURN Instruktion
             if ((value & (int)0x3FFF) == (int)0x0008)
             {
-                RETURN Operation = new RETURN(PC, Stack);
+                RETURN Operation = new RETURN(PC, Stack, Reg);
             }
 
             //SLEEP Instruktion

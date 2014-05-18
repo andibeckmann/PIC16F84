@@ -22,7 +22,7 @@ namespace Simulator_PIC16F84.Instruktionen
             //                  1, the result is stored back in
             //                  register 'f'.
 
-            public ADDWF(int file, bool d, WorkingRegister W, RegisterFileMap Reg)
+            public ADDWF(int file, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
             {
                 this.f = f;
                 this.d = d;

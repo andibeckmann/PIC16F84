@@ -10,6 +10,54 @@ namespace Simulator_PIC16F84
     {
         private RegisterByte[] RegisterList;
         public int[] MappingArray;
+        private byte timer;
+        private TimerStatus status;
+        private int inhibitCycles;
+
+        public byte Timer {
+            get
+            {
+                return RegisterList[0x01].Value;
+            }
+            set
+            {
+                inhibitCycles = 2;
+                RegisterList[0x01].Value = value;
+            }
+        }
+
+        public void SetTimerMode()
+        {
+            status = TimerStatus.TIMER;
+            RegisterList[0x81].Value = ClearBit(RegisterList[0x81].Value, 5);
+            //Clear Bit 5 in 81h
+        }
+
+
+        public void SetCounterMode()
+        {
+            status = TimerStatus.COUNTER;
+            RegisterList[0x81].Value = SetBit(RegisterList[0x81].Value, 5);
+            //Set Bit 5 in 81h
+        }
+
+        public void IncrementTimer()
+        {
+            switch (status)
+            {
+                case TimerStatus.COUNTER:
+                    break;
+                case TimerStatus.TIMER:
+                    if (inhibitCycles <= 0)
+                    {
+                        RegisterList[0x01].Value++;
+                    }
+                    inhibitCycles--;
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public RegisterFileMap()
         {
@@ -17,7 +65,7 @@ namespace Simulator_PIC16F84
             RegisterList = new RegisterByte[256];
             for (int var = 0; var < RegisterList.Length; var++ )
             {
-                RegisterList[var] = new RegisterByte(var);
+                RegisterList[var] = new RegisterByte(var);//TODO muss das var oder 0 sein? new RegisterByte(0)
             }
             Init();
         }
@@ -184,8 +232,58 @@ namespace Simulator_PIC16F84
             else
                 return false;
         }
+
+        public void RegisterContentChanged(object sender, RegisterByte registerToChange)
+        {
+            RegisterList.Where(item => item.Index == registerToChange.Index).Select(item => item.Value = registerToChange.Value);
+        }
         
       
+        /// <summary>
+        /// Setzt ein bestimmtes Bit in einem Byte.
+        /// </summary>
+        /// <param name="b">Byte, welches bearbeitet werden soll.</param>
+        /// <param name="BitNumber">Das zu setzende Bit (0 bis 7).</param>
+        /// <returns>Ergebnis - Byte</returns>
+        public static byte SetBit(byte b, int BitNumber)
+        {
+            //Kleine Fehlerbehandlung
+            if (BitNumber < 8 && BitNumber > -1)
+            {
+                return (byte)(b | (byte)(0x01 << BitNumber));
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                "Der Wert für BitNumber " + BitNumber.ToString() + " war nicht im zulässigen Bereich! (BitNumber = (min)0 - (max)7)");
+            }
+        }
+
+        /// <summary>
+        /// Löscht ein bestimmtes Bit in einem Byte.
+        /// </summary>
+        /// <param name="b">Byte, welches bearbeitet werden soll.</param>
+        /// <param name="BitNumber">Das zu löschende Bit (0 bis 7).</param>
+        /// <returns>Ergebnis - Byte</returns>
+        public static byte ClearBit(byte b, int BitNumber)
+        {
+            //Kleine Fehlerbehandlung
+            if (BitNumber < 8 && BitNumber > -1)
+            {
+                return (byte)(b & (byte)(~BitNumber));
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                "Der Wert für BitNumber " + BitNumber.ToString() + " war nicht im zulässigen Bereich! (BitNumber = (min)0 - (max)7)");
+            }
+        }
+    }
+
+    public enum TimerStatus
+    {
+        TIMER,
+        COUNTER
     }
  
 }

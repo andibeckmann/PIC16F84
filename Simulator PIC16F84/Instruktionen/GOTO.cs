@@ -22,9 +22,10 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  PCLATH<4:3>. GOTO i a two-
         //                  cycle instruction.
 
-        public GOTO(byte k, ProgramCounter PC)
+        public GOTO(byte k, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
         {
             this.k = k;
+            Reg.IncrementTimer();
 
             execute(PC);
         }

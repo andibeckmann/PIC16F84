@@ -24,7 +24,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  The processor is put into SLEEP
         //                  mode with the oscillator stopped.
 
-        public SLEEP(WorkingRegister W, RegisterFileMap Reg, WatchdogTimer WDT, Prescaler Prescaler)
+        public SLEEP(WorkingRegister W, RegisterFileMap Reg, WatchdogTimer WDT, Prescaler Prescaler) : base(Reg)
         {
             execute(W, Reg, WDT, Prescaler);
         }

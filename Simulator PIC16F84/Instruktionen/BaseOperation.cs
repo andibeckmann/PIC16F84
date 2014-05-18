@@ -71,6 +71,11 @@ namespace Simulator_PIC16F84.Instruktionen
             this.PD = PD;
         }
 
+        public BaseOperation(RegisterFileMap Reg)
+        {
+            Reg.IncrementTimer();
+        }
+
         protected bool IsBitSet(int b, int pos)
         {
             return (b & (1 << pos)) != 0;

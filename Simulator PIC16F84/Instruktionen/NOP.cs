@@ -16,7 +16,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //Status Affected:  None
         //Description:      No operation
 
-        public NOP()
+        public NOP(RegisterFileMap Reg) : base(Reg)
         {
             execute(null, null);
         }

@@ -16,7 +16,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //Status Affected: None
         //Description: Bit 'b' in register 'f' is set.
 
-        public BSF(int f, int b, RegisterFileMap Reg)
+        public BSF(int f, int b, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.b = b;

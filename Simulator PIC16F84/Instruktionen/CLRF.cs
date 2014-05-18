@@ -19,7 +19,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  cleared and the Z bit is set.
 
 
-        public CLRF(int f, RegisterFileMap Reg)
+        public CLRF(int f, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             execute(Reg);

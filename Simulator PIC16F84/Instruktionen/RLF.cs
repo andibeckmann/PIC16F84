@@ -25,7 +25,7 @@ namespace Simulator_PIC16F84.Instruktionen
         private int content;
         private bool CarryReminder;
 
-        public RLF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
+        public RLF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.d = d;

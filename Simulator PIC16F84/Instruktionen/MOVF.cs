@@ -24,7 +24,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  since status flag Z is affected.
 
 
-        public MOVF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
+        public MOVF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.d = d;

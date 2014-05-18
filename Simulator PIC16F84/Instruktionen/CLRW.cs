@@ -18,7 +18,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //Description:      W register is cleared. Zero bit (Z)
         //                  is set.
 
-        public CLRW(WorkingRegister W, RegisterFileMap Reg)
+        public CLRW(WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
 
             execute(W, Reg);

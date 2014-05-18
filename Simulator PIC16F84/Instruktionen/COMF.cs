@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //result is stored back in register ’f’
 
 
-        public COMF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
+        public COMF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.d = d;

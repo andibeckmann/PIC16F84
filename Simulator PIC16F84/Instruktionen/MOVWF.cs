@@ -19,7 +19,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         private byte content;
 
-        public MOVWF(int f, WorkingRegister W, RegisterFileMap Reg)
+        public MOVWF(int f, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
 

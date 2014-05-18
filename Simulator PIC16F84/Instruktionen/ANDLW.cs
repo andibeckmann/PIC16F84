@@ -19,7 +19,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  'k'. The result is placed in the W
         //                  register.
 
-        public ANDLW(int k, WorkingRegister W)
+        public ANDLW(int k, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.b = b;

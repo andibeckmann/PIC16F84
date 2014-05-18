@@ -14,7 +14,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //Operation: TOS -> PC,
         //1 -> GIE
         //Status Affected: None
-        public RETFIE(ProgramCounter PC, Stack stack)
+        public RETFIE(ProgramCounter PC, Stack stack, RegisterFileMap Reg) : base(Reg)
         {
             execute(PC, stack);
         }

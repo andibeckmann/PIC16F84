@@ -21,7 +21,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  register.
 
 
-        public ADDLW(byte k, WorkingRegister W, RegisterFileMap Reg)
+        public ADDLW(byte k, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.k = k;
 

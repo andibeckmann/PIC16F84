@@ -20,7 +20,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  the W register. If 'd' is 1, the result
         //                  is stored back in register 'f'.
 
-        public ANDWF(int f, bool d, WorkingRegister W, RegisterFileMap Reg)
+        public ANDWF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.d = d;
             this.f = f;

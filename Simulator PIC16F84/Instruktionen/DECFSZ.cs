@@ -27,7 +27,7 @@ namespace Simulator_PIC16F84.Instruktionen
         //                  making it a 2TCY instruction.
 
 
-        public DECFSZ(int f, bool d, WorkingRegister W, RegisterFileMap Reg, ProgramCounter PC)
+        public DECFSZ(int f, bool d, WorkingRegister W, RegisterFileMap Reg, ProgramCounter PC) : base(Reg)
         {
             this.f = f;
             this.d = d;
@@ -46,7 +46,7 @@ namespace Simulator_PIC16F84.Instruktionen
             if (result == 0)
             {
                 PC.Counter.Value++;
-                NOP Operation = new NOP();
+                NOP Operation = new NOP(Reg);
             }
          }
 

@@ -27,7 +27,7 @@ namespace Simulator_PIC16F84.Instruktionen
             W.Value.Value = (byte) ((int)k - (int)W.Value.Value);
         }
 
-        public SUBLW(byte k, WorkingRegister W, RegisterFileMap Reg)
+        public SUBLW(byte k, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.k = k;
 

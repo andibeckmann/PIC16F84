@@ -19,9 +19,10 @@ namespace Simulator_PIC16F84.Instruktionen
         //counter. This is a two-cycle
         //instruction.
 
-        public RETURN(ProgramCounter PC, Stack Stack)
+        public RETURN(ProgramCounter PC, Stack Stack, RegisterFileMap Reg) : base(Reg)
         {
             this.Stack = Stack;
+            Reg.IncrementTimer();
 
             execute(PC);
         }
