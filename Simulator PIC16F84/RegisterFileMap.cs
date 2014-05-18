@@ -10,7 +10,7 @@ namespace Simulator_PIC16F84
     {
         private RegisterByte[] RegisterList;
         public int[] MappingArray;
-        private byte timer;
+        //private byte timer;
         private TimerStatus status;
         private int inhibitCycles;
 
@@ -59,6 +59,34 @@ namespace Simulator_PIC16F84
             }
         }
 
+        public void TimerInterrupt()
+        {
+            RegisterList[0x0b].Value = SetBit(RegisterList[0x0b].Value, 2);
+        }
+
+        public void EnableTimerInterrupt()
+        {
+            RegisterList[0x0b].Value = SetBit(RegisterList[0x0b].Value, 5);
+        }
+
+        public void DisableTimerInterrupt()
+        {
+            RegisterList[0x0b].Value = ClearBit(RegisterList[0x0b].Value, 5);
+        }
+
+        public void Overflow(object sender, int index)
+        {
+            if(index == 1 && IsBitSet(RegisterList[0x0b].Value, 5))
+            {
+                TimerInterrupt();
+            }
+        }
+
+        public bool IsBitSet(byte value, int pos)
+        {
+            return (((value >> pos) & 0x1) == 0x1);
+        }
+
         public RegisterFileMap()
         {
             fillMappingArray();
@@ -66,6 +94,7 @@ namespace Simulator_PIC16F84
             for (int var = 0; var < RegisterList.Length; var++ )
             {
                 RegisterList[var] = new RegisterByte(var);//TODO muss das var oder 0 sein? new RegisterByte(0)
+                RegisterList[var].Overflow += new System.EventHandler<int>(Overflow);
             }
             Init();
         }
@@ -278,6 +307,7 @@ namespace Simulator_PIC16F84
                 "Der Wert für BitNumber " + BitNumber.ToString() + " war nicht im zulässigen Bereich! (BitNumber = (min)0 - (max)7)");
             }
         }
+
     }
 
     public enum TimerStatus

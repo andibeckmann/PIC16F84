@@ -12,6 +12,7 @@ namespace Simulator_PIC16F84
         private int index;
 
         public event EventHandler<int> RegisterChanged;
+        public event EventHandler<int> Overflow;
 
         public int Index { get; set; }
 
@@ -25,11 +26,22 @@ namespace Simulator_PIC16F84
             get { return value; }
             set
             {
-                    this.value = value;
-                    if (this.RegisterChanged != null)
+                if(value > 255)
+                {
+                    //TODO Andi bitte...this.value = ((int) value) - 256; 
+                    if (this.Overflow != null)
                     {
-                        this.RegisterChanged(this, index);
+                        this.Overflow(this, index);
                     }
+                }
+                else
+                {
+                    this.value = value;
+                }  
+                if (this.RegisterChanged != null)
+                {
+                    this.RegisterChanged(this, index);
+                }
             }
         }
 
