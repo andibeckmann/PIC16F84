@@ -27,10 +27,14 @@ namespace Simulator_PIC16F84
         RegisterView registerView;
         System.Timers.Timer crystalFrequency;
         List<int> breakPoints;
+        int frequency = 10;
+        private System.Windows.Forms.TrackBar frequencySlider;
+        private System.Windows.Forms.TextBox textBoxSlider;
 
         public Main()
         {
             InitializeComponent();
+            InitializeSlider();
             IsMdiContainer = true;
             this.WindowState = FormWindowState.Maximized;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
@@ -62,6 +66,74 @@ namespace Simulator_PIC16F84
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
 
 
+        }
+
+        private void InitializeSlider()
+        {
+            this.textBoxSlider = new System.Windows.Forms.TextBox();
+            this.frequencySlider = new System.Windows.Forms.TrackBar();
+
+            // TextBox for TrackBar.Value update.
+            this.textBoxSlider.Location = new System.Drawing.Point(1080, 45+25);
+            this.textBoxSlider.Size = new System.Drawing.Size(48, 20);
+            this.textBoxSlider.Text = Frequency + " ms";
+            this.textBoxSlider.TextChanged += new System.EventHandler(this.textBoxSlider_Changed);
+
+            // Set up how the form should be displayed and add the controls to the form.
+            this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider });
+
+            // Set up the TrackBar.
+            this.frequencySlider.Location = new System.Drawing.Point(1080, 25);
+            this.frequencySlider.Size = new System.Drawing.Size(224, 45);
+            this.frequencySlider.Scroll += new System.EventHandler(this.frequencySlider_Scroll);
+
+            // The Maximum property sets the value of the track bar when
+            // the slider is all the way to the right.
+            frequencySlider.Maximum = 1000;
+
+            // The Minimum property sets the value of the track bar when
+            // the slider is all the way to the left.
+            frequencySlider.Minimum = 10;
+
+            // The TickFrequency property establishes how many positions
+            // are between each tick-mark.
+            frequencySlider.TickFrequency = 10;
+
+            // The LargeChange property sets how many positions to move
+            // if the bar is clicked on either side of the slider.
+            frequencySlider.LargeChange = 5;
+
+            // The SmallChange property sets how many positions to move
+            // if the keyboard arrows are used to move the slider.
+            frequencySlider.SmallChange = 2;
+        }
+
+        private void frequencySlider_Scroll(object sender, System.EventArgs e)
+        {
+            // Display the trackbar value in the text box.
+            textBoxSlider.Text = frequencySlider.Value + " ms";
+            Frequency = frequencySlider.Value;
+        }
+
+        public int Frequency
+        {
+            get
+            {
+                return frequency;
+            }
+            set
+            {
+                frequency = value;
+                crystalFrequency.Interval = frequency;
+            } 
+        }
+
+        private void textBoxSlider_Changed(object sender, System.EventArgs e)
+        {
+            if (this.textBoxSlider.Text != "" && int.Parse(this.textBoxSlider.Text) <= frequencySlider.Maximum && int.Parse(this.textBoxSlider.Text) >= frequencySlider.Minimum){
+            Frequency = int.Parse(this.textBoxSlider.Text);
+            frequencySlider.Value = Frequency;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)

@@ -62,7 +62,7 @@
             this.deiMuddaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.programmLadenToolStripMenuItem,
             this.schliessenToolStripMenuItem});
-            this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";
+            this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";//TODO
             this.deiMuddaToolStripMenuItem.Size = new System.Drawing.Size(70, 19);
             this.deiMuddaToolStripMenuItem.Text = "Simulator";
             // 
