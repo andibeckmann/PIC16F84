@@ -75,6 +75,7 @@ namespace Simulator_PIC16F84
             CheckBox checkbox = new CheckBox();
             checkbox.Location = new System.Drawing.Point((sizeOfField + marginSmall) * index + marginSmall, marginTop + marginSmall);
             checkbox.Width = sizeOfField;
+            checkbox.Name = "Bit " + (7 - index);
             this.Controls.Add(checkbox);
         }
 
