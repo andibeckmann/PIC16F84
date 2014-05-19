@@ -29,16 +29,22 @@ namespace Simulator_PIC16F84
         public void SetTimerMode()
         {
             timerMode = TimerStatus.TIMER;
+            if(IsBitSet(registerList[0x81].Value, 5))
+            {
             registerList[0x81].Value = ClearBit(registerList[0x81].Value, 5);
             //Clear Bit 5 in 81h
+            }
         }
 
 
         public void SetCounterMode()
         {
             timerMode = TimerStatus.COUNTER;
-            registerList[0x81].Value = SetBit(registerList[0x81].Value, 5);
-            //Set Bit 5 in 81h
+            if (!IsBitSet(registerList[0x81].Value, 5))
+            {
+                registerList[0x81].Value = SetBit(registerList[0x81].Value, 5);
+                //Set Bit 5 in 81h
+            }
         }
 
         public void IncrementTimer()

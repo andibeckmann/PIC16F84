@@ -107,11 +107,12 @@ namespace Simulator_PIC16F84
             //TMR0-Modes (timermode or countermode)
             if (index == 0x81)
             {
-                if(registerMap.IsBitSet(registerMap.getRegister(0x81).Value,5))
+                if (registerMap.IsBitSet(registerMap.getRegister(0x81).Value, 5))
                 {
                     registerMap.SetCounterMode();
                 }
-                else{
+                else
+                {
                     registerMap.SetTimerMode();
                 }
             }
