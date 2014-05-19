@@ -22,6 +22,7 @@ namespace Simulator_PIC16F84
         WorkingRegister W;
         ProgramCounter PC;
         Stack Stack;
+        StackView StackView;
         WatchdogTimer WDT;
         //TMR0 Timer0;
         Prescaler Prescaler;
@@ -57,7 +58,12 @@ namespace Simulator_PIC16F84
 
             W = new WorkingRegister(RegisterMap);
             PC = new ProgramCounter(RegisterMap);
+            //Stack
             Stack = new Stack();
+            StackView = new StackView(ref Stack);
+            StackView.MdiParent = this;
+            StackView.Show();
+            //Watchdogtimer
             WDT = new WatchdogTimer();
             //Timer0 = new TMR0();
             //Timer0.TimerChanged += RegisterMap.RegisterContentChanged;

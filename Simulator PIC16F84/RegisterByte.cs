@@ -47,7 +47,7 @@ namespace Simulator_PIC16F84
 
         public void ClearRegister()
         {
-            value = 0;
+            this.Value = 0;
         }
 
         public int DecrementRegister()

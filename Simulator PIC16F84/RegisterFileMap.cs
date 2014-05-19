@@ -238,11 +238,13 @@ namespace Simulator_PIC16F84
         {
             this.getRegister(0x02).Value = 0x00; 
             this.getRegister(0x03).Value = 0x18;
+            this.getRegister(0x07).Value = 0x00;
             this.getRegister(0x0A).Value = 0x00;
             this.getRegister(0x0B).Value = 0x00;
             this.getRegister(0x81).Value = 0xFF;
             this.getRegister(0x85).Value = 0x1F;
             this.getRegister(0x86).Value = 0xFF;
+            this.getRegister(0x87).Value = 0x00;
             this.getRegister(0x88).Value = 0x00;
         }
 

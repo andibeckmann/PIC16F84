@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
+using System.Text.RegularExpressions;
 
 namespace Simulator_PIC16F84
 {
@@ -22,19 +23,29 @@ namespace Simulator_PIC16F84
         ProgramCounter PC;
         Stack Stack;
         WatchdogTimer WDT;
+        //TMR0 Timer0;
         Prescaler Prescaler;
         RegisterView registerView;
-        System.Timers.Timer crystalFrequency; 
+        System.Timers.Timer crystalFrequency;
+        List<int> breakPoints;
+<<<<<<< origin/master
+        int frequency = 10;
+        private System.Windows.Forms.TrackBar frequencySlider;
+        private System.Windows.Forms.TextBox textBoxSlider;
+=======
+        StackView StackView;
+>>>>>>> local
 
         public Main()
         {
             InitializeComponent();
+            InitializeSlider();
             IsMdiContainer = true;
             this.WindowState = FormWindowState.Maximized;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
             RegisterMap = new RegisterFileMap();
-            registerView = new RegisterView(ref RegisterMap);
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.MappingArray);
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
             registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
@@ -42,21 +53,100 @@ namespace Simulator_PIC16F84
             registerView.Show();
             var size = registerView.Size;
 
+            //StackView
+            StackView = new StackView(ref Stack);
+            StackView.MdiParent = this;
+            StackView.Show();
+
+
             UserMemorySpace = new ProgramMemoryMap();
-            ProgramView = new ProgramMemoryView(UserMemorySpace);
+            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
             ProgramView.MdiParent = this;
             ProgramView.SetDesktopLocation(size.Width + 18, 0);
             ProgramView.Show();
 
             W = new WorkingRegister(RegisterMap);
-            PC = new ProgramCounter();
+            PC = new ProgramCounter(RegisterMap);
             Stack = new Stack();
             WDT = new WatchdogTimer();
+            //Timer0 = new TMR0();
+            //Timer0.TimerChanged += RegisterMap.RegisterContentChanged;
             Prescaler = new Prescaler();
+            breakPoints = new List<int>();
             crystalFrequency = new System.Timers.Timer(10);
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
 
 
+        }
+
+        private void InitializeSlider()
+        {
+            this.textBoxSlider = new System.Windows.Forms.TextBox();
+            this.frequencySlider = new System.Windows.Forms.TrackBar();
+
+            // TextBox for TrackBar.Value update.
+            this.textBoxSlider.Location = new System.Drawing.Point(1080, 45+25);
+            this.textBoxSlider.Size = new System.Drawing.Size(48, 20);
+            this.textBoxSlider.Text = Frequency + " ms";
+            this.textBoxSlider.TextChanged += new System.EventHandler(this.textBoxSlider_Changed);
+
+            // Set up how the form should be displayed and add the controls to the form.
+            this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider });
+
+            // Set up the TrackBar.
+            this.frequencySlider.Location = new System.Drawing.Point(1080, 25);
+            this.frequencySlider.Size = new System.Drawing.Size(224, 45);
+            this.frequencySlider.Scroll += new System.EventHandler(this.frequencySlider_Scroll);
+
+            // The Maximum property sets the value of the track bar when
+            // the slider is all the way to the right.
+            frequencySlider.Maximum = 1000;
+
+            // The Minimum property sets the value of the track bar when
+            // the slider is all the way to the left.
+            frequencySlider.Minimum = 10;
+
+            // The TickFrequency property establishes how many positions
+            // are between each tick-mark.
+            frequencySlider.TickFrequency = 10;
+
+            // The LargeChange property sets how many positions to move
+            // if the bar is clicked on either side of the slider.
+            frequencySlider.LargeChange = 5;
+
+            // The SmallChange property sets how many positions to move
+            // if the keyboard arrows are used to move the slider.
+            frequencySlider.SmallChange = 2;
+        }
+
+        private void frequencySlider_Scroll(object sender, System.EventArgs e)
+        {
+            // Display the trackbar value in the text box.
+            textBoxSlider.Text = frequencySlider.Value + " ms";
+            Frequency = frequencySlider.Value;
+        }
+
+        public int Frequency
+        {
+            get
+            {
+                return frequency;
+            }
+            set
+            {
+                frequency = value;
+                crystalFrequency.Interval = frequency;
+            } 
+        }
+
+        private void textBoxSlider_Changed(object sender, System.EventArgs e)
+        {
+            var resultString = Regex.Match(this.textBoxSlider.Text, @"\d+").Value;
+            if (this.textBoxSlider.Text != "" && int.Parse(resultString) <= frequencySlider.Maximum && int.Parse(resultString) >= frequencySlider.Minimum)
+            {
+                Frequency = int.Parse(resultString);
+            frequencySlider.Value = Frequency;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -140,23 +230,25 @@ namespace Simulator_PIC16F84
             ProgramView.loadProgram(fileContent);
             UserMemorySpace = ProgramView.getBinaryCode();
             PC.Clear();
-
-
         }
 
         private void ExecuteCycle(object source, ElapsedEventArgs e)
         {
             var index = FindRowForPC(PC.Counter.Value);
+            if(breakPoints.Contains(index))
+            {
+                crystalFrequency.Stop();
+                return;
+            }
+            ExecuteSingleCycle(index);
+        }
+
+        private void ExecuteSingleCycle(int index)
+        {
             this.registerView.ClearColors();
-<<<<<<< origin/master
-            SetSelection(index);
-            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(W, PC, Stack, WDT, Prescaler);
-=======
-            this.ProgramView.dataGridView1.ClearSelection();
-            this.ProgramView.dataGridView1.Rows[index].Selected = true;
-            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction( RegisterMap, W, PC, Stack, WDT, Prescaler);
->>>>>>> local
+            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack, WDT, Prescaler);
             PC.InkrementPC();
+            SetSelection(index);
         }
 
         private void SetSelection(int index)
@@ -167,9 +259,9 @@ namespace Simulator_PIC16F84
             }
             else
             {
+                this.ProgramView.dataGridView1.CurrentCell = this.ProgramView.dataGridView1[0, index];
                 this.ProgramView.dataGridView1.ClearSelection();
                 this.ProgramView.dataGridView1.Rows[index].Selected = true;
-                this.ProgramView.dataGridView1.CurrentCell = this.ProgramView.dataGridView1[0, index];
             }
         }
 
@@ -178,11 +270,11 @@ namespace Simulator_PIC16F84
             int rowIndex = 0;
             foreach (DataGridViewRow row in this.ProgramView.dataGridView1.Rows)
             {
-                if(row.Cells[0].Value == null)
+                if(row.Cells[1].Value == null)
                 {
                     continue;
                 }
-                if (row.Cells[0].Value.ToString().Equals(counter.ToString("X4")))
+                if (row.Cells[1].Value.ToString().Equals(counter.ToString("X4")))
                 {
                     rowIndex = row.Index;
                     break;
@@ -191,8 +283,22 @@ namespace Simulator_PIC16F84
             return rowIndex;
         }
 
+        public void HandleBreakpoint(object sender, int index)
+        {
+            if(breakPoints.Contains(index))
+            {
+                breakPoints.Remove(index);
+            }
+            else
+            {
+                breakPoints.Add(index);
+            }
+        }
+
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var index = FindRowForPC(PC.Counter.Value);
+            ExecuteSingleCycle(index);
             crystalFrequency.Start();
         }
 
@@ -200,8 +306,10 @@ namespace Simulator_PIC16F84
         {
             crystalFrequency.Stop();
             PC.Clear();
-            registerView.ClearRegister();
             SetSelection(0);
+            RegisterMap.ClearRegister();
+            RegisterMap.Init();
+            registerView.ClearColors();
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -211,7 +319,8 @@ namespace Simulator_PIC16F84
 
         private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ExecuteCycle(null, null);
+            var index = FindRowForPC(PC.Counter.Value);
+            ExecuteSingleCycle(index);
         }
 
     }

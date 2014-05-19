@@ -23,6 +23,7 @@ namespace Simulator_PIC16F84
             get { return counter; }
             set {   this.counter = value;
                     this.Reg.getRegister(0x02).Value = getLower8Bits();
+                //TODO LATCH-Funktionalität
             }
         }
 

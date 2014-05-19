@@ -9,7 +9,7 @@ namespace Simulator_PIC16F84
     public class Stack
     {
         private List<ProgramMemoryAddress> StackAddresses;
-
+        public event EventHandler<ProgramMemoryAddress> StackChanged;
 
         public Stack()
         {
