@@ -52,9 +52,11 @@ namespace Simulator_PIC16F84
             WBox = new RegisterBox(W);
             WBox.MdiParent = this;
             WBox.Show();
+           
 
             registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
             RegisterMap.Init();
+            W.Value.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
             registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };

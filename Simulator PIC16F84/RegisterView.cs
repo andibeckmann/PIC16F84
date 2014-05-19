@@ -110,7 +110,7 @@ namespace Simulator_PIC16F84
             }
         }
 
-        private void RegisterContentChanged(object sender, int index)
+        public void RegisterContentChanged(object sender, int index)
         {
             if (InvokeRequired)
             {
