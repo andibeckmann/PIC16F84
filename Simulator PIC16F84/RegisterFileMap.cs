@@ -154,7 +154,7 @@ namespace Simulator_PIC16F84
             if (index == 0)
                 return readINDFReg();
 
-                //TODO: Verursacht derzeit einen Fehler im Testprogramm SimTest3, daher erstmal rausgenommen
+                //TODO: Bank umschalten derzeit noch unmöglich, verursacht derzeit einen Fehler im Testprogramm SimTest3, daher erstmal rausgenommen
             //if (isRegisterBankSelectBitSet())
             //    index = mappingArray[index + 0x80];
             else
