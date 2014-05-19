@@ -9,7 +9,6 @@ namespace Simulator_PIC16F84
     public class RegisterByte
     {
         private byte value;
-        private int index;
 
         public event EventHandler<int> RegisterChanged;
         public event EventHandler<int> Overflow;
@@ -18,8 +17,8 @@ namespace Simulator_PIC16F84
 
         public RegisterByte(int index)
         {
-            value = 0;
-            this.index = index;
+            Value = 0;
+            this.Index = index;
         }
 
         public byte Value {
@@ -29,7 +28,7 @@ namespace Simulator_PIC16F84
                     this.value = value; 
                 if (this.RegisterChanged != null)
                 {
-                    this.RegisterChanged(this, index);
+                    this.RegisterChanged(this, Index);
                 }
             }
         }
@@ -50,7 +49,7 @@ namespace Simulator_PIC16F84
             {
                 if (this.Overflow != null)
                 {
-                    this.Overflow(this, index);
+                    this.Overflow(this, Index);
                 }
                 ClearRegister();
                 return Value;

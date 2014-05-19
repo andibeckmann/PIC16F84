@@ -99,10 +99,10 @@ namespace Simulator_PIC16F84
             registerList = new RegisterByte[256];
             for (int var = 0; var < registerList.Length; var++ )
             {
-                registerList[var] = new RegisterByte(var);//TODO muss das var oder 0 sein? new RegisterByte(0)
+                registerList[var] = new RegisterByte(var);
                 registerList[var].Overflow += new System.EventHandler<int>(Overflow);
             }
-            Init();
+            //Init();
         }
 
         private void fillMappingArray()

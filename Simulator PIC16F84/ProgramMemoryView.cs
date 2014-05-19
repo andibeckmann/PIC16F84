@@ -133,7 +133,7 @@ namespace Simulator_PIC16F84
         {
             string temp;
             temp = item.Substring(9).Trim();
-            row.Cells[2].Value = temp.Substring(0, 5);
+            row.Cells[3].Value = temp.Substring(0, 5);
             return temp;
         }
 
