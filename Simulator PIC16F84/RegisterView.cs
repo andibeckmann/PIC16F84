@@ -34,34 +34,50 @@ namespace Simulator_PIC16F84
 
             for(int i = 0; i < 8; i++)
             {
-                Label label = new Label();
-                label.Location = new System.Drawing.Point(( sizeOfField + 4) * i+sizeOfField, 4);
-                label.Name = "ByteColumn" + i;
-                label.Size = new System.Drawing.Size(sizeOfField, sizeOfField - 6);
-                label.Text = "0" + i;
-                this.Controls.Add(label);
+                createLabels(sizeOfField, i);
             }
             for(int i = 0; i < 32; i++)
             {
-                Label label = new Label();
-                label.Location = new System.Drawing.Point(0, sizeOfField * i + sizeOfField + 3);
-                label.Name = "ByteRow" + i;
-                label.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
-                int content = i * 8;
-                label.Text = content.ToString("X2");
-                this.Controls.Add(label);
+                createColumn0Label(sizeOfField, i);
+
                 for(int m = 0; m < 8; m++)
                 {
-                    TextBox textBox = new TextBox();
-                    textBox.Location = new System.Drawing.Point(( sizeOfField + 4) * m + sizeOfField, sizeOfField * i + sizeOfField);
-                    textBox.Name = "Byte " + (i * 8 + m); 
-                    textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
-                    textBox.TabIndex = i * 8 + 8 + m;
-                    textBox.Text = RegisterMap.getRegister(i*8+m).Value.ToString("X2");
-                    textBox.TextChanged += new System.EventHandler(textbox_TextChanged); 
-                    this.Controls.Add(textBox);
+                    createTextBox(RegisterMap, sizeOfField, i, m);
                 }
             }
+        }
+
+        private void createColumn0Label(int sizeOfField, int i)
+        {
+            Label label = new Label();
+            label.Location = new System.Drawing.Point(0, sizeOfField * i + sizeOfField + 3);
+            label.Name = "ByteRow" + i;
+            label.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
+            int content = i * 8;
+            label.Text = content.ToString("X2");
+            this.Controls.Add(label);
+        }
+
+        private void createTextBox(RegisterFileMap RegisterMap, int sizeOfField, int i, int m)
+        {
+            TextBox textBox = new TextBox();
+            textBox.Location = new System.Drawing.Point((sizeOfField + 4) * m + sizeOfField, sizeOfField * i + sizeOfField);
+            textBox.Name = "Byte " + (i * 8 + m);
+            textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
+            textBox.TabIndex = i * 8 + 8 + m;
+            textBox.Text = RegisterMap.getRegister(i * 8 + m).Value.ToString("X2");
+            textBox.TextChanged += new System.EventHandler(textbox_TextChanged);
+            this.Controls.Add(textBox);
+        }
+
+        private void createLabels(int sizeOfField, int i)
+        {
+            Label label = new Label();
+            label.Location = new System.Drawing.Point((sizeOfField + 4) * i + sizeOfField, 4);
+            label.Name = "ByteColumn" + i;
+            label.Size = new System.Drawing.Size(sizeOfField, sizeOfField - 6);
+            label.Text = "0" + i;
+            this.Controls.Add(label);
         }
 
         private void textbox_TextChanged(object sender, EventArgs e)
@@ -97,6 +113,12 @@ namespace Simulator_PIC16F84
             }
             else
             {
+                if (index == -1)
+                {
+                    
+                }
+
+
                 FillInRegBytes(index);
                 CheckSpecialRegisters(index);
             }

@@ -76,7 +76,7 @@ namespace Simulator_PIC16F84
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
 
             //Working Register View
-            WBox = new RegisterBox();
+            WBox = new RegisterBox(W);
             WBox.MdiParent = this;
             WBox.Show();
 
