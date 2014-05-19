@@ -97,6 +97,12 @@
     <Compile Include="Register.Designer.cs">
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
+    <Compile Include="RegisterBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegisterBox.Designer.cs">
+      <DependentUpon>RegisterBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="RegisterByte.cs" />
     <Compile Include="RegisterFileMap.cs" />
     <Compile Include="Form1.cs">
@@ -140,6 +146,9 @@
     </Compile>
     <EmbeddedResource Include="Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RegisterBox.resx">
+      <DependentUpon>RegisterBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RegisterView.resx">
       <DependentUpon>RegisterView.cs</DependentUpon>

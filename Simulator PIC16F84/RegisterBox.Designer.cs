@@ -1,6 +1,6 @@
 ﻿namespace Simulator_PIC16F84
 {
-    partial class StackView
+    partial class RegisterBox
     {
         /// <summary>
         /// Required designer variable.
@@ -30,20 +30,18 @@
         {
             this.SuspendLayout();
             // 
-            // StackView
+            // RegisterBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(130, 197);
-            this.Location = new System.Drawing.Point(1100, 50);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "StackView";
-            this.Text = "StackView";
+            this.ClientSize = new System.Drawing.Size(194, 87);
+            this.Name = "RegisterBox";
+            this.Text = "RegisterBox";
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
     }
 }

@@ -33,6 +33,9 @@ namespace Simulator_PIC16F84
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
 
+        //Working Register
+        RegisterBox WBox;
+
         public Main()
         {
             InitializeComponent();
@@ -72,6 +75,11 @@ namespace Simulator_PIC16F84
             breakPoints = new List<int>();
             crystalFrequency = new System.Timers.Timer(10);
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
+
+            //Working Register View
+            WBox = new RegisterBox(W);
+            WBox.MdiParent = this;
+            WBox.Show();
 
 
         }
