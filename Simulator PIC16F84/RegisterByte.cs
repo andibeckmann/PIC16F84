@@ -41,7 +41,7 @@ namespace Simulator_PIC16F84
 
         public int DecrementRegister()
         {
-            return value - 1;
+            return --Value;
         }
 
         public int IncrementRegister()
@@ -52,9 +52,10 @@ namespace Simulator_PIC16F84
                 {
                     this.Overflow(this, index);
                 }
-                return 0;
+                ClearRegister();
+                return Value;
             }
-            return value + 1;
+            return ++Value;
         }
 
         public bool IsBitSet(int pos)

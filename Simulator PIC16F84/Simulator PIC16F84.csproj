@@ -81,7 +81,6 @@
     <Compile Include="Instruktionen\XORLW.cs" />
     <Compile Include="Instruktionen\XORWF.cs" />
     <Compile Include="Prescaler.cs" />
-    <Compile Include="ProgramCode.cs" />
     <Compile Include="ProgramCounter.cs" />
     <Compile Include="ProgramMemoryAddress.cs" />
     <Compile Include="ProgramMemoryByte.cs" />
@@ -121,7 +120,6 @@
     <Compile Include="StackView.Designer.cs">
       <DependentUpon>StackView.cs</DependentUpon>
     </Compile>
-    <Compile Include="TMR0.cs" />
     <Compile Include="WatchdogTimer.cs" />
     <Compile Include="WorkingRegister.cs" />
     <EmbeddedResource Include="Form1.resx">
