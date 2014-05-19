@@ -97,16 +97,38 @@ namespace Simulator_PIC16F84
             }
             else
             {
-                for (int i = 0; i < mappingArray.Length; i++)
+                FillInRegBytes(index);
+                CheckSpecialRegisters(index);
+            }
+        }
+
+        private void CheckSpecialRegisters(int index)
+        {
+            //TMR0-Modes (timermode or countermode)
+            if (index == 0x81)
+            {
+                if(registerMap.IsBitSet(registerMap.getRegister(0x81).Value,5))
                 {
-                    if (mappingArray[i] == index)
+                    registerMap.SetCounterMode();
+                }
+                else{
+                    registerMap.SetTimerMode();
+                }
+            }
+
+        }
+
+        private void FillInRegBytes(int index)
+        {
+            for (int i = 0; i < mappingArray.Length; i++)
+            {
+                if (mappingArray[i] == index)
+                {
+                    var textBoxArray = this.Controls.Find("Byte " + i, true);
+                    if (textBoxArray.Length > 0)
                     {
-                        var textBoxArray = this.Controls.Find("Byte " + i, true);
-                        if (textBoxArray.Length > 0)
-                        {
-                            textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
-                            textBoxArray[0].BackColor = Color.Red;
-                        }
+                        textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
+                        textBoxArray[0].BackColor = Color.Red;
                     }
                 }
             }

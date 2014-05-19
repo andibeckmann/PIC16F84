@@ -8,49 +8,49 @@ namespace Simulator_PIC16F84
 {
     public class RegisterFileMap
     {
-        private RegisterByte[] RegisterList;
-        public int[] MappingArray;
+        private RegisterByte[] registerList;
+        public int[] mappingArray;
         //private byte timer;
-        private TimerStatus status;
+        private TimerStatus timerMode;
         private int inhibitCycles;
 
         public byte Timer {
             get
             {
-                return RegisterList[0x01].Value;
+                return registerList[0x01].Value;
             }
             set
             {
                 inhibitCycles = 2;
-                RegisterList[0x01].Value = value;
+                registerList[0x01].Value = value;
             }
         }
 
         public void SetTimerMode()
         {
-            status = TimerStatus.TIMER;
-            RegisterList[0x81].Value = ClearBit(RegisterList[0x81].Value, 5);
+            timerMode = TimerStatus.TIMER;
+            registerList[0x81].Value = ClearBit(registerList[0x81].Value, 5);
             //Clear Bit 5 in 81h
         }
 
 
         public void SetCounterMode()
         {
-            status = TimerStatus.COUNTER;
-            RegisterList[0x81].Value = SetBit(RegisterList[0x81].Value, 5);
+            timerMode = TimerStatus.COUNTER;
+            registerList[0x81].Value = SetBit(registerList[0x81].Value, 5);
             //Set Bit 5 in 81h
         }
 
         public void IncrementTimer()
         {
-            switch (status)
+            switch (timerMode)
             {
                 case TimerStatus.COUNTER:
                     break;
                 case TimerStatus.TIMER:
                     if (inhibitCycles <= 0)
                     {
-                        RegisterList[0x01].IncrementRegister();
+                        registerList[0x01].IncrementRegister();
                     }
                     inhibitCycles--;
                     break;
@@ -61,22 +61,22 @@ namespace Simulator_PIC16F84
 
         public void TimerInterrupt()
         {
-            RegisterList[0x0b].Value = SetBit(RegisterList[0x0b].Value, 2);
+            registerList[0x0b].Value = SetBit(registerList[0x0b].Value, 2);
         }
 
         public void EnableTimerInterrupt()
         {
-            RegisterList[0x0b].Value = SetBit(RegisterList[0x0b].Value, 5);
+            registerList[0x0b].Value = SetBit(registerList[0x0b].Value, 5);
         }
 
         public void DisableTimerInterrupt()
         {
-            RegisterList[0x0b].Value = ClearBit(RegisterList[0x0b].Value, 5);
+            registerList[0x0b].Value = ClearBit(registerList[0x0b].Value, 5);
         }
 
         public void Overflow(object sender, int index)
         {
-            if(index == 1 && IsBitSet(RegisterList[0x0b].Value, 5))
+            if(index == 1 && IsBitSet(registerList[0x0b].Value, 5))
             {
                 TimerInterrupt();
             }
@@ -90,52 +90,52 @@ namespace Simulator_PIC16F84
         public RegisterFileMap()
         {
             fillMappingArray();
-            RegisterList = new RegisterByte[256];
-            for (int var = 0; var < RegisterList.Length; var++ )
+            registerList = new RegisterByte[256];
+            for (int var = 0; var < registerList.Length; var++ )
             {
-                RegisterList[var] = new RegisterByte(var);//TODO muss das var oder 0 sein? new RegisterByte(0)
-                RegisterList[var].Overflow += new System.EventHandler<int>(Overflow);
+                registerList[var] = new RegisterByte(var);//TODO muss das var oder 0 sein? new RegisterByte(0)
+                registerList[var].Overflow += new System.EventHandler<int>(Overflow);
             }
             Init();
         }
 
         private void fillMappingArray()
         {
-            MappingArray = new int[256];
+            mappingArray = new int[256];
             for (int index = 0; index < 255; index++)
             {
-                    MappingArray[index] = index;
+                    mappingArray[index] = index;
             }
             FillMappingArrayExceptions();
         }
 
         private void FillMappingArrayExceptions()
         {
-            MappingArray[0x80] = 0x00;
-            MappingArray[0x82] = 0x02;
-            MappingArray[0x83] = 0x03;
-            MappingArray[0x84] = 0x04;
-            MappingArray[0x8A] = 0x0A;
-            MappingArray[0x8B] = 0x0B;
+            mappingArray[0x80] = 0x00;
+            mappingArray[0x82] = 0x02;
+            mappingArray[0x83] = 0x03;
+            mappingArray[0x84] = 0x04;
+            mappingArray[0x8A] = 0x0A;
+            mappingArray[0x8B] = 0x0B;
         }
 
         private RegisterByte readINDFReg()
         {
             var address = getFSRReg();
             if (address == 0)
-                return RegisterList[0];
+                return registerList[0];
             else
                 return getRegister(address);
         }
 
         private int getFSRReg()
         {
-            return RegisterList[0x04].Value;
+            return registerList[0x04].Value;
         }
 
         public RegisterByte[] getRegisterList {
-            get { return RegisterList; }
-            set { this.RegisterList = value;}
+            get { return registerList; }
+            set { this.registerList = value;}
         }
 
         /// <summary>
@@ -148,31 +148,31 @@ namespace Simulator_PIC16F84
             if (index == 0)
                 return readINDFReg();
             if (isRegisterBankSelectBitSet())
-                index = MappingArray[index + 0x80];
+                index = mappingArray[index + 0x80];
             else
-                index = MappingArray[index];
-            return this.RegisterList[index];
+                index = mappingArray[index];
+            return this.registerList[index];
         }
 
         public RegisterByte getStatusRegisterContent()
         {
-            return RegisterList[3];
+            return registerList[3];
         }
 
 
         internal void SetCarryBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x01);
+            registerList[3].Value = (byte) (registerList[3].Value | 0x01);
         }
 
         internal void ResetCarryBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xFE);
+            registerList[3].Value = (byte) (registerList[3].Value & 0xFE);
         }
 
         public bool getCarryBit()
         {
-            if ( (RegisterList[3].Value & 0x01) == 0x01)
+            if ( (registerList[3].Value & 0x01) == 0x01)
                 return true;
             else
                 return false;
@@ -180,17 +180,17 @@ namespace Simulator_PIC16F84
 
         internal void SetDigitCarryBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x02);
+            registerList[3].Value = (byte) (registerList[3].Value | 0x02);
         }
 
         internal void ResetDigitCarryBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xFD);
+            registerList[3].Value = (byte) (registerList[3].Value & 0xFD);
         }
 
         public bool getDigitCarryBit()
         {
-            if ((RegisterList[3].Value & 0x02) == 0x02)
+            if ((registerList[3].Value & 0x02) == 0x02)
                 return true;
             else
                 return false;
@@ -198,17 +198,17 @@ namespace Simulator_PIC16F84
 
         internal void SetZeroBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x04);
+            registerList[3].Value = (byte) (registerList[3].Value | 0x04);
         }
 
         internal void ResetZeroBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xFB);
+            registerList[3].Value = (byte) (registerList[3].Value & 0xFB);
         }
 
         public bool getZeroBit()
         {
-            if ((RegisterList[3].Value & 0x02) == 0x04)
+            if ((registerList[3].Value & 0x02) == 0x04)
                 return true;
             else
                 return false;
@@ -216,22 +216,22 @@ namespace Simulator_PIC16F84
 
         public void SetPowerDownBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x08);
+            registerList[3].Value = (byte) (registerList[3].Value | 0x08);
         }
 
         public void ResetPowerDownBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xF7);
+            registerList[3].Value = (byte) (registerList[3].Value & 0xF7);
         }
 
         public void SetTimeOutBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value | 0x10);
+            registerList[3].Value = (byte) (registerList[3].Value | 0x10);
         }
 
         public void ResetTimeOutBit()
         {
-            RegisterList[3].Value = (byte) (RegisterList[3].Value & 0xEF);
+            registerList[3].Value = (byte) (registerList[3].Value & 0xEF);
         }
 
         public void Init()
@@ -250,7 +250,7 @@ namespace Simulator_PIC16F84
 
         public void ClearRegister()
         {
-            foreach (var registerByte in RegisterList)
+            foreach (var registerByte in registerList)
             {
                 registerByte.Value = 0;
             }
@@ -258,7 +258,7 @@ namespace Simulator_PIC16F84
 
         public bool isRegisterBankSelectBitSet()
         {
-            if ((RegisterList[3].Value & 0x20) == 0x20)
+            if ((registerList[3].Value & 0x20) == 0x20)
                 return true;
             else
                 return false;
@@ -266,7 +266,7 @@ namespace Simulator_PIC16F84
 
         public void RegisterContentChanged(object sender, RegisterByte registerToChange)
         {
-            RegisterList.Where(item => item.Index == registerToChange.Index).Select(item => item.Value = registerToChange.Value);
+            registerList.Where(item => item.Index == registerToChange.Index).Select(item => item.Value = registerToChange.Value);
         }
         
       
