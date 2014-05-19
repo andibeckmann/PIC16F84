@@ -44,15 +44,15 @@ namespace Simulator_PIC16F84
             this.WindowState = FormWindowState.Maximized;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
+            W = new WorkingRegister(RegisterMap);
+
+            RegisterMap = new RegisterFileMap();
+
             //Working Register View
             WBox = new RegisterBox(W);
             WBox.MdiParent = this;
             WBox.Show();
 
-
-            W = new WorkingRegister(RegisterMap);
-
-            RegisterMap = new RegisterFileMap();
             registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
             RegisterMap.Init();
             // Set the Parent Form of the Child window.

@@ -21,6 +21,8 @@ namespace Simulator_PIC16F84
         public RegisterBox(WorkingRegister W)
         {
             this.W = W;
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point(300,500);
             constructRegisterBox();
         }
 
@@ -46,8 +48,10 @@ namespace Simulator_PIC16F84
             this.MinimizeBox = false;
             this.MaximizeBox = false;
 
-            if ( W != null)
+            if (W != null)
                 this.Text = "Working Register";
+            else
+                this.Text = "Register " + RegByte.Index;
         }
 
         private void createTextBox()

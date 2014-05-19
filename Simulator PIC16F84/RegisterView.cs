@@ -31,7 +31,8 @@ namespace Simulator_PIC16F84
             this.AutoScroll = true;
             Size max = SystemInformation.MaxWindowTrackSize;
             this.Size = new System.Drawing.Size(9*(sizeOfField+6), max.Height);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
 
             this.mappingArray = mappingArray;
             AddEventToRegister();
