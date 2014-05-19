@@ -56,6 +56,7 @@ namespace Simulator_PIC16F84
             textBox.Location = new System.Drawing.Point(marginSmall, marginSmall);
             textBox.Width = marginSmall*7 + sizeOfField*8;
             textBox.TextChanged += new System.EventHandler(textbox_TextChanged);
+            textBox.Name = "Value";
             this.Controls.Add(textBox);
         }
 

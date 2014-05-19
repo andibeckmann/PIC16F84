@@ -15,10 +15,14 @@ namespace Simulator_PIC16F84
         RegisterFileMap registerMap;
         int[] mappingArray;
         public event EventHandler TimerInterrupt;
+        RegisterBox registerBox;
+        WorkingRegister W;
 
-        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray)
+        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W)
         {
             this.registerMap = RegisterMap;
+            this.registerBox = registerBox;
+            this.W = W;
 
             int sizeOfField = 25;
 
@@ -115,7 +119,8 @@ namespace Simulator_PIC16F84
             {
                 if (index == -1)
                 {
-                    
+                    var textBoxArray = this.registerBox.Controls.Find("Value", true);
+                    textBoxArray[0].Text = W.Value.Value.ToString("X2");
                 }
 
 

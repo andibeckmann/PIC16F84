@@ -44,8 +44,16 @@ namespace Simulator_PIC16F84
             this.WindowState = FormWindowState.Maximized;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
+            //Working Register View
+            WBox = new RegisterBox(W);
+            WBox.MdiParent = this;
+            WBox.Show();
+
+
+            W = new WorkingRegister(RegisterMap);
+
             RegisterMap = new RegisterFileMap();
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray);
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
             RegisterMap.Init();
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
@@ -60,7 +68,6 @@ namespace Simulator_PIC16F84
             ProgramView.SetDesktopLocation(size.Width + 18, 0);
             ProgramView.Show();
 
-            W = new WorkingRegister(RegisterMap);
             PC = new ProgramCounter(RegisterMap);
             //Stack
             Stack = new Stack();
@@ -76,10 +83,8 @@ namespace Simulator_PIC16F84
             crystalFrequency = new System.Timers.Timer(10);
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
 
-            //Working Register View
-            WBox = new RegisterBox(W);
-            WBox.MdiParent = this;
-            WBox.Show();
+            
+            
 
 
         }
