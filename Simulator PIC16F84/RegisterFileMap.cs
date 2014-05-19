@@ -153,8 +153,10 @@ namespace Simulator_PIC16F84
         {
             if (index == 0)
                 return readINDFReg();
-            if (isRegisterBankSelectBitSet())
-                index = mappingArray[index + 0x80];
+
+                //TODO: Verursacht derzeit einen Fehler im Testprogramm SimTest3, daher erstmal rausgenommen
+            //if (isRegisterBankSelectBitSet())
+            //    index = mappingArray[index + 0x80];
             else
                 index = mappingArray[index];
             return this.registerList[index];
