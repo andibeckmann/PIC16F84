@@ -26,18 +26,7 @@ namespace Simulator_PIC16F84
             get { return value; }
             set
             {
-                if(value > 255)
-                {
-                    //TODO Andi bitte...this.value = ((int) value) - 256; 
-                    if (this.Overflow != null)
-                    {
-                        this.Overflow(this, index);
-                    }
-                }
-                else
-                {
-                    this.value = value;
-                }  
+                    this.value = value; 
                 if (this.RegisterChanged != null)
                 {
                     this.RegisterChanged(this, index);
@@ -57,6 +46,14 @@ namespace Simulator_PIC16F84
 
         public int IncrementRegister()
         {
+            if (value == 255)
+            {
+                if (this.Overflow != null)
+                {
+                    this.Overflow(this, index);
+                }
+                return 0;
+            }
             return value + 1;
         }
 

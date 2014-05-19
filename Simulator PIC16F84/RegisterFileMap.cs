@@ -50,7 +50,7 @@ namespace Simulator_PIC16F84
                 case TimerStatus.TIMER:
                     if (inhibitCycles <= 0)
                     {
-                        RegisterList[0x01].Value++;
+                        RegisterList[0x01].IncrementRegister();
                     }
                     inhibitCycles--;
                     break;
