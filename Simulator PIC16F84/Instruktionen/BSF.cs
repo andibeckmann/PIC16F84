@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// BSF Bit Set f
+    /// Syntax: [label] BSF f,b
+    /// Operands: 0 ≤ f ≤ 127
+    /// 0 ≤ b ≤ 7
+    /// Operation: 1 → (f<b>)
+    /// Status Affected: None
+    /// Description: Bit 'b' in register 'f' is set.
+    /// </summary>
     public class BSF : BaseOperation
     {
-        //BSF Bit Set f
-        //Syntax: [label] BSF f,b
-        //Operands: 0 ≤ f ≤ 127
-        //0 ≤ b ≤ 7
-        //Operation: 1 → (f<b>)
-        //Status Affected: None
-        //Description: Bit 'b' in register 'f' is set.
-
         public BSF(int f, int b, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
