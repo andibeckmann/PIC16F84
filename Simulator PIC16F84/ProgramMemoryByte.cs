@@ -282,7 +282,7 @@ namespace Simulator_PIC16F84
         private void ExtractFileRegisterAndBitAddress(out int f, out int b)
         {
             f = value & (int)0x7F;
-            b = value & (int)0x380;
+            b = (value & (int)0x380 ) >> 7;
         }
 
         private void ExtractFileRegisterAndDestinationBit(out int f, out bool d)

@@ -30,9 +30,9 @@ namespace Simulator_PIC16F84.Instruktionen
             Reg.getRegister(f).Value = TurnBitOn(Reg.getRegister(f).Value, b);
         }
 
-        public static byte TurnBitOn(int value, int bitToTurnOn)
+        public static byte TurnBitOn(int value, int b)
         {
-            return (byte)(value | bitToTurnOn);
+            return (byte)(value | 1<<b);
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
