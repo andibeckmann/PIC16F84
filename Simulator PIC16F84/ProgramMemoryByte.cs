@@ -16,7 +16,8 @@ namespace Simulator_PIC16F84
             value = 0;
         }
 
-        public int Value {
+        public int Value
+        {
             get { return value; }
             set { this.value = value; }
         }
@@ -87,7 +88,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3F00) == (int)0x0F00)
             {
                 ExtractFileRegisterAndDestinationBit(out f, out d);
-                INCFSZ Operation = new INCFSZ(f, d, W , Reg, PC);
+                INCFSZ Operation = new INCFSZ(f, d, W, Reg, PC);
             }
 
             //IORWF Instruktion
@@ -282,7 +283,7 @@ namespace Simulator_PIC16F84
         private void ExtractFileRegisterAndBitAddress(out int f, out int b)
         {
             f = value & (int)0x7F;
-            b = (value & (int)0x380 ) >> 7;
+            b = (value & (int)0x380) >> 7;
         }
 
         private void ExtractFileRegisterAndDestinationBit(out int f, out bool d)

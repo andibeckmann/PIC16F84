@@ -121,11 +121,11 @@ namespace Simulator_PIC16F84
                 if (index == -1)
                 {
                     var textBoxArray = this.registerBox.Controls.Find("Value", true);
-                    textBoxArray[0].Text = W.Value.Value.ToString("X2");
+                    textBoxArray[0].Text = W.Value.ToString("X2");
                     for (int i = 0; i < 8; i++)
 			{
                 var checkBoxArray = this.registerBox.Controls.Find("Bit " + i, true);
-			     if(W.Value.IsBitSet(i))
+			     if(W.IsBitSet(i))
                  {
                      
                      var checkBox = ((CheckBox)checkBoxArray[0]).Checked = true;

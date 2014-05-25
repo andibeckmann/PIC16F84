@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// CLRWDT Clear Watchdog Timer
+    /// Syntax: [ label ] CLRWDT
+    /// Operands: None
+    /// Operation: 00h → WDT
+    /// 0 → WDT prescaler,
+    /// 1 → TO
+    /// 1 → PD
+    /// Status Affected: TO, PD
+    /// Description: CLRWDT instruction resets the 
+    /// Watchdog Timer. It also resets the 
+    /// prescaler of the WDT. Status bits 
+    /// TO and PD are set.
+    /// </summary>
     public class CLRWDT : BaseOperation
     {
-        //CLRWDT Clear Watchdog Timer
-        //Syntax: [ label ] CLRWDT
-        //Operands: None
-        //Operation: 00h → WDT
-        //0 → WDT prescaler,
-        //1 → TO
-        //1 → PD
-        //Status Affected: TO, PD
-        //Description: CLRWDT instruction resets the 
-        //Watchdog Timer. It also resets the 
-        //prescaler of the WDT. Status bits 
-        //TO and PD are set.
+        
 
         public CLRWDT(WorkingRegister W, WatchdogTimer WDT, Prescaler prescaler, RegisterFileMap Reg) : base(Reg)
         {

@@ -9,20 +9,22 @@ namespace Simulator_PIC16F84
     public class ProgramCounter
     {
         private ProgramMemoryAddress counter;
-        private RegisterFileMap Reg;
+        private RegisterFileMap reg;
 
 
-        public ProgramCounter(RegisterFileMap _reg)
+        public ProgramCounter(RegisterFileMap reg)
         {
             this.counter = new ProgramMemoryAddress(0);
-            this.Reg = _reg;
+            this.reg = reg;
         }
 
         public ProgramMemoryAddress Counter
         {
             get { return counter; }
-            set {   this.counter = value;
-                    this.Reg.getRegister(0x02).Value = getLower8Bits();
+            set
+            {
+                this.counter = value;
+                this.reg.getRegister(0x02).Value = getLower8Bits();
                 //TODO LATCH-Funktionalität
             }
         }
@@ -35,7 +37,7 @@ namespace Simulator_PIC16F84
         public void InkrementPC()
         {
             Counter.Value++;
-            this.Reg.getRegister(0x02).Value = getLower8Bits();
+            this.reg.getRegister(0x02).Value = getLower8Bits();
         }
 
         public void Clear()

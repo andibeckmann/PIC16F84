@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// CLRF              Clear f
+    /// Syntax:           [label] CLRF f
+    /// Operands:         0 &lt;= f &lt;= 127
+    /// Operation:        00h -> (f)
+    ///                   1 -> Z
+    /// Status Affected:  Z
+    /// Description:      The contents of register 'f' are
+    ///                   cleared and the Z bit is set. 
+    /// </summary>
     public class CLRF : BaseOperation
     {
-        //CLRF              Clear f
-        //--------------------------------------
-        //Syntax:           [label] CLRF f
-        //Operands:         0 <= f <= 127
-        //Operation:        00h -> (f)
-        //                  1 -> Z
-        //Status Affected:  Z
-        //Description:      The contents of register 'f' are
-        //                  cleared and the Z bit is set.
+        
 
 
         public CLRF(int f, RegisterFileMap Reg) : base(Reg)

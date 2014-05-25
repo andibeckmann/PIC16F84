@@ -10,7 +10,6 @@ namespace Simulator_PIC16F84
     {
         private RegisterByte[] registerList;
         public int[] mappingArray;
-        //private byte timer;
         private TimerStatus timerMode;
         private int inhibitCycles;
 
@@ -102,7 +101,6 @@ namespace Simulator_PIC16F84
                 registerList[var] = new RegisterByte(var);
                 registerList[var].Overflow += new System.EventHandler<int>(Overflow);
             }
-            //Init();
         }
 
         private void fillMappingArray()

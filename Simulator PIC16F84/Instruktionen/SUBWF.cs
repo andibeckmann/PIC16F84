@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// SUBWF Subtract W from f
+    /// Syntax: [ label ] SUBWF f,d
+    /// Operands: 0 &lt; f &lt; 127
+    /// d e [0,1]
+    /// Operation: (f) - (W) -> (destination)
+    /// Status Affected: C, DC, Z
+    /// Description: Subtract (2’s complement method)
+    /// W register from register 'f'. If 'd' is 0,
+    /// the result is stored in the W register.
+    /// If 'd' is 1, the result is stored
+    /// back in register 'f'.
+    /// </summary>
     class SUBWF : BaseOperation
     {
-        //SUBWF Subtract W from f
-        //Syntax: [ label ] SUBWF f,d
-        //Operands: 0 < f < 127
-        //d e [0,1]
-        //Operation: (f) - (W) -> (destination)
-        //Status Affected: C, DC, Z
-        //Description: Subtract (2’s complement method)
-        //W register from register 'f'. If 'd' is 0,
-        //the result is stored in the W register.
-        //If 'd' is 1, the result is stored
-        //back in register 'f'.
+        
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = Reg.getRegister(f).Value - W.Value.Value;
+            var result = Reg.getRegister(f).Value - W.Value;
 
             if(d)
             {
@@ -30,7 +33,7 @@ namespace Simulator_PIC16F84.Instruktionen
             }
             else
             {
-                W.Value.Value = (byte) result;
+                W.Value = (byte) result;
             }
         }
 

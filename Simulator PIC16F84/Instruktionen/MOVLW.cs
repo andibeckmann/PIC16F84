@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// MOVLW              Move Literal to W
+    /// Syntax:           [label] MOVLW k
+    /// Operands:         0 &lt;= k &lt;= 255
+    /// Operation:        k -> (W)
+    /// Status Affected:  None
+    /// Description:      The eight-bit literal ’k’ is loaded
+    ///                   into W register. The don’t cares
+    ///                   will assemble as 0’s.
+    /// </summary>
     public class MOVLW : BaseOperation
     {
-        //MOVLW              Move Literal to W
-        //--------------------------------------
-        //Syntax:           [label] MOVLW k
-        //Operands:         0 <= k <= 255
-        //Operation:        k -> (W)
-        //Status Affected:  None
-        //Description:      The eight-bit literal ’k’ is loaded
-        //                  into W register. The don’t cares
-        //                  will assemble as 0’s.
+        
 
         public MOVLW(byte k, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
@@ -27,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(WorkingRegister W)
         {
-            W.Value.Value = k;
+            W.Value = k;
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)

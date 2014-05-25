@@ -6,21 +6,23 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// RRF               Rotate Right f through Carry
+    /// Syntax:           [label] RRF f,d
+    /// Operands:         0 &lt;= f &lt;= 127
+    ///                   d e [0,1]
+    /// Operation:        See description below
+    /// Status Affected:  C
+    /// Description:      The contents of register ’f’ are
+    ///                   rotated one bit to the right through
+    ///                   the Carry Flag. If ’d’ is 0, the
+    ///                   result is placed in the W register.
+    ///                   If ’d’ is 1, the result is stored back
+    ///                   in register ’f’.
+    /// </summary>
     class RRF : BaseOperation
     {
-        //RRF               Rotate Right f through Carry
-        //--------------------------------------
-        //Syntax:           [label] RRF f,d
-        //Operands:         0 <= f <= 127
-        //                  d e [0,1]
-        //Operation:        See description below
-        //Status Affected:  C
-        //Description:      The contents of register ’f’ are
-        //                  rotated one bit to the right through
-        //                  the Carry Flag. If ’d’ is 0, the
-        //                  result is placed in the W register.
-        //                  If ’d’ is 1, the result is stored back
-        //                  in register ’f’.
+        
 
         private int content;
         private bool CarryReminder;
@@ -48,7 +50,7 @@ namespace Simulator_PIC16F84.Instruktionen
             if (d)
                 Reg.getRegister(f).Value = (byte)content;
             else
-                W.Value.Value = (byte)content;
+                W.Value = (byte)content;
 
             if (CarryReminder)
                 Reg.SetCarryBit();

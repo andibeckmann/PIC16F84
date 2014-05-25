@@ -14,6 +14,9 @@ using System.Text.RegularExpressions;
 
 namespace Simulator_PIC16F84
 {
+    /// <summary>
+    /// Main Class which initalize the program
+    /// </summary>
     public partial class Main : Form
     {
         RegisterFileMap RegisterMap;
@@ -24,7 +27,6 @@ namespace Simulator_PIC16F84
         Stack Stack;
         StackView StackView;
         WatchdogTimer WDT;
-        //TMR0 Timer0;
         Prescaler Prescaler;
         RegisterView registerView;
         System.Timers.Timer crystalFrequency;
@@ -33,7 +35,9 @@ namespace Simulator_PIC16F84
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
 
-        //Working Register
+        /// <summary>
+        /// Working Register
+        /// </summary>
         RegisterBox WBox;
 
         public Main()
@@ -44,11 +48,11 @@ namespace Simulator_PIC16F84
             this.WindowState = FormWindowState.Maximized;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
-            W = new WorkingRegister(RegisterMap);
+            W = new WorkingRegister(-1);
 
             RegisterMap = new RegisterFileMap();
 
-            //Working Register View
+            /// Working Register View
             WBox = new RegisterBox(W);
             WBox.MdiParent = this;
             WBox.Show();
@@ -56,7 +60,7 @@ namespace Simulator_PIC16F84
 
             registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
             RegisterMap.Init();
-            W.Value.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
+            W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
             registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
@@ -78,8 +82,6 @@ namespace Simulator_PIC16F84
             StackView.Show();
             //Watchdogtimer
             WDT = new WatchdogTimer();
-            //Timer0 = new TMR0();
-            //Timer0.TimerChanged += RegisterMap.RegisterContentChanged;
             Prescaler = new Prescaler();
             breakPoints = new List<int>();
             crystalFrequency = new System.Timers.Timer(10);

@@ -11,7 +11,7 @@ namespace Simulator_PIC16F84.Instruktionen
     /// Syntax: [label] BSF f,b
     /// Operands: 0 ≤ f ≤ 127
     /// 0 ≤ b ≤ 7
-    /// Operation: 1 → (f<b>)
+    /// Operation: 1 → (f&lt;b>)
     /// Status Affected: None
     /// Description: Bit 'b' in register 'f' is set.
     /// </summary>
@@ -30,10 +30,7 @@ namespace Simulator_PIC16F84.Instruktionen
             Reg.getRegister(f).Value = TurnBitOn(Reg.getRegister(f).Value, b);
         }
 
-        public static byte TurnBitOn(int value, int b)
-        {
-            return (byte)(value | 1<<b);
-        }
+        
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {

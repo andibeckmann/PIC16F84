@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// INCF              Increment f
+    /// Syntax:           [label] INCF f,d
+    /// Operands:         0 &lt;= f &lt;= 127
+    ///                   d e [0,1]
+    /// Operation:        (f) + 1 -> (destination)
+    /// Status Affected:  Z
+    /// Description:      The contents of register 'f' are
+    ///                   incremented. If 'd' is 0, the result
+    ///                   is placed in the W register. If 'd' is
+    ///                   1, the result is placed back in register 'f'.
+    /// </summary>
     public class INCF : BaseOperation
     {
-        //INCF              Increment f
-        //--------------------------------------
-        //Syntax:           [label] INCF f,d
-        //Operands:         0 <= f <= 127
-        //                  d e [0,1]
-        //Operation:        (f) + 1 -> (destination)
-        //Status Affected:  Z
-        //Description:      The contents of register 'f' are
-        //                  incremented. If 'd' is 0, the result
-        //                  is placed in the W register. If 'd' is
-        //                  1, the result is placed back in register 'f'.
+        
 
 
         public INCF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
@@ -36,7 +38,7 @@ namespace Simulator_PIC16F84.Instruktionen
             if (d)
                 Reg.getRegister(f).Value = (byte)result;
             else
-                W.Value.Value = (byte)result;
+                W.Value = (byte)result;
             if( result == 0 )
                 Reg.SetZeroBit();
         }

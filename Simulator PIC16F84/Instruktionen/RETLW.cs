@@ -6,22 +6,25 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// RETLW Return with Literal in W
+    /// Syntax: [ label ] RETLW k
+    /// Operands: 0 &lt; k &lt; 255
+    /// Operation: k -> (W);
+    /// TOS -> PC
+    /// Status Affected: None
+    /// Description: The W register is loaded with the
+    /// eight-bit literal 'k'. The program
+    /// counter is loaded from the top of
+    /// the stack (the return address).
+    /// This is a two-cycle instruction.
+    /// </summary>
     class RETLW : BaseOperation
     {
-        //RETLW Return with Literal in W
-        //Syntax: [ label ] RETLW k
-        //Operands: 0 < k < 255
-        //Operation: k -> (W);
-        //TOS -> PC
-        //Status Affected: None
-        //Description: The W register is loaded with the
-        //eight-bit literal 'k'. The program
-        //counter is loaded from the top of
-        //the stack (the return address).
-        //This is a two-cycle instruction.
+        
         protected void execute(WorkingRegister W, ProgramCounter PC, Stack stack)
         {
-            W.Value.Value = k;
+            W.Value = k;
 
             PC.Counter.Value = stack.PullFromStack().Value;
         }

@@ -6,19 +6,21 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// BTFSC             Bit Test, Skip if Clear
+    /// Syntax:           [label] BTFSC f,b
+    /// Operands:         0 &lt;= f &lt;= 127
+    ///                   0 &lt;= b &lt;= 7
+    /// Operation:        skip if (f&lt;b>) = 0
+    /// Status Affected:  None
+    /// Description:      If bit 'bit' in register 'f' is 1, the next
+    ///                   instruction is discarded, and a NOP
+    ///                   is executed instead, making this a
+    ///                   2TCY instruction
+    /// </summary>
     public class BTFSC : BaseOperation
     {
-        //BTFSC             Bit Test, Skip if Clear
-        //--------------------------------------
-        //Syntax:           [label] BTFSC f,b
-        //Operands:         0 <= f <= 127
-        //                  0 <= b <= 7
-        //Operation:        skip if (f<b>) = 0
-        //Status Affected:  None
-        //Description:      If bit 'bit' in register 'f' is 1, the next
-        //                  instruction is discarded, and a NOP
-        //                  is executed instead, making this a
-        //                  2TCY instruction
+        
 
         public BTFSC(int file, int b, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
         {

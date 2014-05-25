@@ -6,25 +6,30 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84
 {
-    public class WorkingRegister
+    public class WorkingRegister : RegisterByte
     {
-
-        private RegisterByte value;
-
-        public WorkingRegister(RegisterFileMap RegisterMap)
+        
+        public WorkingRegister(int index) : base(index)
         {
-            value = new RegisterByte(-1);
+
         }
 
-        public RegisterByte Value
-        {
-            get { return value; }
-            set { this.value = value; }
-        }
+        //private RegisterByte value;
 
-        public void ClearWorkingRegister()
-        {
-            value.ClearRegister();
-        }
+        //public WorkingRegister(RegisterFileMap RegisterMap)
+        //{
+        //    value = new RegisterByte(-1);
+        //}
+
+        //public RegisterByte Value
+        //{
+        //    get { return value; }
+        //    set { this.value = value; }
+        //}
+
+        //public void ClearWorkingRegister()
+        //{
+        //    value.ClearRegister();
+        //}
     }
 }

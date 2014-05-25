@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// BCF Bit Clear f
+    /// Syntax: [label] BCF f,b
+    /// Operands: 0 ≤ f ≤ 127
+    /// 0 ≤ b ≤ 7
+    /// Operation: 0 → (f&lt;b>)
+    /// Status Affected: None
+    /// Description: Bit 'b' in register 'f' is cleared
+    /// </summary>
     public class BCF : BaseOperation
     {
-        //BCF Bit Clear f
-        //Syntax: [label] BCF f,b
-        //Operands: 0 ≤ f ≤ 127
-        //0 ≤ b ≤ 7
-        //Operation: 0 → (f<b>)
-        //Status Affected: None
-        //Description: Bit 'b' in register 'f' is cleared
+        
 
         public BCF(int f, int b, RegisterFileMap Reg) : base(Reg)
         {
@@ -26,13 +29,10 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(RegisterFileMap Reg)
         {
-            Reg.getRegister(f).Value = (byte) TurnBitOff(Reg.getRegister(f).Value, b);
+            Reg.getRegister(f).Value = TurnBitOff(Reg.getRegister(f).Value, b);
         }
 
-        private static int TurnBitOff(int value, int b)
-        {
-            return (value & ~ (1 << b));
-        }
+        
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {

@@ -6,19 +6,20 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// COMF Decrement f
+    /// Syntax: [ label ] DECF f,d
+    /// Operands: 0 ≤ f ≤ 127
+    /// d ∈ [0,1]
+    /// Operation: (f) -1  → (destination)
+    /// Status Affected: Z
+    /// Description: Decrement register 'f'.  
+    /// If ’d’ is 0, the 
+    /// result is stored in W. If ’d’ is 1, the 
+    /// result is stored back in register ’f’
+    /// </summary>
     class DECF : BaseOperation
     {
-        //COMF Decrement f
-        //Syntax: [ label ] DECF f,d
-        //Operands: 0 ≤ f ≤ 127
-        //d ∈ [0,1]
-        //Operation: (f) -1  → (destination)
-        //Status Affected: Z
-        //Description: Decrement register 'f'.  
-        //If ’d’ is 0, the 
-        //result is stored in W. If ’d’ is 1, the 
-        //result is stored back in register ’f’
-
         public DECF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
@@ -39,7 +40,7 @@ namespace Simulator_PIC16F84.Instruktionen
             }
             else
             {
-                W.Value.Value = result;
+                W.Value = result;
             }
         }
     }

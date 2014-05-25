@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// MOVWF             Move W to f
+    /// Syntax:           [label] MOVWF f
+    /// Operands:         0 &lt;= f &lt;= 127
+    /// Operation:        (W) -> (f)
+    /// Status Affected:  None
+    /// Description:      Move data from W register to
+    ///                   register 'f'.
+    /// </summary>
     public class MOVWF : BaseOperation
     {
-        //MOVWF             Move W to f
-        //--------------------------------------
-        //Syntax:           [label] MOVWF f
-        //Operands:         0 <= f <= 127
-        //Operation:        (W) -> (f)
-        //Status Affected:  None
-        //Description:      Move data from W register to
-        //                  register 'f'.
+        
 
         private byte content;
 
@@ -28,7 +30,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            content = W.Value.Value;
+            content = W.Value;
             Reg.getRegister(f).Value = content;
         }
     }

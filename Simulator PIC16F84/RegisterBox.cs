@@ -120,7 +120,7 @@ namespace Simulator_PIC16F84
             try
             {
                 content = Convert.ToInt32(textBox.Text, 16);
-                W.Value.Value = (byte)content;
+                W.Value = (byte)content;
             }
             catch
             {

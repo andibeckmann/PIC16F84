@@ -59,29 +59,52 @@ namespace Simulator_PIC16F84.Instruktionen
         /// </summary>
         protected Stack Stack;
 
-        public BaseOperation(int f = 0, WorkingRegister W = null, int b = 0, byte k = 0, bool d = true, ProgramCounter PC = null, bool TO = false, bool PD = false)
-        {
-            this.f = f;
-            this.W = W;
-            this.b = b;
-            this.k = k;
-            this.d = d;
-            this.PC = PC;
-            this.TO = TO;
-            this.PD = PD;
-        }
 
         public BaseOperation(RegisterFileMap Reg)
         {
             Reg.IncrementTimer();
         }
 
-        protected bool IsBitSet(int b, int pos)
+        /// <summary>
+        /// method to execute the instruction
+        /// </summary>
+        /// <param name="W">WorkingRegister</param>
+        /// <param name="Reg">RegisterFileMap</param>
+        protected abstract void execute(WorkingRegister W, RegisterFileMap Reg);
+
+        /// <summary>
+        /// Check if Bit is set in Byte
+        /// </summary>
+        /// <param name="byteValue">Byte</param>
+        /// <param name="bit">Bit</param>
+        /// <returns>result</returns>
+        protected bool IsBitSet(int byteValue, int bit)
         {
-            return (b & (1 << pos)) != 0;
+            return (byteValue & (1 << bit)) != 0;
         }
 
-        protected abstract void execute(WorkingRegister W, RegisterFileMap Reg);
+        /// <summary>
+        /// Turn Bit on
+        /// </summary>
+        /// <param name="byteValue">Byte</param>
+        /// <param name="bit">Bit</param>
+        /// <returns>Byte with Bit turned on</returns>
+        protected static byte TurnBitOn(int byteValue, int bit)
+        {
+            return (byte)(byteValue | 1 << bit);
+        }
+
+        /// <summary>
+        /// Turn Bit off
+        /// </summary>
+        /// <param name="byteValue">Byte</param>
+        /// <param name="bit">Bit</param>
+        /// <returns>Byte with Bit turned off</returns>
+        protected static byte TurnBitOff(int byteValue, int bit)
+        {
+            return (byte) (byteValue & ~(1 << bit));
+        }
+
 
     }
 }

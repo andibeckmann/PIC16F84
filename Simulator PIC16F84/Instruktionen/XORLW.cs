@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace Simulator_PIC16F84.Instruktionen
 {
+    /// <summary>
+    /// XORLW             Exclusive OR Literal with W
+    /// Syntax:           [label]  XORLW k
+    /// Operands:         0 &lt;= k &lt;= 255
+    /// Operation:        (W) .XOR.k -> (W)
+    /// Status Affected:  Z
+    /// Description:      The contents of the W register
+    ///                   are XOR’ed with the eight-bit literal
+    ///                   'k'. The result is placed in
+    ///                   the W register.
+    /// </summary>
     class XORLW : BaseOperation
     {
-        //XORLW             Exclusive OR Literal with W
-        //--------------------------------------
-        //Syntax:           [label]  XORLW k
-        //Operands:         0 <= k <= 255
-        //Operation:        (W) .XOR.k -> (W)
-        //Status Affected:  Z
-        //Description:      The contents of the W register
-        //                  are XOR’ed with the eight-bit literal
-        //                  'k'. The result is placed in
-        //                  the W register.
+        
 
         private int result;
 
@@ -29,8 +31,8 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            result = W.Value.Value ^ k;
-            W.Value.Value = (byte) result;
+            result = W.Value ^ k;
+            W.Value = (byte) result;
 
             if (result == 0)
                 Reg.SetZeroBit();
