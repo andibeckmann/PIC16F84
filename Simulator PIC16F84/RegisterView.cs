@@ -30,22 +30,22 @@ namespace Simulator_PIC16F84
             this.StartPosition = FormStartPosition.Manual;
             this.AutoScroll = true;
             Size max = SystemInformation.MaxWindowTrackSize;
-            this.Size = new System.Drawing.Size(9*(sizeOfField+6), max.Height);
+            this.Size = new System.Drawing.Size(9 * (sizeOfField + 6), max.Height);
             this.MinimizeBox = false;
             this.MaximizeBox = false;
 
             this.mappingArray = mappingArray;
             AddEventToRegister();
 
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 createLabels(sizeOfField, i);
             }
-            for(int i = 0; i < 32; i++)
+            for (int i = 0; i < 32; i++)
             {
                 createColumn0Label(sizeOfField, i);
 
-                for(int m = 0; m < 8; m++)
+                for (int m = 0; m < 8; m++)
                 {
                     createTextBox(RegisterMap, sizeOfField, i, m);
                 }
@@ -123,25 +123,53 @@ namespace Simulator_PIC16F84
                     var textBoxArray = this.registerBox.Controls.Find("Value", true);
                     textBoxArray[0].Text = W.Value.ToString("X2");
                     for (int i = 0; i < 8; i++)
-			{
-                var checkBoxArray = this.registerBox.Controls.Find("Bit " + i, true);
-			     if(W.IsBitSet(i))
-                 {
-                     
-                     var checkBox = ((CheckBox)checkBoxArray[0]).Checked = true;
-                 }
-                 else
-                 {
-                     var checkBox = ((CheckBox)checkBoxArray[0]).Checked = false;
-                 }
-			}
-                   
+                    {
+                        var checkBoxArray = this.registerBox.Controls.Find("Bit " + i, true);
+                        if (W.IsBitSet(i))
+                        {
+
+                            var checkBox = ((CheckBox)checkBoxArray[0]).Checked = true;
+                        }
+                        else
+                        {
+                            var checkBox = ((CheckBox)checkBoxArray[0]).Checked = false;
+                        }
+                    }
+
+                }
+                if(index == 0x05)
+                {
+                    if(IsBitSet(registerMap.getRegister(0x81).Value, 4))
+                    {
+                        if(registerMap.getRegister(0x05).fallingEdges[4])
+                        {
+                            registerMap.IncrementCounter();
+                        }
+                    }
+                    else
+                    {
+                        if (registerMap.getRegister(0x05).risingEdges[4])
+                        {
+                            registerMap.IncrementCounter();
+                        }
+                    }
                 }
 
 
                 FillInRegBytes(index);
                 CheckSpecialRegisters(index);
             }
+        }
+
+        /// <summary>
+        /// Check if Bit is set in Byte
+        /// </summary>
+        /// <param name="byteValue">Byte</param>
+        /// <param name="bit">Bit</param>
+        /// <returns>result</returns>
+        private bool IsBitSet(int byteValue, int bit)
+        {
+            return (byteValue & (1 << bit)) != 0;
         }
 
         private void CheckSpecialRegisters(int index)
@@ -179,7 +207,7 @@ namespace Simulator_PIC16F84
 
         private void AddEventToRegister()
         {
-            for(int i = 0 ; i < registerMap.getRegisterList.Length; i++ )
+            for (int i = 0; i < registerMap.getRegisterList.Length; i++)
             {
                 registerMap.getRegister(i).RegisterChanged += new EventHandler<int>(this.RegisterContentChanged);
             }
@@ -195,7 +223,7 @@ namespace Simulator_PIC16F84
             }
             else
             {
-                for (int i = 0; i < this.Controls.Count; i++ )
+                for (int i = 0; i < this.Controls.Count; i++)
                 {
                     if (this.Controls[i].GetType() == typeof(TextBox))
                     {

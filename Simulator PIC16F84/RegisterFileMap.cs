@@ -48,25 +48,37 @@ namespace Simulator_PIC16F84
 
         public void IncrementTimer()
         {
-            switch (timerMode)
+            if (timerMode == TimerStatus.TIMER)
             {
-                case TimerStatus.COUNTER:
-                    break;
-                case TimerStatus.TIMER:
-                    if (inhibitCycles <= 0)
-                    {
-                        registerList[0x01].IncrementRegister();
-                    }
+                if (inhibitCycles <= 0)
+                {
+                    registerList[0x01].IncrementRegister();
+                }
+                else
+                {
                     inhibitCycles--;
-                    break;
-                default:
-                    break;
+                }
+            }
+        }
+
+        public void IncrementCounter()
+        {
+            if (timerMode == TimerStatus.COUNTER)
+            {
+                registerList[0x01].IncrementRegister();
             }
         }
 
         public void TimerInterrupt()
         {
-            registerList[0x0b].Value = SetBit(registerList[0x0b].Value, 2);
+            if (!IsBitSet(registerList[0x0b].Value, 2) && IsBitSet(registerList[0x0b].Value, 7))
+            {
+                registerList[0x0b].Value = ClearBit(registerList[0x0b].Value, 7);
+                registerList[0x0b].Value = SetBit(registerList[0x0b].Value, 2);
+                PC.Counter.Value = 0x04;
+                
+                //TODO push return address on stack
+            }
         }
 
         public void EnableTimerInterrupt()
@@ -92,8 +104,9 @@ namespace Simulator_PIC16F84
             return (((value >> pos) & 0x1) == 0x1);
         }
 
-        public RegisterFileMap()
+        public RegisterFileMap(ProgramCounter PC)
         {
+            this.PC = PC;
             fillMappingArray();
             registerList = new RegisterByte[256];
             for (int var = 0; var < registerList.Length; var++ )
@@ -316,6 +329,8 @@ namespace Simulator_PIC16F84
             }
         }
 
+
+        public ProgramCounter PC { get; set; }
     }
 
     public enum TimerStatus
