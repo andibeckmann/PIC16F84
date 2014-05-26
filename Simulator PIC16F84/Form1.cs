@@ -238,7 +238,7 @@ namespace Simulator_PIC16F84
 
             String testPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\Programme\\";
 
-            System.IO.StreamReader sr = new System.IO.StreamReader(testPath + "SimTest3.lst");
+            System.IO.StreamReader sr = new System.IO.StreamReader(testPath + "SimTest2.lst");
             string fileContent = sr.ReadToEnd();
             sr.Close();
             ProgramView.loadProgram(fileContent);
@@ -324,6 +324,7 @@ namespace Simulator_PIC16F84
             RegisterMap.ClearRegister();
             RegisterMap.Init();
             registerView.ClearColors();
+            W.Value = 0;
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
