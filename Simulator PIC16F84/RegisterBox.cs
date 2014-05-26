@@ -142,11 +142,25 @@ namespace Simulator_PIC16F84
                 var bit = Int32.Parse(resultString);
                 if (checkBox.Checked == true)
                 {
-                    W.Value = SetBit(W.Value, bit);
+                    if (W != null)
+                    {
+                        W.Value = SetBit(W.Value, bit);
+                    }
+                    else
+                    {
+                        RegByte.Value = SetBit(RegByte.Value, bit);
+                    }
                 }
                 else
                 {
-                    W.Value = ClearBit(W.Value, bit); 
+                    if(W != null)
+                    {
+                        W.Value = ClearBit(W.Value, bit);
+                    }
+                    else
+                    {
+                        RegByte.Value = ClearBit(RegByte.Value, bit);
+                    }
                 }
             }
         }

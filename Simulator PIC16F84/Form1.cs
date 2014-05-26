@@ -57,18 +57,8 @@ namespace Simulator_PIC16F84
             /// Working Register View
             WBox = new RegisterBox(W);
             WBox.MdiParent = this;
-            WBox.Show();         
-
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
-            RegisterMap.Init();
-            W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
-            // Set the Parent Form of the Child window.
-            registerView.MdiParent = this;
-            registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
-            // Display the new form.
-            registerView.Show();
-            var size = registerView.Size;
-
+            WBox.Show(); 
+        
             ///A-Register View
             AReg = new RegisterBox(RegisterMap.getARegister());
             AReg.MdiParent = this;
@@ -82,6 +72,17 @@ namespace Simulator_PIC16F84
             BReg.StartPosition = FormStartPosition.Manual;
             BReg.Location = new Point(750, 500);
             BReg.Show();
+
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg);
+            RegisterMap.Init();
+            W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
+            // Set the Parent Form of the Child window.
+            registerView.MdiParent = this;
+            registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
+            // Display the new form.
+            registerView.Show();
+            var size = registerView.Size;
+
 
             UserMemorySpace = new ProgramMemoryMap();
             ProgramView = new ProgramMemoryView(UserMemorySpace, this);

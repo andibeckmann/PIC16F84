@@ -15,14 +15,18 @@ namespace Simulator_PIC16F84
         RegisterFileMap registerMap;
         int[] mappingArray;
         public event EventHandler TimerInterrupt;
-        RegisterBox registerBox;
+        RegisterBox workingRegisterBox;
         WorkingRegister W;
+        RegisterBox ARegRegisterBox;
+        RegisterBox BRegRegisterBox;
 
-        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W)
+        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W, RegisterBox AReg, RegisterBox BReg)
         {
             this.registerMap = RegisterMap;
-            this.registerBox = registerBox;
+            this.workingRegisterBox = registerBox;
             this.W = W;
+            this.ARegRegisterBox = AReg;
+            this.BRegRegisterBox = BReg;
 
             int sizeOfField = 25;
 
@@ -120,11 +124,11 @@ namespace Simulator_PIC16F84
             {
                 if (index == -1)
                 {
-                    var textBoxArray = this.registerBox.Controls.Find("Value", true);
+                    var textBoxArray = this.workingRegisterBox.Controls.Find("Value", true);
                     textBoxArray[0].Text = W.Value.ToString("X2");
                     for (int i = 0; i < 8; i++)
                     {
-                        var checkBoxArray = this.registerBox.Controls.Find("Bit " + i, true);
+                        var checkBoxArray = this.workingRegisterBox.Controls.Find("Bit " + i, true);
                         if (W.IsBitSet(i))
                         {
                             var checkBox = ((CheckBox)checkBoxArray[0]).Checked = true;
@@ -152,6 +156,13 @@ namespace Simulator_PIC16F84
                             registerMap.IncrementCounter();
                         }
                     }
+                    var textBox = ARegRegisterBox.Controls.Find("Value",true);
+                    textBox[0].Text = registerMap.getRegister(0x05).Value.ToString("X2");
+                }
+                if (index == 0x06)
+                {
+                    var textBox = BRegRegisterBox.Controls.Find("Value", true);
+                    textBox[0].Text = registerMap.getRegister(0x06).Value.ToString("X2");
                 }
 
 
