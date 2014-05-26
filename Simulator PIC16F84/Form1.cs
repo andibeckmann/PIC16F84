@@ -50,7 +50,7 @@ namespace Simulator_PIC16F84
 
             W = new WorkingRegister(-1);
 
-            RegisterMap = new RegisterFileMap();
+            RegisterMap = new RegisterFileMap(PC);
 
             /// Working Register View
             WBox = new RegisterBox(W);
