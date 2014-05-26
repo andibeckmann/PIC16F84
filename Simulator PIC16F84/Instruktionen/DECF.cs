@@ -32,15 +32,15 @@ namespace Simulator_PIC16F84.Instruktionen
         {
            Reg.SetZeroBit();
 
-            var result = Reg.getRegister(f).Value--;
+            var result = Reg.getRegister(f).Value - 1;
 
             if (d)
             {
-               Reg.getRegister(f).Value = result;
+               Reg.getRegister(f).Value = (byte) result;
             }
             else
             {
-                W.Value = result;
+                W.Value = (byte) result;
             }
         }
     }
