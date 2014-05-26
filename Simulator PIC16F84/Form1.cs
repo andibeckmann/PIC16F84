@@ -65,6 +65,7 @@ namespace Simulator_PIC16F84
             // Set the Parent Form of the Child window.
             registerView.MdiParent = this;
             registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
+            registerView.ClearColors();
             // Display the new form.
             registerView.Show();
             var size = registerView.Size;
@@ -114,7 +115,7 @@ namespace Simulator_PIC16F84
             this.frequencySlider = new System.Windows.Forms.TrackBar();
 
             // TextBox for TrackBar.Value update.
-            this.textBoxSlider.Location = new System.Drawing.Point(1080, 45+25);
+            this.textBoxSlider.Location = new System.Drawing.Point(1180, 45+25);
             this.textBoxSlider.Size = new System.Drawing.Size(48, 20);
             this.textBoxSlider.Text = Frequency + " ms";
             this.textBoxSlider.TextChanged += new System.EventHandler(this.textBoxSlider_Changed);
@@ -123,7 +124,7 @@ namespace Simulator_PIC16F84
             this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider });
 
             // Set up the TrackBar.
-            this.frequencySlider.Location = new System.Drawing.Point(1080, 25);
+            this.frequencySlider.Location = new System.Drawing.Point(1180, 25);
             this.frequencySlider.Size = new System.Drawing.Size(224, 45);
             this.frequencySlider.Scroll += new System.EventHandler(this.frequencySlider_Scroll);
 
@@ -231,34 +232,38 @@ namespace Simulator_PIC16F84
             OpenFileDialog programmLaden = new OpenFileDialog();
 
             //TODO: Programm Laden Auswahl wieder einfügen
-            //programmLaden.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath) + "\\Programme";
-            //programmLaden.Filter = "lst files (*.lst)|*.lst";
-            //programmLaden.FilterIndex = 1;
-            //programmLaden.RestoreDirectory = false;
+            programmLaden.InitialDirectory = Path.GetDirectoryName(Application.ExecutablePath) + "\\Programme";
+            programmLaden.Filter = "lst files (*.lst)|*.lst";
+            programmLaden.FilterIndex = 1;
+            programmLaden.RestoreDirectory = false;
 
-            //if (programmLaden.ShowDialog() == DialogResult.OK)
-            //{
-            //    try
-            //    {
-            //        System.IO.StreamReader sr = new System.IO.StreamReader(programmLaden.FileName);
-            //        string fileContent = sr.ReadToEnd();
-            //        sr.Close();
+            if (programmLaden.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    System.IO.StreamReader sr = new System.IO.StreamReader(programmLaden.FileName);
+                    string fileContent = sr.ReadToEnd();
+                    sr.Close();
+                    ProgramView.loadProgram(fileContent);
+                    UserMemorySpace = ProgramView.getBinaryCode();
+                    PC.Clear();
 
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show("Error: Could not read file" + ex.Message);
-            //    }
-            //}
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: Could not read file" + ex.Message);
+                }
+            }
 
-            String testPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\Programme\\";
+            /// Direkter Aufruf zum Testen
+            //String testPath = Path.GetDirectoryName(Application.ExecutablePath) + "\\Programme\\";
 
-            System.IO.StreamReader sr = new System.IO.StreamReader(testPath + "SimTest1.lst");
-            string fileContent = sr.ReadToEnd();
-            sr.Close();
-            ProgramView.loadProgram(fileContent);
-            UserMemorySpace = ProgramView.getBinaryCode();
-            PC.Clear();
+            //System.IO.StreamReader sr = new System.IO.StreamReader(testPath + "SimTest1.lst");
+            //string fileContent = sr.ReadToEnd();
+            //sr.Close();
+            //ProgramView.loadProgram(fileContent);
+            //UserMemorySpace = ProgramView.getBinaryCode();
+            //PC.Clear();
         }
 
         private void ExecuteCycle(object source, ElapsedEventArgs e)
@@ -351,6 +356,61 @@ namespace Simulator_PIC16F84
         {
             var index = FindRowForPC(PC.Counter.Value);
             ExecuteSingleCycle(index);
+        }
+
+        private void programMemoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UserMemorySpace = new ProgramMemoryMap();
+            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
+            ProgramView.Location = new Point(300, 0);
+            ProgramView.MdiParent = this;
+            ProgramView.Show();
+        }
+
+        private void registerFileMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
+            RegisterMap.Init();
+            W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
+            // Set the Parent Form of the Child window.
+            registerView.MdiParent = this;
+            registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
+            registerView.ClearColors();
+            // Display the new form.
+            registerView.Show();
+        }
+
+        private void stackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Stack = new Stack();
+            StackView = new StackView(Stack);
+            StackView.MdiParent = this;
+            StackView.Show();
+        }
+
+        private void workingRegisterToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            WBox = new RegisterBox(W);
+            WBox.MdiParent = this;
+            WBox.Show();       
+        }
+
+        private void aRegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AReg = new RegisterBox(RegisterMap.getARegister());
+            AReg.MdiParent = this;
+            AReg.StartPosition = FormStartPosition.Manual;
+            AReg.Location = new Point(525, 500);
+            AReg.Show();
+        }
+
+        private void bRegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BReg = new RegisterBox(RegisterMap.getBRegister());
+            BReg.MdiParent = this;
+            BReg.StartPosition = FormStartPosition.Manual;
+            BReg.Location = new Point(750, 500);
+            BReg.Show();
         }
 
     }
