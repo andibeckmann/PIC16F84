@@ -14,7 +14,7 @@ namespace Simulator_PIC16F84
 
         public ProgramCounter(RegisterFileMap reg)
         {
-            this.counter = new ProgramMemoryAddress(0);
+            this.counter = new ProgramMemoryAddress();
             this.reg = reg;
         }
 

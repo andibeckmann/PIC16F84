@@ -9,18 +9,17 @@ namespace Simulator_PIC16F84
     public class Stack
     {
         private List<ProgramMemoryAddress> StackAddresses;
-        public event EventHandler<ProgramMemoryAddress> StackChanged;
 
         public Stack()
         {
             StackAddresses = new List<ProgramMemoryAddress>();
             for (int var = 0; var < 8; var++)
-                StackAddresses.Add(new ProgramMemoryAddress(0));
+                StackAddresses.Add(new ProgramMemoryAddress(0, var));
         }
 
-        public void PushOntoStack(int ReturnAddress)
+        public void PushOntoStack(ProgramMemoryAddress returnAddress)
         {
-            StackAddresses.Insert(0, new ProgramMemoryAddress(ReturnAddress));
+            StackAddresses.Insert(0, returnAddress);
             StackAddresses.RemoveAt(8);
         }
 
@@ -33,6 +32,20 @@ namespace Simulator_PIC16F84
             }
             StackAddresses[7].Value = 0; 
             return topOfStack;
+        }
+
+        public ProgramMemoryAddress getStackValues(int index)
+        {
+            return StackAddresses[index];
+        }
+
+        public ProgramMemoryAddress Value
+        {
+            get { return PullFromStack(); }
+            set
+            {
+                PushOntoStack(value);
+            }
         }
     }
 }
