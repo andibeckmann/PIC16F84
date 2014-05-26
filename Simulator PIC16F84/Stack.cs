@@ -50,5 +50,13 @@ namespace Simulator_PIC16F84
                 PushOntoStack(value);
             }
         }
+
+        public void ClearStack()
+        {
+            foreach (var item in StackAddresses)
+	        {
+                item.Value = 0;
+	        }
+        }
     }
 }

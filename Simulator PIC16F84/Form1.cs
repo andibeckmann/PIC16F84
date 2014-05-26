@@ -324,6 +324,7 @@ namespace Simulator_PIC16F84
             RegisterMap.ClearRegister();
             RegisterMap.Init();
             registerView.ClearColors();
+            Stack.ClearStack();
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
