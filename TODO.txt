@@ -1,0 +1,9 @@
+##############################
+# TODO
+##############################
+
+
+0. Laufzeitzähler
+1. Breakpoints: Breakpoints auf erste und letzte Zeile funktionieren nicht
+2. Anweisung (Start, Einzelschritt, etc.) ohne geladenes Programm wirft Exception
+3. Exception fliegt falls man das Programm zu schließen versucht, während Schritte ausgeführt werden
