@@ -26,7 +26,7 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             W.Value = k;
 
-            PC.Counter.Value = stack.PullFromStack().Value;
+            PC.Counter.Value = stack.PullFromStack().Value - 1;
         }
 
         public RETLW(byte k, WorkingRegister W, ProgramCounter PC, Stack stack, RegisterFileMap Reg) : base(Reg)
@@ -34,6 +34,7 @@ namespace Simulator_PIC16F84.Instruktionen
             this.k = k;
 
             execute(W, PC, stack);
+            Reg.IncrementTimer();
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
