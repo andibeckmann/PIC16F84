@@ -39,6 +39,8 @@ namespace Simulator_PIC16F84
         /// Working Register
         /// </summary>
         RegisterBox WBox;
+        RegisterBox AReg;
+        RegisterBox BReg;
 
         public Main()
         {
@@ -55,8 +57,7 @@ namespace Simulator_PIC16F84
             /// Working Register View
             WBox = new RegisterBox(W);
             WBox.MdiParent = this;
-            WBox.Show();
-           
+            WBox.Show();         
 
             registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
             RegisterMap.Init();
@@ -67,6 +68,20 @@ namespace Simulator_PIC16F84
             // Display the new form.
             registerView.Show();
             var size = registerView.Size;
+
+            ///A-Register View
+            AReg = new RegisterBox(RegisterMap.getARegister());
+            AReg.MdiParent = this;
+            AReg.StartPosition = FormStartPosition.Manual;
+            AReg.Location = new Point(525, 500);
+            AReg.Show();
+
+            ///B-Register View
+            BReg = new RegisterBox(RegisterMap.getBRegister());
+            BReg.MdiParent = this;
+            BReg.StartPosition = FormStartPosition.Manual;
+            BReg.Location = new Point(750, 500);
+            BReg.Show();
 
             UserMemorySpace = new ProgramMemoryMap();
             ProgramView = new ProgramMemoryView(UserMemorySpace, this);
