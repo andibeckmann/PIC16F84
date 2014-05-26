@@ -127,7 +127,6 @@ namespace Simulator_PIC16F84
                         var checkBoxArray = this.registerBox.Controls.Find("Bit " + i, true);
                         if (W.IsBitSet(i))
                         {
-
                             var checkBox = ((CheckBox)checkBoxArray[0]).Checked = true;
                         }
                         else
@@ -137,11 +136,11 @@ namespace Simulator_PIC16F84
                     }
 
                 }
-                if(index == 0x05)
+                if (index == 0x05)
                 {
-                    if(IsBitSet(registerMap.getRegister(0x81).Value, 4))
+                    if (IsBitSet(registerMap.getRegister(0x81).Value, 4))
                     {
-                        if(registerMap.getRegister(0x05).fallingEdges[4])
+                        if (registerMap.getRegister(0x05).fallingEdges[4])
                         {
                             registerMap.IncrementCounter();
                         }
