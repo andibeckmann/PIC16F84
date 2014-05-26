@@ -9,4 +9,4 @@
 3. Exception fliegt falls man das Programm zu schließen versucht, während Schritte ausgeführt werden
 4. Man kann nur einmal Programm laden. Beim zweiten Mal explodiert irgendwas...
 5. Breakpoints: Programm hält nicht am Haltepunkt, sondern an der Instruktion davor.
-6. Program View: Die Ansicht sollte die ausgeführten Instruktionen möglichst in der Mitte anzeigen (derzeit ist es nur die unterste Zeile) damit man sehen kann, was als nächstes kommt.
+6. Program View: Die Ansicht sollte die ausgeführten Instruktionen möglichst oben anzeigen (derzeit ist es nur die unterste Zeile) damit man sehen kann, was als nächstes kommt.

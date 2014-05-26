@@ -31,7 +31,9 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = Reg.getRegister(f).Value + ~W.Value + 1;
+            var alterWert = Reg.getRegister(f).Value;
+            var subtraktor = W.Value;
+            var result = alterWert + ~subtraktor + 1;
 
             /// Zero-Bit Logik
             if (result == 0 || result == 256)
@@ -40,13 +42,13 @@ namespace Simulator_PIC16F84.Instruktionen
                 Reg.ResetZeroBit();
 
             /// Carry-Bit Logik
-            if (result < Reg.getRegister(f).Value )
+            if (result <  alterWert && result >= 0)
                 Reg.SetCarryBit();
             else
                 Reg.ResetCarryBit();
 
             /// Digit Carry Logik
-            if ((Reg.getRegister(f).Value & 0x0F) + (W.Value & 0x0F) > 0x0f)
+            if ((alterWert & 0x0F) + (subtraktor & 0x0F) > 0x0f)
                 Reg.SetDigitCarryBit();
             else
                 Reg.ResetDigitCarryBit();
