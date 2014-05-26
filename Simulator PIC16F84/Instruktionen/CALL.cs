@@ -42,7 +42,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
     private int DeriveReturnAddress(ProgramCounter PC)
     {
-        return PC.Counter.Value++;//TODO Value++ oder Value + 1? benötigt es eine eigene Methode?
+        return PC.Counter.Value + 1;//TODO Value++ oder Value + 1? benötigt es eine eigene Methode?
     }
 
     protected override void execute(WorkingRegister W, RegisterFileMap Reg)

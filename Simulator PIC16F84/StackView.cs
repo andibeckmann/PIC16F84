@@ -60,14 +60,14 @@ namespace Simulator_PIC16F84
 
         private void AddEventToStack()
         {
-                Stack.Value.StackChanged += new EventHandler<int>(this.StackContentChanged);
+                Stack.StackChanged += new EventHandler(this.StackContentChanged);
         }
 
-        public void StackContentChanged(object sender, int index)
+        public void StackContentChanged(object sender, EventArgs e)
         {
             if (InvokeRequired)
             {
-                BeginInvoke((MethodInvoker)delegate { StackContentChanged(sender, index); });
+                BeginInvoke((MethodInvoker)delegate { StackContentChanged(sender, e); });
             }
             else
             {
