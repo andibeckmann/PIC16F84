@@ -32,15 +32,6 @@
             this.deiMuddaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.programmLadenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.schliessenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hilfeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.anweisungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.einzelschrittToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.unterbrechenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ansichtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.registerFileMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.programMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +40,18 @@
             this.workingRegisterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.anweisungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.einzelschrittToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unterbrechenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hilfeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.intconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,36 +92,71 @@
             this.schliessenToolStripMenuItem.Text = "Schließen";
             this.schliessenToolStripMenuItem.Click += new System.EventHandler(this.schliessenToolStripMenuItem_Click);
             // 
-            // hilfeToolStripMenuItem
+            // ansichtToolStripMenuItem
             // 
-            this.hilfeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem,
-            this.datenblattPIC16C84ToolStripMenuItem,
-            this.projektToolStripMenuItem});
-            this.hilfeToolStripMenuItem.Name = "hilfeToolStripMenuItem";
-            this.hilfeToolStripMenuItem.Size = new System.Drawing.Size(44, 19);
-            this.hilfeToolStripMenuItem.Text = "Hilfe";
+            this.ansichtToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.registerFileMapToolStripMenuItem,
+            this.programMemoryToolStripMenuItem,
+            this.stackToolStripMenuItem,
+            this.workingRegisterToolStripMenuItem});
+            this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
+            this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 19);
+            this.ansichtToolStripMenuItem.Text = "Ansicht";
             // 
-            // aboutToolStripMenuItem
+            // registerFileMapToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.aboutToolStripMenuItem.Text = "About";
+            this.registerFileMapToolStripMenuItem.Name = "registerFileMapToolStripMenuItem";
+            this.registerFileMapToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.registerFileMapToolStripMenuItem.Text = "Register File Map";
+            this.registerFileMapToolStripMenuItem.Click += new System.EventHandler(this.registerFileMapToolStripMenuItem_Click);
             // 
-            // datenblattPIC16C84ToolStripMenuItem
+            // programMemoryToolStripMenuItem
             // 
-            this.datenblattPIC16C84ToolStripMenuItem.Name = "datenblattPIC16C84ToolStripMenuItem";
-            this.datenblattPIC16C84ToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.datenblattPIC16C84ToolStripMenuItem.Text = "Datenblatt PIC16F84";
-            this.datenblattPIC16C84ToolStripMenuItem.Click += new System.EventHandler(this.datenblattPIC16F84ToolStripMenuItem_Click);
+            this.programMemoryToolStripMenuItem.Name = "programMemoryToolStripMenuItem";
+            this.programMemoryToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.programMemoryToolStripMenuItem.Text = "Program Memory";
+            this.programMemoryToolStripMenuItem.Click += new System.EventHandler(this.programMemoryToolStripMenuItem_Click);
             // 
-            // projektToolStripMenuItem
+            // stackToolStripMenuItem
             // 
-            this.projektToolStripMenuItem.Name = "projektToolStripMenuItem";
-            this.projektToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.projektToolStripMenuItem.Text = "Projekt Aufgabenstellung";
-            this.projektToolStripMenuItem.Click += new System.EventHandler(this.projektToolStripMenuItem_Click);
+            this.stackToolStripMenuItem.Name = "stackToolStripMenuItem";
+            this.stackToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.stackToolStripMenuItem.Text = "Stack";
+            this.stackToolStripMenuItem.Click += new System.EventHandler(this.stackToolStripMenuItem_Click);
+            // 
+            // workingRegisterToolStripMenuItem
+            // 
+            this.workingRegisterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.workingRegisterToolStripMenuItem1,
+            this.aRegisterToolStripMenuItem,
+            this.bRegisterToolStripMenuItem,
+            this.statusRegisterToolStripMenuItem,
+            this.optionRegisterToolStripMenuItem,
+            this.intconToolStripMenuItem});
+            this.workingRegisterToolStripMenuItem.Name = "workingRegisterToolStripMenuItem";
+            this.workingRegisterToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.workingRegisterToolStripMenuItem.Text = "Register";
+            // 
+            // workingRegisterToolStripMenuItem1
+            // 
+            this.workingRegisterToolStripMenuItem1.Name = "workingRegisterToolStripMenuItem1";
+            this.workingRegisterToolStripMenuItem1.Size = new System.Drawing.Size(199, 22);
+            this.workingRegisterToolStripMenuItem1.Text = "Working (Accumulator)";
+            this.workingRegisterToolStripMenuItem1.Click += new System.EventHandler(this.workingRegisterToolStripMenuItem1_Click);
+            // 
+            // aRegisterToolStripMenuItem
+            // 
+            this.aRegisterToolStripMenuItem.Name = "aRegisterToolStripMenuItem";
+            this.aRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.aRegisterToolStripMenuItem.Text = "Port A";
+            this.aRegisterToolStripMenuItem.Click += new System.EventHandler(this.aRegisterToolStripMenuItem_Click);
+            // 
+            // bRegisterToolStripMenuItem
+            // 
+            this.bRegisterToolStripMenuItem.Name = "bRegisterToolStripMenuItem";
+            this.bRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.bRegisterToolStripMenuItem.Text = "Port B";
+            this.bRegisterToolStripMenuItem.Click += new System.EventHandler(this.bRegisterToolStripMenuItem_Click);
             // 
             // anweisungenToolStripMenuItem
             // 
@@ -163,68 +201,56 @@
             this.unterbrechenToolStripMenuItem.Text = "Unterbrechen";
             this.unterbrechenToolStripMenuItem.Click += new System.EventHandler(this.unterbrechenToolStripMenuItem_Click);
             // 
-            // ansichtToolStripMenuItem
+            // hilfeToolStripMenuItem
             // 
-            this.ansichtToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.registerFileMapToolStripMenuItem,
-            this.programMemoryToolStripMenuItem,
-            this.stackToolStripMenuItem,
-            this.workingRegisterToolStripMenuItem});
-            this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
-            this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 19);
-            this.ansichtToolStripMenuItem.Text = "Ansicht";
+            this.hilfeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem,
+            this.datenblattPIC16C84ToolStripMenuItem,
+            this.projektToolStripMenuItem});
+            this.hilfeToolStripMenuItem.Name = "hilfeToolStripMenuItem";
+            this.hilfeToolStripMenuItem.Size = new System.Drawing.Size(44, 19);
+            this.hilfeToolStripMenuItem.Text = "Hilfe";
             // 
-            // registerFileMapToolStripMenuItem
+            // aboutToolStripMenuItem
             // 
-            this.registerFileMapToolStripMenuItem.Name = "registerFileMapToolStripMenuItem";
-            this.registerFileMapToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.registerFileMapToolStripMenuItem.Text = "Register File Map";
-            this.registerFileMapToolStripMenuItem.Click += new System.EventHandler(this.registerFileMapToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.aboutToolStripMenuItem.Text = "About";
             // 
-            // programMemoryToolStripMenuItem
+            // datenblattPIC16C84ToolStripMenuItem
             // 
-            this.programMemoryToolStripMenuItem.Name = "programMemoryToolStripMenuItem";
-            this.programMemoryToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.programMemoryToolStripMenuItem.Text = "Program Memory";
-            this.programMemoryToolStripMenuItem.Click += new System.EventHandler(this.programMemoryToolStripMenuItem_Click);
+            this.datenblattPIC16C84ToolStripMenuItem.Name = "datenblattPIC16C84ToolStripMenuItem";
+            this.datenblattPIC16C84ToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.datenblattPIC16C84ToolStripMenuItem.Text = "Datenblatt PIC16F84";
+            this.datenblattPIC16C84ToolStripMenuItem.Click += new System.EventHandler(this.datenblattPIC16F84ToolStripMenuItem_Click);
             // 
-            // stackToolStripMenuItem
+            // projektToolStripMenuItem
             // 
-            this.stackToolStripMenuItem.Name = "stackToolStripMenuItem";
-            this.stackToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.stackToolStripMenuItem.Text = "Stack";
-            this.stackToolStripMenuItem.Click += new System.EventHandler(this.stackToolStripMenuItem_Click);
+            this.projektToolStripMenuItem.Name = "projektToolStripMenuItem";
+            this.projektToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.projektToolStripMenuItem.Text = "Projekt Aufgabenstellung";
+            this.projektToolStripMenuItem.Click += new System.EventHandler(this.projektToolStripMenuItem_Click);
             // 
-            // workingRegisterToolStripMenuItem
+            // statusRegisterToolStripMenuItem
             // 
-            this.workingRegisterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.workingRegisterToolStripMenuItem1,
-            this.aRegisterToolStripMenuItem,
-            this.bRegisterToolStripMenuItem});
-            this.workingRegisterToolStripMenuItem.Name = "workingRegisterToolStripMenuItem";
-            this.workingRegisterToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.workingRegisterToolStripMenuItem.Text = "Register";
+            this.statusRegisterToolStripMenuItem.Name = "statusRegisterToolStripMenuItem";
+            this.statusRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.statusRegisterToolStripMenuItem.Text = "Status";
             // 
-            // workingRegisterToolStripMenuItem1
+            // optionRegisterToolStripMenuItem
             // 
-            this.workingRegisterToolStripMenuItem1.Name = "workingRegisterToolStripMenuItem1";
-            this.workingRegisterToolStripMenuItem1.Size = new System.Drawing.Size(164, 22);
-            this.workingRegisterToolStripMenuItem1.Text = "Working Register";
-            this.workingRegisterToolStripMenuItem1.Click += new System.EventHandler(this.workingRegisterToolStripMenuItem1_Click);
+            this.optionRegisterToolStripMenuItem.Name = "optionRegisterToolStripMenuItem";
+            this.optionRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.optionRegisterToolStripMenuItem.Text = "Option";
+            this.optionRegisterToolStripMenuItem.Click += new System.EventHandler(this.optionRegisterToolStripMenuItem_Click);
             // 
-            // aRegisterToolStripMenuItem
+            // intconToolStripMenuItem
             // 
-            this.aRegisterToolStripMenuItem.Name = "aRegisterToolStripMenuItem";
-            this.aRegisterToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.aRegisterToolStripMenuItem.Text = "A Register";
-            this.aRegisterToolStripMenuItem.Click += new System.EventHandler(this.aRegisterToolStripMenuItem_Click);
-            // 
-            // bRegisterToolStripMenuItem
-            // 
-            this.bRegisterToolStripMenuItem.Name = "bRegisterToolStripMenuItem";
-            this.bRegisterToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.bRegisterToolStripMenuItem.Text = "B Register";
-            this.bRegisterToolStripMenuItem.Click += new System.EventHandler(this.bRegisterToolStripMenuItem_Click);
+            this.intconToolStripMenuItem.Name = "intconToolStripMenuItem";
+            this.intconToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.intconToolStripMenuItem.Text = "Intcon";
+            this.intconToolStripMenuItem.Click += new System.EventHandler(this.intconToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -269,6 +295,9 @@
         private System.Windows.Forms.ToolStripMenuItem workingRegisterToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem aRegisterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bRegisterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem statusRegisterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionRegisterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem intconToolStripMenuItem;
 
     }
 }

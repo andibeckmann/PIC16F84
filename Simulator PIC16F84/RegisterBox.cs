@@ -50,7 +50,17 @@ namespace Simulator_PIC16F84
             this.MaximizeBox = false;
 
             if (W != null)
-                this.Text = "Working Register";
+                this.Text = "WORKING Register";
+            else if (RegByte.Index == 3)
+                this.Text = "STATUS Register";
+            else if (RegByte.Index == 5)
+                this.Text = "PORT A Register";
+            else if (RegByte.Index == 6)
+                this.Text = "PORT B Register";
+            else if (RegByte.Index == 0x81)
+                this.Text = "OPTION Register";
+            else if (RegByte.Index == 0x0B)
+                this.Text = "INTCON Register";
             else
                 this.Text = "Register " + RegByte.Index;
         }

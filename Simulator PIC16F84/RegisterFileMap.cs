@@ -171,7 +171,7 @@ namespace Simulator_PIC16F84
             return this.registerList[index];
         }
 
-        public RegisterByte getStatusRegisterContent()
+        public RegisterByte getStatusRegister()
         {
             return registerList[3];
         }
@@ -184,6 +184,16 @@ namespace Simulator_PIC16F84
         public RegisterByte getBRegister()
         {
             return registerList[6];
+        }
+
+        public RegisterByte getOptionRegister()
+        {
+            return registerList[0x81];
+        }
+
+        public RegisterByte getIntconRegister()
+        {
+            return registerList[0x0B];
         }
 
         internal void SetCarryBit()

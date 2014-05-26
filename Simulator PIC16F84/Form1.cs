@@ -36,11 +36,14 @@ namespace Simulator_PIC16F84
         private System.Windows.Forms.TextBox textBoxSlider;
 
         /// <summary>
-        /// Working Register
+        /// Detailansicht spezieller Register
         /// </summary>
         RegisterBox WBox;
         RegisterBox AReg;
         RegisterBox BReg;
+        RegisterBox Status;
+        RegisterBox Option;
+        RegisterBox Intcon;
 
         public Main()
         {
@@ -54,25 +57,42 @@ namespace Simulator_PIC16F84
 
             RegisterMap = new RegisterFileMap(PC);
 
-            /// Working Register View
-            WBox = new RegisterBox(W);
-            WBox.MdiParent = this;
-            WBox.Show();
+            setupWorkingRegisterBox();
+            setupRegisterBoxA();
+            setupRegisterBoxB();
+            setupStatusBox();
+            setupOptionRegister();
+            setupIntconRegister();
 
-            ///A-Register View
-            AReg = new RegisterBox(RegisterMap.getARegister());
-            AReg.MdiParent = this;
-            AReg.StartPosition = FormStartPosition.Manual;
-            AReg.Location = new Point(525, 500);
-            AReg.Show();
+            setupRegisterView();
+            setupProgramView();
 
-            ///B-Register View
-            BReg = new RegisterBox(RegisterMap.getBRegister());
-            BReg.MdiParent = this;
-            BReg.StartPosition = FormStartPosition.Manual;
-            BReg.Location = new Point(750, 500);
-            BReg.Show();
+            PC = new ProgramCounter(RegisterMap);
+            setupStack();
+            //Watchdogtimer
+            WDT = new WatchdogTimer();
+            Prescaler = new Prescaler();
+            breakPoints = new List<int>();
+            setupCrystalFrequency();
+        }
 
+        private void setupCrystalFrequency()
+        {
+            crystalFrequency = new System.Timers.Timer(10);
+            crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
+        }
+
+        private void setupProgramView()
+        {
+            UserMemorySpace = new ProgramMemoryMap();
+            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
+            ProgramView.Location = new Point(300, 0);
+            ProgramView.MdiParent = this;
+            ProgramView.Show();
+        }
+
+        private void setupRegisterView()
+        {
             registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg);
             RegisterMap.Init();
             W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
@@ -82,32 +102,61 @@ namespace Simulator_PIC16F84
             registerView.ClearColors();
             // Display the new form.
             registerView.Show();
-            var size = registerView.Size;
+        }
 
+        private void setupStatusBox()
+        {
+            Status = new RegisterBox(RegisterMap.getStatusRegister());
+            Status.MdiParent = this;
+            Status.StartPosition = FormStartPosition.Manual;
+            Status.Location = new Point(300, 600);
+            Status.Show();
+        }
 
-            UserMemorySpace = new ProgramMemoryMap();
-            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
-            ProgramView.MdiParent = this;
-            ProgramView.SetDesktopLocation(size.Width + 18, 0);
-            ProgramView.Show();
+        private void setupRegisterBoxB()
+        {
+            ///B-Register View
+            BReg = new RegisterBox(RegisterMap.getBRegister());
+            BReg.MdiParent = this;
+            BReg.StartPosition = FormStartPosition.Manual;
+            BReg.Location = new Point(750, 500);
+            BReg.Show();
+        }
 
-            PC = new ProgramCounter(RegisterMap);
-            //Stack
-            Stack = new Stack();
-            StackView = new StackView(Stack);
-            StackView.MdiParent = this;
-            StackView.Show();
-            //Watchdogtimer
-            WDT = new WatchdogTimer();
-            Prescaler = new Prescaler();
-            breakPoints = new List<int>();
-            crystalFrequency = new System.Timers.Timer(10);
-            crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
+        private void setupRegisterBoxA()
+        {
+            ///A-Register View
+            AReg = new RegisterBox(RegisterMap.getARegister());
+            AReg.MdiParent = this;
+            AReg.StartPosition = FormStartPosition.Manual;
+            AReg.Location = new Point(525, 500);
+            AReg.Show();
+        }
 
-            
-            
+        private void setupWorkingRegisterBox()
+        {
+            /// Working Register View
+            WBox = new RegisterBox(W);
+            WBox.MdiParent = this;
+            WBox.Show();
+        }
 
+        private void setupOptionRegister()
+        {
+            Option = new RegisterBox(RegisterMap.getOptionRegister());
+            Option.MdiParent = this;
+            Option.StartPosition = FormStartPosition.Manual;
+            Option.Location = new Point(525, 600);
+            Option.Show();
+        }
 
+        private void setupIntconRegister()
+        {
+            Intcon = new RegisterBox(RegisterMap.getIntconRegister());
+            Intcon.MdiParent = this;
+            Intcon.StartPosition = FormStartPosition.Manual;
+            Intcon.Location = new Point(750, 600);
+            Intcon.Show();
         }
 
         private void InitializeSlider()
@@ -361,27 +410,20 @@ namespace Simulator_PIC16F84
 
         private void programMemoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UserMemorySpace = new ProgramMemoryMap();
-            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
-            ProgramView.Location = new Point(300, 0);
-            ProgramView.MdiParent = this;
-            ProgramView.Show();
+            setupProgramView();
         }
 
         private void registerFileMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg);
-            RegisterMap.Init();
-            W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
-            // Set the Parent Form of the Child window.
-            registerView.MdiParent = this;
-            registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
-            registerView.ClearColors();
-            // Display the new form.
-            registerView.Show();
+            setupRegisterView();
         }
 
         private void stackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setupStack();
+        }
+
+        private void setupStack()
         {
             Stack = new Stack();
             StackView = new StackView(Stack);
@@ -391,27 +433,27 @@ namespace Simulator_PIC16F84
 
         private void workingRegisterToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            WBox = new RegisterBox(W);
-            WBox.MdiParent = this;
-            WBox.Show();       
+            setupWorkingRegisterBox();   
         }
 
         private void aRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AReg = new RegisterBox(RegisterMap.getARegister());
-            AReg.MdiParent = this;
-            AReg.StartPosition = FormStartPosition.Manual;
-            AReg.Location = new Point(525, 500);
-            AReg.Show();
+            setupRegisterBoxA();
         }
 
         private void bRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BReg = new RegisterBox(RegisterMap.getBRegister());
-            BReg.MdiParent = this;
-            BReg.StartPosition = FormStartPosition.Manual;
-            BReg.Location = new Point(750, 500);
-            BReg.Show();
+            setupRegisterBoxB();
+        }
+
+        private void optionRegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setupOptionRegister();
+        }
+
+        private void intconToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setupIntconRegister();
         }
 
     }
