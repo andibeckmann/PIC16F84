@@ -22,7 +22,10 @@ namespace Simulator_PIC16F84
         {
             this.memoryKopie = UserMemorySpace;
             InitializeComponent();
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.AutoScroll = false;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MinimizeBox = false;
+            this.MaximizeBox = false;
            this.StartPosition = FormStartPosition.Manual;
            this.dataGridView1.SelectionChanged += SelectionChangedEvent;
            this.dataGridView1.CellDoubleClick += HandleBreakPoints;

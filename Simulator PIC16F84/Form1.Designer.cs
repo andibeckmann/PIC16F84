@@ -41,6 +41,14 @@
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.einzelschrittToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unterbrechenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ansichtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.registerFileMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.programMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workingRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.workingRegisterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,8 +56,9 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deiMuddaToolStripMenuItem,
-            this.hilfeToolStripMenuItem,
-            this.anweisungenToolStripMenuItem});
+            this.ansichtToolStripMenuItem,
+            this.anweisungenToolStripMenuItem,
+            this.hilfeToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
@@ -62,7 +71,7 @@
             this.deiMuddaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.programmLadenToolStripMenuItem,
             this.schliessenToolStripMenuItem});
-            this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";//TODO
+            this.deiMuddaToolStripMenuItem.Name = "deiMuddaToolStripMenuItem";
             this.deiMuddaToolStripMenuItem.Size = new System.Drawing.Size(70, 19);
             this.deiMuddaToolStripMenuItem.Text = "Simulator";
             // 
@@ -154,6 +163,69 @@
             this.unterbrechenToolStripMenuItem.Text = "Unterbrechen";
             this.unterbrechenToolStripMenuItem.Click += new System.EventHandler(this.unterbrechenToolStripMenuItem_Click);
             // 
+            // ansichtToolStripMenuItem
+            // 
+            this.ansichtToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.registerFileMapToolStripMenuItem,
+            this.programMemoryToolStripMenuItem,
+            this.stackToolStripMenuItem,
+            this.workingRegisterToolStripMenuItem});
+            this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
+            this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 19);
+            this.ansichtToolStripMenuItem.Text = "Ansicht";
+            // 
+            // registerFileMapToolStripMenuItem
+            // 
+            this.registerFileMapToolStripMenuItem.Name = "registerFileMapToolStripMenuItem";
+            this.registerFileMapToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.registerFileMapToolStripMenuItem.Text = "Register File Map";
+            this.registerFileMapToolStripMenuItem.Click += new System.EventHandler(this.registerFileMapToolStripMenuItem_Click);
+            // 
+            // programMemoryToolStripMenuItem
+            // 
+            this.programMemoryToolStripMenuItem.Name = "programMemoryToolStripMenuItem";
+            this.programMemoryToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.programMemoryToolStripMenuItem.Text = "Program Memory";
+            this.programMemoryToolStripMenuItem.Click += new System.EventHandler(this.programMemoryToolStripMenuItem_Click);
+            // 
+            // stackToolStripMenuItem
+            // 
+            this.stackToolStripMenuItem.Name = "stackToolStripMenuItem";
+            this.stackToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.stackToolStripMenuItem.Text = "Stack";
+            this.stackToolStripMenuItem.Click += new System.EventHandler(this.stackToolStripMenuItem_Click);
+            // 
+            // workingRegisterToolStripMenuItem
+            // 
+            this.workingRegisterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.workingRegisterToolStripMenuItem1,
+            this.aRegisterToolStripMenuItem,
+            this.bRegisterToolStripMenuItem});
+            this.workingRegisterToolStripMenuItem.Name = "workingRegisterToolStripMenuItem";
+            this.workingRegisterToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.workingRegisterToolStripMenuItem.Text = "Register";
+            // 
+            // workingRegisterToolStripMenuItem1
+            // 
+            this.workingRegisterToolStripMenuItem1.Name = "workingRegisterToolStripMenuItem1";
+            this.workingRegisterToolStripMenuItem1.Size = new System.Drawing.Size(164, 22);
+            this.workingRegisterToolStripMenuItem1.Text = "Working Register";
+            this.workingRegisterToolStripMenuItem1.Click += new System.EventHandler(this.workingRegisterToolStripMenuItem1_Click);
+            // 
+            // aRegisterToolStripMenuItem
+            // 
+            this.aRegisterToolStripMenuItem.Name = "aRegisterToolStripMenuItem";
+            this.aRegisterToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.aRegisterToolStripMenuItem.Text = "A Register";
+            this.aRegisterToolStripMenuItem.Click += new System.EventHandler(this.aRegisterToolStripMenuItem_Click);
+            // 
+            // bRegisterToolStripMenuItem
+            // 
+            this.bRegisterToolStripMenuItem.Name = "bRegisterToolStripMenuItem";
+            this.bRegisterToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.bRegisterToolStripMenuItem.Text = "B Register";
+            this.bRegisterToolStripMenuItem.Click += new System.EventHandler(this.bRegisterToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -189,6 +261,14 @@
         private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem einzelschrittToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unterbrechenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ansichtToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem registerFileMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem programMemoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workingRegisterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workingRegisterToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem aRegisterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bRegisterToolStripMenuItem;
 
     }
 }
