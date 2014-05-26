@@ -93,7 +93,7 @@ namespace Simulator_PIC16F84
 
         private void setupRegisterView()
         {
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg);
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg, Status, Option, Intcon);
             RegisterMap.Init();
             W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.

@@ -11,4 +11,5 @@
 5. Breakpoints: Programm hält nicht am Haltepunkt, sondern an der Instruktion davor.
 6. Program View: Die Ansicht sollte die ausgeführten Instruktionen möglichst oben anzeigen (derzeit ist es nur die unterste Zeile) damit man sehen kann, was als nächstes kommt.
 7. Alle Views lassen sich nur am Anfang fehlerfrei aufrufen. Wenn man sie einmal geschlossen hat, ist die dahinterliegende Logik zerschossen.
-8. Die Registerboxen sind beim Init noch nicht mit Werten befüllt. Sieht unschön aus, da man nicht sicher ist, ob sie funzen oder nicht.
+8. Die Registerboxen sind beim Init noch nicht mit Werten befüllt. Sieht nicht nur unschön aus, ist wegen der Checkboxen auch falsch.
+9. Anbindung für Status/Option/Intcon Regs

@@ -19,16 +19,22 @@ namespace Simulator_PIC16F84
         WorkingRegister W;
         RegisterBox ARegRegisterBox;
         RegisterBox BRegRegisterBox;
+        RegisterBox StatusRegisterBox;
+        RegisterBox OptionRegisterBox;
+        RegisterBox IntconRegisterBox;
 
-        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W, RegisterBox AReg, RegisterBox BReg)
+        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W, RegisterBox AReg, RegisterBox BReg, RegisterBox Status, RegisterBox Option, RegisterBox Intcon)
         {
+            int sizeOfField = 25;
+
             this.registerMap = RegisterMap;
             this.workingRegisterBox = registerBox;
             this.W = W;
             this.ARegRegisterBox = AReg;
             this.BRegRegisterBox = BReg;
-
-            int sizeOfField = 25;
+            this.StatusRegisterBox = Status;
+            this.OptionRegisterBox = Option;
+            this.IntconRegisterBox = Intcon;
 
             InitializeComponent();
             this.StartPosition = FormStartPosition.Manual;
@@ -37,10 +43,14 @@ namespace Simulator_PIC16F84
             this.Size = new System.Drawing.Size(9 * (sizeOfField + 6), max.Height);
             this.MinimizeBox = false;
             this.MaximizeBox = false;
-
             this.mappingArray = mappingArray;
             AddEventToRegister();
+            createRegisterPattern(RegisterMap, sizeOfField);
+            initSpecialRegisters();
+        }
 
+        private void createRegisterPattern(RegisterFileMap RegisterMap, int sizeOfField)
+        {
             for (int i = 0; i < 8; i++)
             {
                 createLabels(sizeOfField, i);
@@ -122,50 +132,6 @@ namespace Simulator_PIC16F84
             }
             else
             {
-                if (index == -1)
-                {
-                    var textBoxArray = this.workingRegisterBox.Controls.Find("Value", true);
-                    textBoxArray[0].Text = W.Value.ToString("X2");
-                    for (int i = 0; i < 8; i++)
-                    {
-                        var checkBoxArray = this.workingRegisterBox.Controls.Find("Bit " + i, true);
-                        if (W.IsBitSet(i))
-                        {
-                            var checkBox = ((CheckBox)checkBoxArray[0]).Checked = true;
-                        }
-                        else
-                        {
-                            var checkBox = ((CheckBox)checkBoxArray[0]).Checked = false;
-                        }
-                    }
-
-                }
-                if (index == 0x05)
-                {
-                    if (IsBitSet(registerMap.getRegister(0x81).Value, 4))
-                    {
-                        if (registerMap.getRegister(0x05).fallingEdges[4])
-                        {
-                            registerMap.IncrementCounter();
-                        }
-                    }
-                    else
-                    {
-                        if (registerMap.getRegister(0x05).risingEdges[4])
-                        {
-                            registerMap.IncrementCounter();
-                        }
-                    }
-                    var textBox = ARegRegisterBox.Controls.Find("Value",true);
-                    textBox[0].Text = registerMap.getRegister(0x05).Value.ToString("X2");
-                }
-                if (index == 0x06)
-                {
-                    var textBox = BRegRegisterBox.Controls.Find("Value", true);
-                    textBox[0].Text = registerMap.getRegister(0x06).Value.ToString("X2");
-                }
-
-
                 FillInRegBytes(index);
                 CheckSpecialRegisters(index);
             }
@@ -184,19 +150,91 @@ namespace Simulator_PIC16F84
 
         private void CheckSpecialRegisters(int index)
         {
-            //TMR0-Modes (timermode or countermode)
-            if (index == 0x81)
+            if (index == -1)
+                checkRegister(workingRegisterBox, W);
+            else if (index == 0x05)
             {
-                if (registerMap.IsBitSet(registerMap.getRegister(0x81).Value, 5))
+                checkRegister(ARegRegisterBox, registerMap.getARegister());
+                checkFallingRisingEdges();
+            }
+            else if (index == 0x06)
+                checkRegister(BRegRegisterBox, registerMap.getBRegister());
+            else if (index == 0x03)
+                checkRegister(StatusRegisterBox, registerMap.getStatusRegister());
+            else if (index == 0x0B)
+                checkRegister(IntconRegisterBox, registerMap.getIntconRegister());
+            else if (index == 0x81)
+            {
+                checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
+                checkTimerMode();
+            }
+        }
+
+        private void checkFallingRisingEdges()
+        {
+            //TODO: Find out what this code even does, is it functional or dead? (Copied over from CheckSpecialRegisters function) Andi
+            if (IsBitSet(registerMap.getRegister(0x81).Value, 4))
+            {
+                if (registerMap.getRegister(0x05).fallingEdges[4])
                 {
-                    registerMap.SetCounterMode();
+                    registerMap.IncrementCounter();
+                }
+            }
+            else
+            {
+                if (registerMap.getRegister(0x05).risingEdges[4])
+                {
+                    registerMap.IncrementCounter();
+                }
+            }
+        }
+
+        private void checkTimerMode()
+        {
+            //TMR0-Modes (timermode or countermode)
+            if (registerMap.IsBitSet(registerMap.getRegister(0x81).Value, 5))
+            {
+                registerMap.SetCounterMode();
+            }
+            else
+            {
+                registerMap.SetTimerMode();
+            }
+        }
+
+        private void initSpecialRegisters()
+        {
+            checkRegister(workingRegisterBox, W);
+            checkRegister(ARegRegisterBox, registerMap.getARegister());
+            checkRegister(BRegRegisterBox, registerMap.getBRegister());
+            checkRegister(StatusRegisterBox, registerMap.getStatusRegister());
+            checkRegister(IntconRegisterBox, registerMap.getIntconRegister());
+            checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
+
+            checkTimerMode();
+        }
+
+        private void checkRegister(RegisterBox box, RegisterByte Reg)
+        {
+            var textBoxArray = box.Controls.Find("Value", true);
+            textBoxArray[0].Text = Reg.Value.ToString("X2");
+            updateCheckBoxes(box, Reg);
+        }
+
+        private void updateCheckBoxes(RegisterBox box, RegisterByte Reg)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                var checkBoxArray = box.Controls.Find("Bit " + i, true);
+                if (Reg.IsBitSet(i))
+                {
+                    var checkBox = ((CheckBox)checkBoxArray[0]).Checked = true;
                 }
                 else
                 {
-                    registerMap.SetTimerMode();
+                    var checkBox = ((CheckBox)checkBoxArray[0]).Checked = false;
                 }
             }
-
         }
 
         private void FillInRegBytes(int index)
