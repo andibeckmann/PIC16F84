@@ -32,7 +32,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(ProgramCounter PC)
         {
-            PC.Counter.Value = Stack.PullFromStack().Value;
+            PC.Counter.Value = Stack.PullFromStack().Value - 1;
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
