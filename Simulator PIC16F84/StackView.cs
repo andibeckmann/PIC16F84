@@ -28,6 +28,7 @@ namespace Simulator_PIC16F84
             createStackLabel();
             createStackTextboxes();
             AddEventToStack();
+            fillInStack();
         }
 
         private void createStackTextboxes()
@@ -37,8 +38,9 @@ namespace Simulator_PIC16F84
                 TextBox textBox = new TextBox();
                 textBox.Location = new System.Drawing.Point((marginSmall + sizeOfField )* 2, marginSmall + index * (sizeOfField + marginSmall ));
                 textBox.Size = new System.Drawing.Size(sizeOfField * 4, sizeOfField);
-                textBox.TextChanged += new System.EventHandler(textbox_TextChanged);
                 textBox.Name = "Stack Level " + index;
+                textBox.ReadOnly = true;
+                textBox.TextAlign = HorizontalAlignment.Right;
                 this.Controls.Add(textBox);
             }
         }
@@ -53,28 +55,6 @@ namespace Simulator_PIC16F84
                 label.Size = new System.Drawing.Size(sizeOfField * 2 + marginSmall, sizeOfField);
                 label.Text = "Level " + index;
                 this.Controls.Add(label);
-            }
-        }
-
-        private void textbox_TextChanged(object sender, EventArgs e)
-        {
-            TextBox textBox = sender as TextBox;
-
-            var name = textBox.Name;
-            name = name.Substring(13);
-            int id;
-            if (int.TryParse(name, out id))
-            {
-                int content;
-                try
-                {
-                    content = Convert.ToInt32(textBox.Text, 16);
-                    Stack.Value = new ProgramMemoryAddress(content);
-                }
-                catch
-                {
-                    // TODO
-                }
             }
         }
 
