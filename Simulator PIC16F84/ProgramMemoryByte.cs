@@ -101,11 +101,7 @@ namespace Simulator_PIC16F84
             //MOVF Instruktion
             if ((value & (int)0x3F00) == (int)0x0800)
             {
-                f = value & (int)0x7F;
-                if ((value & 0x80) == 0x80)
-                    d = true;
-                else
-                    d = false;
+                ExtractFileRegisterAndDestinationBit(out f, out d);
                 MOVF Operation = new MOVF(f, d, W, Reg);
             }
 

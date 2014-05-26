@@ -21,28 +21,45 @@ namespace Simulator_PIC16F84.Instruktionen
     /// </summary>
     class SUBWF : BaseOperation
     {
-        
-
-        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
-        {
-            var result = Reg.getRegister(f).Value - W.Value;
-
-            if(d)
-            {
-                Reg.getRegister(f).Value = (byte) result;
-            }
-            else
-            {
-                W.Value = (byte) result;
-            }
-        }
-
         public SUBWF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
             this.d = d;
 
             execute(W, Reg);
+        }
+
+        protected override void execute(WorkingRegister W, RegisterFileMap Reg)
+        {
+            var result = Reg.getRegister(f).Value + ~W.Value + 1;
+
+            /// Zero-Bit Logik
+            if (result == 0 || result == 256)
+                Reg.SetZeroBit();
+            else
+                Reg.ResetZeroBit();
+
+            /// Carry-Bit Logik
+            if (result < Reg.getRegister(f).Value )
+                Reg.SetCarryBit();
+            else
+                Reg.ResetCarryBit();
+
+            /// Digit Carry Logik
+            if ((Reg.getRegister(f).Value & 0x0F) + (W.Value & 0x0F) > 0x0f)
+                Reg.SetDigitCarryBit();
+            else
+                Reg.ResetDigitCarryBit();
+
+            /// Resultat ablegen, Unterscheidung Working Reg oder File Reg
+            if (d)
+            {
+                Reg.getRegister(f).Value = (byte)result;
+            }
+            else
+            {
+                W.Value = (byte)result;
+            }
         }
     }
 }

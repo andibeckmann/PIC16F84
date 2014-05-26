@@ -54,17 +54,11 @@ namespace Simulator_PIC16F84.Instruktionen
                 else
                     Reg.ResetDigitCarryBit();
 
-                /// Unterscheidung Working Reg oder File Reg
+                /// Resultat Ablegen, Unterscheidung Working Reg oder File Reg
                 if (d)
-                {
-                    /// Resultat Ablegen
                    Reg.getRegister(f).Value = (byte)result;
-                }
                 else
-                {
-                    /// Resultat Ablegen
                     W.Value = (byte)result;
-                }
             }
     }
 }
