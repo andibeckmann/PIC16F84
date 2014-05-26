@@ -34,13 +34,13 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             var result = W.Value + k;
             /// Zero-Bit Logik
-            if (result == 0)
+            if (result == 0 || result == 256 )
                 Reg.SetZeroBit();
             else
                Reg.ResetZeroBit();
 
             /// Digit Carry Logik
-            if ((W.Value & 0x0F) + k > 0x0f)
+            if ((W.Value & 0x0F) + (k & 0x0F) > 0x0f)
                 Reg.SetDigitCarryBit();
             else
                 Reg.ResetDigitCarryBit();
