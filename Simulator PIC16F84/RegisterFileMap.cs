@@ -318,7 +318,7 @@ namespace Simulator_PIC16F84
             //Kleine Fehlerbehandlung
             if (BitNumber < 8 && BitNumber > -1)
             {
-                return (byte)(b & (byte)(~BitNumber));
+                return (byte)(b & (byte)(~(0x01 << BitNumber)));
             }
             else
             {

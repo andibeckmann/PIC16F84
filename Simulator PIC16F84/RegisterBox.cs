@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace Simulator_PIC16F84
 {
@@ -22,7 +23,7 @@ namespace Simulator_PIC16F84
         {
             this.W = W;
             this.StartPosition = FormStartPosition.Manual;
-            this.Location = new Point(300,500);
+            this.Location = new Point(300, 500);
             constructRegisterBox();
         }
 
@@ -58,7 +59,7 @@ namespace Simulator_PIC16F84
         {
             TextBox textBox = new TextBox();
             textBox.Location = new System.Drawing.Point(marginSmall, marginSmall);
-            textBox.Width = marginSmall*7 + sizeOfField*8;
+            textBox.Width = marginSmall * 7 + sizeOfField * 8;
             textBox.TextChanged += new System.EventHandler(textbox_TextChanged);
             textBox.Name = "Value";
             this.Controls.Add(textBox);
@@ -67,7 +68,9 @@ namespace Simulator_PIC16F84
         private void createBitCheckboxes()
         {
             for (int index = 0; index < 8; index++)
+            {
                 createCheckBox(index);
+            }
         }
 
         private void createCheckBox(int index)
@@ -76,6 +79,7 @@ namespace Simulator_PIC16F84
             checkbox.Location = new System.Drawing.Point((sizeOfField + marginSmall) * index + marginSmall, marginTop + marginSmall);
             checkbox.Width = sizeOfField;
             checkbox.Name = "Bit " + (7 - index);
+            checkbox.CheckedChanged += new System.EventHandler(CheckBoxChanged);
             this.Controls.Add(checkbox);
         }
 
@@ -125,6 +129,64 @@ namespace Simulator_PIC16F84
             catch
             {
                 //TODO
+            }
+        }
+
+        public void CheckBoxChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+
+            if (checkBox != null)
+            {
+                var resultString = Regex.Match(checkBox.Name, @"\d+").Value;
+                var bit = Int32.Parse(resultString);
+                if (checkBox.Checked == true)
+                {
+                    W.Value = SetBit(W.Value, bit);
+                }
+                else
+                {
+                    W.Value = ClearBit(W.Value, bit); 
+                }
+            }
+        }
+        /// <summary>
+        /// Setzt ein bestimmtes Bit in einem Byte.
+        /// </summary>
+        /// <param name="b">Byte, welches bearbeitet werden soll.</param>
+        /// <param name="BitNumber">Das zu setzende Bit (0 bis 7).</param>
+        /// <returns>Ergebnis - Byte</returns>
+        public static byte SetBit(byte b, int BitNumber)
+        {
+            //Kleine Fehlerbehandlung
+            if (BitNumber < 8 && BitNumber > -1)
+            {
+                return (byte)(b | (byte)(0x01 << BitNumber));
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                "Der Wert für BitNumber " + BitNumber.ToString() + " war nicht im zulässigen Bereich! (BitNumber = (min)0 - (max)7)");
+            }
+        }
+
+        /// <summary>
+        /// Löscht ein bestimmtes Bit in einem Byte.
+        /// </summary>
+        /// <param name="b">Byte, welches bearbeitet werden soll.</param>
+        /// <param name="BitNumber">Das zu löschende Bit (0 bis 7).</param>
+        /// <returns>Ergebnis - Byte</returns>
+        public static byte ClearBit(byte b, int BitNumber)
+        {
+            //Kleine Fehlerbehandlung
+            if (BitNumber < 8 && BitNumber > -1)
+            {
+                return (byte)(b & (byte)(~(0x01 << BitNumber)));
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                "Der Wert für BitNumber " + BitNumber.ToString() + " war nicht im zulässigen Bereich! (BitNumber = (min)0 - (max)7)");
             }
         }
     }
