@@ -40,7 +40,7 @@ namespace Simulator_PIC16F84
         public void checkTimerMode()
         {
             //TMR0-Modes (timermode or countermode)
-            if (optionReg.IsBitSet(5))
+            if (optionReg.isBitSet(5))
                 setCounterMode();
             else
                 setTimerMode();
@@ -66,7 +66,7 @@ namespace Simulator_PIC16F84
         {
             timerMode = TimerMode.TIMER;
             //Clear Bit 5 in 81h
-            if ( optionReg.IsBitSet(5) )
+            if ( optionReg.isBitSet(5) )
                 optionReg.clearBit(5);
         }
 
@@ -74,7 +74,7 @@ namespace Simulator_PIC16F84
         {
             timerMode = TimerMode.COUNTER;
             //Set Bit 5 in 81h
-            if (!optionReg.IsBitSet(5))
+            if (!optionReg.isBitSet(5))
                 optionReg.setBit(5);
         }
 

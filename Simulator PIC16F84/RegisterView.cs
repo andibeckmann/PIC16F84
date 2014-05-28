@@ -158,7 +158,7 @@ namespace Simulator_PIC16F84
             {
                 checkRegister(ARegRegisterBox, registerMap.getARegister());
                 if ( registerMap.timer0InCounterMode())
-                    checkFallingAndRisingEdges();
+                    registerMap.checkForFallingAndRisingEdgesOnPortA();
             }
             else if (index == 0x06)
                 checkRegister(BRegRegisterBox, registerMap.getBRegister());
@@ -170,22 +170,6 @@ namespace Simulator_PIC16F84
             {
                 checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
                 registerMap.checkOptionRegisterSettings();
-            }
-        }
-
-        private void checkFallingAndRisingEdges()
-        {
-            //Check for Rising or Falling Edges for Timer 0 Module Counter Mode
-            if (IsBitSet(registerMap.getRegister(0x81).Value, 4))
-            {
-                if (registerMap.getRegister(0x05).fallingEdges[4])
-                {
-                    registerMap.incrementCounter();
-                }
-                if (registerMap.getRegister(0x05).risingEdges[4])
-                {
-                    registerMap.incrementCounter();
-                }
             }
         }
 
@@ -213,7 +197,7 @@ namespace Simulator_PIC16F84
             for (int i = 0; i < 8; i++)
             {
                 var checkBoxArray = box.Controls.Find("Bit " + i, true);
-                if (Reg.IsBitSet(i))
+                if (Reg.isBitSet(i))
                 {
                     var checkBox = ((CheckBox)checkBoxArray[0]).Checked = true;
                 }

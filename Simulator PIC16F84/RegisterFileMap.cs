@@ -13,6 +13,7 @@ namespace Simulator_PIC16F84
         private Timer0Module timer0;
         private WatchdogTimer WDT;
         private Prescaler prescaler;
+        private byte portAOldValue;
 
         public RegisterFileMap(ProgramCounter PC)
         {
@@ -29,6 +30,7 @@ namespace Simulator_PIC16F84
             WDT = new WatchdogTimer();
             prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
             timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
+            portAOldValue = 0;
         }
 
         public void checkOptionRegisterSettings()
@@ -253,7 +255,7 @@ namespace Simulator_PIC16F84
 
         public void Overflow(object sender, int index)
         {
-            if (index == 1 && getIntconRegister().IsBitSet(5))
+            if (index == 1 && getIntconRegister().isBitSet(5))
             {
                 TimerInterrupt();
             }
@@ -261,7 +263,7 @@ namespace Simulator_PIC16F84
 
         public void TimerInterrupt()
         {
-            if (!getIntconRegister().IsBitSet(2) && getIntconRegister().IsBitSet(7))
+            if (!getIntconRegister().isBitSet(2) && getIntconRegister().isBitSet(7))
             {
                 getIntconRegister().clearBit(7);
                 getIntconRegister().setBit(2);
@@ -290,6 +292,22 @@ namespace Simulator_PIC16F84
         {
             if( !prescaler.isAssignedToTMR0() )
                 prescaler.clearPrescaler();
+        }
+
+        public void checkForFallingAndRisingEdgesOnPortA()
+        {
+            //Check for Rising or Falling Edges for Timer 0 Module Counter Mode
+            if (getOptionRegister().isBitSet(4))
+            {
+                if (getARegister().checkForFallingEdge(portAOldValue, 4))
+                    incrementCounter();
+            }
+            else
+            {
+                if (getARegister().checkForRisingEdge(portAOldValue, 4))
+                    incrementCounter();
+            }
+             portAOldValue = getARegister().Value;
         }
       
         /// <summary>

@@ -66,7 +66,7 @@ namespace Simulator_PIC16F84
 
         private bool isPrescalerAssignmentBitSet()
         {
-            return optionReg.IsBitSet(3);
+            return optionReg.isBitSet(3);
         }
 
         private void assignPrescalerToWDT()
