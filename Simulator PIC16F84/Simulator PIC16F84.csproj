@@ -126,6 +126,7 @@
     <Compile Include="StackView.Designer.cs">
       <DependentUpon>StackView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Timer0Module.cs" />
     <Compile Include="WatchdogTimer.cs" />
     <Compile Include="WorkingRegister.cs" />
     <EmbeddedResource Include="Form1.resx">

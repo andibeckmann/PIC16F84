@@ -10,99 +10,9 @@ namespace Simulator_PIC16F84
     {
         private RegisterByte[] registerList;
         public int[] mappingArray;
-        private TimerStatus timerMode;
-        private int inhibitCycles;
-
-        public byte Timer {
-            get
-            {
-                return registerList[0x01].Value;
-            }
-            set
-            {
-                inhibitCycles = 2;
-                registerList[0x01].Value = value;
-            }
-        }
-
-        public void SetTimerMode()
-        {
-            timerMode = TimerStatus.TIMER;
-            if(IsBitSet(registerList[0x81].Value, 5))
-            {
-            registerList[0x81].Value = ClearBit(registerList[0x81].Value, 5);
-            //Clear Bit 5 in 81h
-            }
-        }
-
-
-        public void SetCounterMode()
-        {
-            timerMode = TimerStatus.COUNTER;
-            if (!IsBitSet(registerList[0x81].Value, 5))
-            {
-                registerList[0x81].Value = SetBit(registerList[0x81].Value, 5);
-                //Set Bit 5 in 81h
-            }
-        }
-
-        public void IncrementTimer()
-        {
-            if (timerMode == TimerStatus.TIMER)
-            {
-                if (inhibitCycles <= 0)
-                {
-                    registerList[0x01].IncrementRegister();
-                }
-                else
-                {
-                    inhibitCycles--;
-                }
-            }
-        }
-
-        public void IncrementCounter()
-        {
-            if (timerMode == TimerStatus.COUNTER)
-            {
-                registerList[0x01].IncrementRegister();
-            }
-        }
-
-        public void TimerInterrupt()
-        {
-            if (!IsBitSet(registerList[0x0b].Value, 2) && IsBitSet(registerList[0x0b].Value, 7))
-            {
-                registerList[0x0b].Value = ClearBit(registerList[0x0b].Value, 7);
-                registerList[0x0b].Value = SetBit(registerList[0x0b].Value, 2);
-                PC.Counter.Value = 0x04;
-                
-                //TODO push return address on stack
-            }
-        }
-
-        public void EnableTimerInterrupt()
-        {
-            registerList[0x0b].Value = SetBit(registerList[0x0b].Value, 5);
-        }
-
-        public void DisableTimerInterrupt()
-        {
-            registerList[0x0b].Value = ClearBit(registerList[0x0b].Value, 5);
-        }
-
-        public void Overflow(object sender, int index)
-        {
-            if(index == 1 && IsBitSet(registerList[0x0b].Value, 5))
-            {
-                TimerInterrupt();
-            }
-        }
-
-        public bool IsBitSet(byte value, int pos)
-        {
-            return (((value >> pos) & 0x1) == 0x1);
-        }
+        private Timer0Module timer0;
+        private WatchdogTimer WDT;
+        private Prescaler prescaler;
 
         public RegisterFileMap(ProgramCounter PC)
         {
@@ -114,6 +24,17 @@ namespace Simulator_PIC16F84
                 registerList[var] = new RegisterByte(var);
                 registerList[var].Overflow += new System.EventHandler<int>(Overflow);
             }
+
+            //Timer0 MOdule, Watchdogtimer und Prescaler
+            WDT = new WatchdogTimer();
+            prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
+            timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
+        }
+
+        public void checkSpecialRegisterSettings()
+        {
+            prescaler.checkPrescalerSettings();
+            timer0.checkTimerMode();
         }
 
         private void fillMappingArray()
@@ -169,6 +90,11 @@ namespace Simulator_PIC16F84
             else
                 index = mappingArray[index];
             return this.registerList[index];
+        }
+
+        public RegisterByte getTMR0Register()
+        {
+            return registerList[1];
         }
 
         public RegisterByte getStatusRegister()
@@ -304,7 +230,56 @@ namespace Simulator_PIC16F84
         {
             registerList.Where(item => item.Index == registerToChange.Index).Select(item => item.Value = registerToChange.Value);
         }
-        
+
+        public void incrementTimer()
+        {
+            timer0.incrementInTimerMode();
+        }
+
+        public void incrementCounter()
+        {
+            timer0.incrementInCounterMode();       
+        }
+
+        public void Overflow(object sender, int index)
+        {
+            if (index == 1 && getIntconRegister().IsBitSet(5))
+            {
+                TimerInterrupt();
+            }
+        }
+
+        public void TimerInterrupt()
+        {
+            if (!getIntconRegister().IsBitSet(2) && getIntconRegister().IsBitSet(7))
+            {
+                getIntconRegister().clearBit(7);
+                getIntconRegister().setBit(2);
+                PC.Counter.Value = 0x04;
+
+                //TODO push return address on stack
+            }
+        }
+
+        public void EnableTimerInterrupt()
+        {
+            getIntconRegister().setBit(5);
+        }
+
+        public void DisableTimerInterrupt()
+        {
+            getIntconRegister().clearBit(5);
+        }
+
+        public void clearWatchdogTimer()
+        {
+            WDT.ClearWatchdogTimer();
+        }
+
+        public void clearPrescaler()
+        {
+            prescaler.clearPrescaler();
+        }
       
         /// <summary>
         /// Setzt ein bestimmtes Bit in einem Byte.
@@ -348,12 +323,5 @@ namespace Simulator_PIC16F84
 
 
         public ProgramCounter PC { get; set; }
-    }
-
-    public enum TimerStatus
-    {
-        TIMER,
-        COUNTER
-    }
- 
+    } 
 }

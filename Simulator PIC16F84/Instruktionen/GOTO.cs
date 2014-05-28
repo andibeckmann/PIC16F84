@@ -26,7 +26,7 @@ namespace Simulator_PIC16F84.Instruktionen
         public GOTO(byte k, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
         {
             this.k = k;
-            Reg.IncrementTimer();
+            Reg.incrementTimer();
 
             execute(PC);
         }

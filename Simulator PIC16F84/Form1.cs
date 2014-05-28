@@ -26,8 +26,6 @@ namespace Simulator_PIC16F84
         ProgramCounter PC;
         Stack Stack;
         StackView StackView;
-        WatchdogTimer WDT;
-        Prescaler Prescaler;
         RegisterView registerView;
         System.Timers.Timer crystalFrequency;
         List<int> breakPoints;
@@ -69,9 +67,6 @@ namespace Simulator_PIC16F84
 
             PC = new ProgramCounter(RegisterMap);
             setupStack();
-            //Watchdogtimer
-            WDT = new WatchdogTimer();
-            Prescaler = new Prescaler();
             breakPoints = new List<int>();
             setupCrystalFrequency();
         }
@@ -330,7 +325,7 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
-            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack, WDT, Prescaler);
+            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack);
             PC.InkrementPC();
             SetSelection(index);
         }

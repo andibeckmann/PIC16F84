@@ -22,7 +22,7 @@ namespace Simulator_PIC16F84
             set { this.value = value; }
         }
 
-        public void DecodeInstruction(RegisterFileMap Reg, WorkingRegister W, ProgramCounter PC, Stack Stack, WatchdogTimer WDT, Prescaler Prescaler)
+        public void DecodeInstruction(RegisterFileMap Reg, WorkingRegister W, ProgramCounter PC, Stack Stack)
         {
             int k;
             int f;
@@ -205,7 +205,7 @@ namespace Simulator_PIC16F84
             //CLRWDT Instruktion
             if ((value & (int)0xFFFF) == (int)0x0064)
             {
-                CLRWDT Operation = new CLRWDT(W, WDT, Prescaler, Reg);
+                CLRWDT Operation = new CLRWDT(W, Reg);
             }
 
             //GOTO Instruktion
@@ -251,7 +251,7 @@ namespace Simulator_PIC16F84
             //SLEEP Instruktion
             if ((value & (int)0x3FFF) == (int)0x0063)
             {
-                SLEEP Operation = new SLEEP(W, Reg, WDT, Prescaler);
+                SLEEP Operation = new SLEEP(W, Reg);
             }
 
             //SUBLW Instruktion

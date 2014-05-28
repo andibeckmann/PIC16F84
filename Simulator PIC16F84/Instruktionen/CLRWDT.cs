@@ -24,22 +24,17 @@ namespace Simulator_PIC16F84.Instruktionen
     {
         
 
-        public CLRWDT(WorkingRegister W, WatchdogTimer WDT, Prescaler prescaler, RegisterFileMap Reg) : base(Reg)
+        public CLRWDT(WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
-            execute(W, WDT, prescaler);
-        }
-
-        protected void execute(WorkingRegister W, WatchdogTimer WDT, Prescaler prescaler)
-        {
-            WDT.ClearWatchdogTimer();
-            prescaler.ClearPrescaler();
-            //TODO Set TO,PD
-            //W.Value.GetRegisterMap().
+            execute(W, Reg);
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            throw new NotImplementedException();
+            Reg.clearWatchdogTimer();
+            Reg.clearPrescaler();
+            //TODO Set TO,PD
+            //W.Value.GetRegisterMap().
         }
     }
 }

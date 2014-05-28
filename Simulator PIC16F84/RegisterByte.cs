@@ -83,6 +83,16 @@ namespace Simulator_PIC16F84
             return ( ( ( value >> pos ) & 0x1 ) == 0x1 );
         }
 
+        public void clearBit(int pos)
+        {
+            value = (byte) ((int)value & (0xFE << pos));
+        }
+
+        public void setBit(int pos)
+        {
+            value = (byte)((int)value | (0x01 << pos));
+        }
+
         public byte FormComplement()
         {
             return ((byte) ((int) value ^ 0xff));
@@ -98,7 +108,6 @@ namespace Simulator_PIC16F84
         {
             return (byteValue & (1 << bit)) != 0;
         }
-
     }
 
 }

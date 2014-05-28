@@ -155,7 +155,7 @@ namespace Simulator_PIC16F84
             else if (index == 0x05)
             {
                 checkRegister(ARegRegisterBox, registerMap.getARegister());
-                checkFallingRisingEdges();
+                checkFallingAndRisingEdges();
             }
             else if (index == 0x06)
                 checkRegister(BRegRegisterBox, registerMap.getBRegister());
@@ -166,39 +166,26 @@ namespace Simulator_PIC16F84
             else if (index == 0x81)
             {
                 checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
-                checkTimerMode();
+                registerMap.checkSpecialRegisterSettings();
             }
         }
 
-        private void checkFallingRisingEdges()
+        private void checkFallingAndRisingEdges()
         {
             //TODO: Find out what this code even does, is it functional or dead? (Copied over from CheckSpecialRegisters function) Andi
             if (IsBitSet(registerMap.getRegister(0x81).Value, 4))
             {
                 if (registerMap.getRegister(0x05).fallingEdges[4])
                 {
-                    registerMap.IncrementCounter();
+                    registerMap.incrementCounter();
                 }
             }
             else
             {
                 if (registerMap.getRegister(0x05).risingEdges[4])
                 {
-                    registerMap.IncrementCounter();
+                    registerMap.incrementCounter();
                 }
-            }
-        }
-
-        private void checkTimerMode()
-        {
-            //TMR0-Modes (timermode or countermode)
-            if (registerMap.IsBitSet(registerMap.getRegister(0x81).Value, 5))
-            {
-                registerMap.SetCounterMode();
-            }
-            else
-            {
-                registerMap.SetTimerMode();
             }
         }
 
@@ -211,7 +198,7 @@ namespace Simulator_PIC16F84
             checkRegister(IntconRegisterBox, registerMap.getIntconRegister());
             checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
 
-            checkTimerMode();
+            registerMap.checkSpecialRegisterSettings();
         }
 
         private void checkRegister(RegisterBox box, RegisterByte Reg)

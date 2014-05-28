@@ -11,4 +11,6 @@
 5. Breakpoints: Programm hält nicht am Haltepunkt, sondern an der Instruktion davor.
 6. Program View: Die Ansicht sollte die ausgeführten Instruktionen möglichst oben anzeigen (derzeit ist es nur die unterste Zeile) damit man sehen kann, was als nächstes kommt.
 7. Alle Views lassen sich nur am Anfang fehlerfrei aufrufen. Wenn man sie einmal geschlossen hat, ist die dahinterliegende Logik zerschossen.
+8. Adresse 0 im Register wird beim Resetten aus irgendeinem Grund mit Werten belegt. o.0
+9. Exception beim Timerinterrupt
 

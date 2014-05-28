@@ -34,7 +34,7 @@ namespace Simulator_PIC16F84.Instruktionen
             this.k = k;
 
             execute(W, PC, stack);
-            Reg.IncrementTimer();
+            Reg.incrementTimer();
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
