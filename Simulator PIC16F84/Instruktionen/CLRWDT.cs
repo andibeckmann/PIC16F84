@@ -32,7 +32,7 @@ namespace Simulator_PIC16F84.Instruktionen
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             Reg.clearWatchdogTimer();
-            Reg.clearPrescaler();
+            Reg.clearWatchdogPrescaler();
             //TODO Set TO,PD
             //W.Value.GetRegisterMap().
         }

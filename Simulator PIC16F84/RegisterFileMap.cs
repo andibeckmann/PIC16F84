@@ -31,10 +31,15 @@ namespace Simulator_PIC16F84
             timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
         }
 
-        public void checkSpecialRegisterSettings()
+        public void checkOptionRegisterSettings()
         {
             prescaler.checkPrescalerSettings();
             timer0.checkTimerMode();
+        }
+
+        public void checkTimerRegister()
+        {
+            timer0.checkTimer();
         }
 
         private void fillMappingArray()
@@ -85,11 +90,16 @@ namespace Simulator_PIC16F84
         {
             if (index == 0)
                 return readINDFReg();
-            if (isRegisterBankSelectBitSet() && index < 0x80)
+            else if (isRegisterBankSelectBitSet() && index < 0x80)
                 index = mappingArray[index + 0x80];
             else
                 index = mappingArray[index];
             return this.registerList[index];
+        }
+
+        public bool timer0InCounterMode()
+        {
+            return timer0.isInCounterMode();
         }
 
         public RegisterByte getTMR0Register()
@@ -276,9 +286,10 @@ namespace Simulator_PIC16F84
             WDT.ClearWatchdogTimer();
         }
 
-        public void clearPrescaler()
+        public void clearWatchdogPrescaler()
         {
-            prescaler.clearPrescaler();
+            if( !prescaler.isAssignedToTMR0() )
+                prescaler.clearPrescaler();
         }
       
         /// <summary>

@@ -16,6 +16,7 @@ namespace Simulator_PIC16F84
         private RegisterByte intconReg;
         private Prescaler prescaler;
         private int inhibitCycles;
+        private byte internalCount;
 
         public Timer0Module(RegisterByte tmr0Reg, RegisterByte optionReg, RegisterByte intconReg, Prescaler prescaler)
         {
@@ -23,6 +24,17 @@ namespace Simulator_PIC16F84
             this.prescaler = prescaler;
             this.optionReg = optionReg;
             this.intconReg = intconReg;
+            this.internalCount = tmr0Reg.Value;
+        }
+
+        public void checkTimer()
+        {
+            //When assigned to the Tmr0-Module, all instruction writing on the Tmr0-Register will clear the prescaler
+            if (prescaler.isAssignedToTMR0() && internalCount != tmr0Reg.Value)
+            {
+                prescaler.clearPrescaler();
+                internalCount = tmr0Reg.Value;
+            }
         }
 
         public void checkTimerMode()
@@ -44,6 +56,9 @@ namespace Simulator_PIC16F84
             {
                 inhibitCycles = 2;
                 tmr0Reg.Value = value;
+                internalCount = value;
+                if ( prescaler.isAssignedToTMR0() )
+                    prescaler.clearPrescaler();
             }
         }
 
@@ -74,10 +89,13 @@ namespace Simulator_PIC16F84
             if ( !(timerMode == TimerMode.TIMER) )
                 return;
             if (inhibitCycles <= 0)
-                if ( checkPrescaler() )
+                if (checkPrescaler())
+                {
                     tmr0Reg.IncrementRegister();
-            else
-                inhibitCycles--;
+                    internalCount = (byte) (internalCount + 1);
+                }
+                else
+                    inhibitCycles--;
         }
 
         private bool checkPrescaler()
@@ -86,6 +104,14 @@ namespace Simulator_PIC16F84
                 if (!prescaler.IncrementPrescaler())
                     return false;
             return true;
+        }
+
+        public bool isInCounterMode()
+        {
+            if (timerMode == TimerMode.COUNTER)
+                return true;
+            else
+                return false;
         }
     }
 }

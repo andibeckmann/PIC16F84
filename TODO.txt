@@ -13,4 +13,5 @@
 7. Alle Views lassen sich nur am Anfang fehlerfrei aufrufen. Wenn man sie einmal geschlossen hat, ist die dahinterliegende Logik zerschossen.
 8. Adresse 0 im Register wird beim Resetten aus irgendeinem Grund mit Werten belegt. o.0
 9. Exception beim Timerinterrupt
-
+10. Das Textfeld der RegisterBox kann keine Änderungen weitergeben (Checkboxen funktionieren und sonst auch alles, aber in der Textbox kann man keine Änderungen vornehmen)
+11. ProgramView ist etwas zu groß fürs Fenster (in Breite) Anpassen.

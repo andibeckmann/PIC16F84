@@ -112,11 +112,11 @@ namespace Simulator_PIC16F84
             label.Width = sizeOfField;
             label.Font = new Font("Arial", 5);
             if (RegByte.Index == 3)
-                getStatusRegLabels(index, label);
+                getStatusRegLabels(7 - index, label);
             if (RegByte.Index == 0x81)
-                getOptionRegLabels(index, label);
+                getOptionRegLabels(7 - index, label);
             if (RegByte.Index == 0x0B)
-                getIntconRegLabels(index, label);
+                getIntconRegLabels(7 - index, label);
             this.Controls.Add(label);
         }
 

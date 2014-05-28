@@ -37,7 +37,7 @@ namespace Simulator_PIC16F84.Instruktionen
             Reg.SetTimeOutBit();
 
             Reg.clearWatchdogTimer();
-            Reg.clearPrescaler();
+            Reg.clearWatchdogPrescaler();
 
             //TODO: Put processor into SLEEP mode and stop oscillator
 

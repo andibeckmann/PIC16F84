@@ -58,10 +58,10 @@ namespace Simulator_PIC16F84
 
         private void setPrescalerAssignment()
         {
-                    if (isPrescalerAssignmentBitSet())
-                        assignPrescalerToWDT();
-                    else
-                        assignPrescalerToTMR0();
+            if (isPrescalerAssignmentBitSet())
+                assignPrescalerToWDT();
+            else
+                assignPrescalerToTMR0();
         }
 
         private bool isPrescalerAssignmentBitSet()
