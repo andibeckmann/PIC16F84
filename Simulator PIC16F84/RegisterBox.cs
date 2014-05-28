@@ -81,6 +81,7 @@ namespace Simulator_PIC16F84
             textBox.Width = marginSmall * 7 + sizeOfField * 8;
             textBox.TextChanged += new System.EventHandler(textbox_TextChanged);
             textBox.Name = "Value";
+            textBox.TextAlign = HorizontalAlignment.Right;
             this.Controls.Add(textBox);
         }
 
@@ -194,21 +195,15 @@ namespace Simulator_PIC16F84
 
         private void fileRegChanged(TextBox textBox)
         {
-            var name = textBox.Name;
-            name = name.Substring(5);
-            int id;
-            if (int.TryParse(name, out id))
+            int content;
+            try
             {
-                int content;
-                try
-                {
-                    content = Convert.ToInt32(textBox.Text, 16);
-                    RegByte.Value = (byte)content;
-                }
-                catch
-                {
-                    // TODO
-                }
+                content = Convert.ToInt32(textBox.Text, 16);
+                RegByte.Value = (byte)content;
+            }
+            catch
+            {
+                // TODO
             }
         }
 

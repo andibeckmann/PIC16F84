@@ -23,16 +23,36 @@ namespace Simulator_PIC16F84
             this.stack = stack;
             fillMappingArray();
             registerList = new RegisterByte[256];
+            portAOldValue = 0;
             for (int var = 0; var < registerList.Length; var++ )
             {
                 registerList[var] = new RegisterByte(var);
             }
 
             //Timer0 MOdule, Watchdogtimer und Prescaler
-            WDT = new WatchdogTimer();
             prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
+            WDT = new WatchdogTimer(this, prescaler);
             timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
-            portAOldValue = 0;
+        }
+
+        public bool isTimeOutBitSet()
+        {
+            return getStatusRegister().isBitSet(4);
+        }
+
+        public void ClearWatchdogTimer()
+        {
+            WDT.ClearWatchdogTimer();
+        }
+
+        public void WDTTimeOut()
+        {
+            setTimeOutBit();
+        }
+
+        private void setTimeOutBit()
+        {
+            getStatusRegister().clearBit(4);
         }
 
         public void checkOptionRegisterSettings()
@@ -365,13 +385,18 @@ namespace Simulator_PIC16F84
         {
             clearGlobalInterruptEnableBit();
             stack.PushOntoStack(new ProgramMemoryAddress(DeriveReturnAddress(PC)));
-            PC.Counter.Value = 0x04;   
+            PC.Counter.Address = 0x04;   
 
         }
 
         public int DeriveReturnAddress(ProgramCounter PC)
         {
-            return PC.Counter.Value + 1;
+            return PC.Counter.Address + 1;
+        }
+
+        public void incrementWatchdogTimer()
+        {
+            WDT.IncrementWatchdogTimer();
         }
       
         /// <summary>

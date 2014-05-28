@@ -11,7 +11,6 @@ namespace Simulator_PIC16F84
         private byte value;
 
         public event EventHandler<int> RegisterChanged;
-        public event EventHandler<int> Overflow;
         public int Index { get; set; }
 
         public RegisterByte(int index)
@@ -20,11 +19,12 @@ namespace Simulator_PIC16F84
             this.Index = index;
         }
 
-        public byte Value {
+        public byte Value
+        {
             get { return value; }
             set
             {
-                this.value = value; 
+                this.value = value;
                 if (this.RegisterChanged != null)
                 {
                     this.RegisterChanged(this, Index);
@@ -46,10 +46,6 @@ namespace Simulator_PIC16F84
         {
             if (value == 255)
             {
-                if (this.Overflow != null)
-                {
-                    this.Overflow(this, Index);
-                }
                 ClearRegister();
                 return Value;
             }
@@ -63,7 +59,7 @@ namespace Simulator_PIC16F84
 
         public void clearBit(int pos)
         {
-            value = (byte) ((int)value & (0xFE << pos));
+            value = (byte) (value & (0xFE << pos));
         }
 
         public void setBit(int pos)

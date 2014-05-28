@@ -31,18 +31,18 @@ namespace Simulator_PIC16F84
 
         public byte getLower8Bits()
         {
-            return (byte)(Counter.Value & 0xFF);
+            return (byte)(Counter.Address & 0xFF);
         }
 
         public void InkrementPC()
         {
-            Counter.Value++;
+            Counter.Address++;
             this.reg.getRegister(0x02).Value = getLower8Bits();
         }
 
         public void Clear()
         {
-            counter.Value = 0;
+            counter.Address = 0;
         }
     }
 }

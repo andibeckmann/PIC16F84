@@ -24,7 +24,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(RegisterFileMap Reg, ProgramCounter PC, Stack stack)
         {
-            PC.Counter.Value = stack.PullFromStack().Value - 1;
+            PC.Counter.Address = stack.PullFromStack().Address - 1;
             Reg.setGlobalInterruptEnableBit();
         }
 

@@ -28,10 +28,12 @@ namespace Simulator_PIC16F84
         StackView StackView;
         RegisterView registerView;
         System.Timers.Timer crystalFrequency;
+        System.Timers.Timer watchdogFrequency;
         List<int> breakPoints;
         int frequency = 10;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
+        ProgramMemoryAddress ConfigurationBits;
 
         /// <summary>
         /// Detailansicht spezieller Register
@@ -46,6 +48,7 @@ namespace Simulator_PIC16F84
         public Main()
         {
             InitializeComponent();
+            InitConfigurationBits();
             InitializeSlider();
             IsMdiContainer = true;
             this.WindowState = FormWindowState.Maximized;
@@ -71,10 +74,51 @@ namespace Simulator_PIC16F84
             setupCrystalFrequency();
         }
 
+        /// <summary>
+        /// The configuration bits can be programmed (read as '0'),
+        /// or left unprogrammed (read as '1'), to select various
+        /// device configurations. These bits are mapped in
+        /// program memory location 2007h.
+        /// Address 2007h is beyond the user program memory
+        /// space and it belongs to the special test/configuration
+        /// memory space (2000h - 3FFFh): This space can only
+        /// be accessed during programming.
+        /// </summary>
+        private void InitConfigurationBits()
+        {
+            ConfigurationBits = new ProgramMemoryAddress(0x2007);
+            //FOSC1:FOSC0: Oscillator Selection bits - 11 = RC oscillator
+            // 11 = RC oscillator
+            // 10 = HS oscillator
+            // 01 = XT oscillator
+            // 00 = LP oscillator
+            ConfigurationBits.setBit(0);
+            ConfigurationBits.setBit(1);
+            //WDTE: Watchdog Timer Enable bit
+            // 1 = WDT enabled
+            // 0 = WDT disabled
+            ConfigurationBits.setBit(2);
+            //PWRTE: Power-up Timer Enable bit
+            // 1 = Power-up Timer is disabled
+            // 0 = Power-up Timer is enabled
+            ConfigurationBits.setBit(3);
+            //CP: Code Protection bit (bits 4-13)
+            // 1 = Code protection disabled
+            // 0 = All program memory is code protected
+            ConfigurationBits.Address = ConfigurationBits.Address | 0x1FF0;
+        }
+
+        private bool isWatchdogTimerEnabled()
+        {
+            return ConfigurationBits.isBitSet(1);
+        }
+
         private void setupCrystalFrequency()
         {
             crystalFrequency = new System.Timers.Timer(10);
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
+            watchdogFrequency = new System.Timers.Timer(1);
+            watchdogFrequency.Elapsed += new System.Timers.ElapsedEventHandler(watchdogTimerPeriodElapsed);
         }
 
         private void setupProgramView()
@@ -313,10 +357,11 @@ namespace Simulator_PIC16F84
 
         private void ExecuteCycle(object source, ElapsedEventArgs e)
         {
-            var index = FindRowForPC(PC.Counter.Value);
+            var index = FindRowForPC(PC.Counter.Address);
             if(breakPoints.Contains(index))
             {
                 crystalFrequency.Stop();
+                watchdogFrequency.Stop();
                 return;
             }
             ExecuteSingleCycle(index);
@@ -325,10 +370,25 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
-            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack);
+            UserMemorySpace.ProgramMemory[PC.Counter.Address].DecodeInstruction(RegisterMap, W, PC, Stack);
             PC.InkrementPC();
             RegisterMap.checkForInterrupt();
             SetSelection(index);
+        }
+
+        private void watchdogTimerPeriodElapsed(object source, ElapsedEventArgs e)
+        {
+            if (isWatchdogTimerEnabled())
+            {
+                RegisterMap.incrementWatchdogTimer();
+                checkForTimeOut();
+            }
+        }
+
+        private void checkForTimeOut()
+        {
+            if (!RegisterMap.isTimeOutBitSet())
+                deviceReset();
         }
 
         private void SetSelection(int index)
@@ -377,14 +437,20 @@ namespace Simulator_PIC16F84
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var index = FindRowForPC(PC.Counter.Value);
-            ExecuteSingleCycle(index);
             crystalFrequency.Start();
+            watchdogFrequency.Start();
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            deviceReset();
+        }
+
+        private void deviceReset()
+        {
             crystalFrequency.Stop();
+            watchdogFrequency.Stop();
+            RegisterMap.ClearWatchdogTimer();
             PC.Clear();
             SetSelection(0);
             RegisterMap.ClearRegister();
@@ -396,11 +462,12 @@ namespace Simulator_PIC16F84
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             crystalFrequency.Stop();
+            watchdogFrequency.Stop();
         }
 
         private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var index = FindRowForPC(PC.Counter.Value);
+            var index = FindRowForPC(PC.Counter.Address);
             ExecuteSingleCycle(index);
         }
 

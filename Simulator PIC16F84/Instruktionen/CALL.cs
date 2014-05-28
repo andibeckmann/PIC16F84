@@ -36,7 +36,7 @@ namespace Simulator_PIC16F84.Instruktionen
     protected void execute(RegisterFileMap Reg, ProgramCounter PC, Stack Stack)
     {
         Stack.PushOntoStack(new ProgramMemoryAddress(Reg.DeriveReturnAddress(PC)));
-        PC.Counter.Value = k - 1;   
+        PC.Counter.Address = k - 1;   
         //TODO: PC LATCH Wasauchimmer
     }
 

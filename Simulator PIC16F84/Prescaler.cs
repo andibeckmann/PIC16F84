@@ -21,6 +21,7 @@ namespace Simulator_PIC16F84
             this.tmr0Reg = tmr0Reg;
             this.optionReg = optionReg;
             checkPrescalerSettings();
+            prescalerMode = prescalerAssignment.WDT;
         }
 
         public void checkPrescalerSettings()
@@ -32,6 +33,14 @@ namespace Simulator_PIC16F84
         public bool isAssignedToTMR0()
         {
             if (prescalerMode == prescalerAssignment.TMR0)
+                return true;
+            else
+                return false;
+        }
+
+        public bool isAssignedToWatchDogTimer()
+        {
+            if (prescalerMode == prescalerAssignment.WDT)
                 return true;
             else
                 return false;
