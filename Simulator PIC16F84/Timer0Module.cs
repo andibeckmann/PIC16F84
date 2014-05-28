@@ -81,7 +81,16 @@ namespace Simulator_PIC16F84
         public void incrementInCounterMode()
         {
             if (timerMode == TimerMode.COUNTER)
+                IncrementWithPrescaler();
+        }
+
+        private void IncrementWithPrescaler()
+        {
+            if (checkPrescaler())
+            {
                 tmr0Reg.IncrementRegister();
+                internalCount = (byte)(internalCount + 1);
+            }
         }
 
         public void incrementInTimerMode()
@@ -89,13 +98,9 @@ namespace Simulator_PIC16F84
             if ( !(timerMode == TimerMode.TIMER) )
                 return;
             if (inhibitCycles <= 0)
-                if (checkPrescaler())
-                {
-                    tmr0Reg.IncrementRegister();
-                    internalCount = (byte) (internalCount + 1);
-                }
-                else
-                    inhibitCycles--;
+                IncrementWithPrescaler();
+            else
+                inhibitCycles--;
         }
 
         private bool checkPrescaler()

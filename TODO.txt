@@ -15,3 +15,4 @@
 9. Exception beim Timerinterrupt
 10. Das Textfeld der RegisterBox kann keine Änderungen weitergeben (Checkboxen funktionieren und sonst auch alles, aber in der Textbox kann man keine Änderungen vornehmen)
 11. ProgramView ist etwas zu groß fürs Fenster (in Breite) Anpassen.
+12. Externer Takt anlegen (?) zBsp für SimTest3 - der Counter Mode Pin
