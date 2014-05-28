@@ -53,7 +53,8 @@ namespace Simulator_PIC16F84
 
             W = new WorkingRegister(-1);
 
-            RegisterMap = new RegisterFileMap(PC);
+            setupStack();
+            RegisterMap = new RegisterFileMap(PC, Stack);
 
             setupWorkingRegisterBox();
             setupRegisterBoxA();
@@ -66,7 +67,6 @@ namespace Simulator_PIC16F84
             setupProgramView();
 
             PC = new ProgramCounter(RegisterMap);
-            setupStack();
             breakPoints = new List<int>();
             setupCrystalFrequency();
         }
@@ -327,6 +327,7 @@ namespace Simulator_PIC16F84
             this.registerView.ClearColors();
             UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack);
             PC.InkrementPC();
+            RegisterMap.checkForInterrupt();
             SetSelection(index);
         }
 

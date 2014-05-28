@@ -14,16 +14,18 @@ namespace Simulator_PIC16F84
         private WatchdogTimer WDT;
         private Prescaler prescaler;
         private byte portAOldValue;
+        private enum InterruptSource { INT, TMR0, PortB, DataEEPROM };
+        private Stack stack;
 
-        public RegisterFileMap(ProgramCounter PC)
+        public RegisterFileMap(ProgramCounter PC, Stack stack)
         {
             this.PC = PC;
+            this.stack = stack;
             fillMappingArray();
             registerList = new RegisterByte[256];
             for (int var = 0; var < registerList.Length; var++ )
             {
                 registerList[var] = new RegisterByte(var);
-                registerList[var].Overflow += new System.EventHandler<int>(Overflow);
             }
 
             //Timer0 MOdule, Watchdogtimer und Prescaler
@@ -129,6 +131,10 @@ namespace Simulator_PIC16F84
             return registerList[0x81];
         }
 
+        /// <summary>
+        /// Interrupt Control Register (Intcon)
+        /// </summary>
+        /// <returns></returns>
         public RegisterByte getIntconRegister()
         {
             return registerList[0x0B];
@@ -253,26 +259,6 @@ namespace Simulator_PIC16F84
             timer0.incrementInCounterMode();       
         }
 
-        public void Overflow(object sender, int index)
-        {
-            if (index == 1 && getIntconRegister().isBitSet(5))
-            {
-                TimerInterrupt();
-            }
-        }
-
-        public void TimerInterrupt()
-        {
-            if (!getIntconRegister().isBitSet(2) && getIntconRegister().isBitSet(7))
-            {
-                getIntconRegister().clearBit(7);
-                getIntconRegister().setBit(2);
-                PC.Counter.Value = 0x04;
-
-                //TODO push return address on stack
-            }
-        }
-
         public void EnableTimerInterrupt()
         {
             getIntconRegister().setBit(5);
@@ -308,6 +294,84 @@ namespace Simulator_PIC16F84
                     incrementCounter();
             }
              portAOldValue = getARegister().Value;
+        }
+
+        public void checkForInterrupt()
+        {
+            if ( !isGlobalInterruptEnableBitSet() )
+                return;
+
+            if (isThereAnIntInterruptRequest())
+                interruptServiceRoutine(InterruptSource.INT);
+            else if (isThereATimer0InterruptRequest())
+                interruptServiceRoutine(InterruptSource.TMR0);
+            else if (isThereAPortBInterruptRequest())
+                interruptServiceRoutine(InterruptSource.PortB);
+            else if (isThereAPDataEEPROMInterruptRequest())
+                interruptServiceRoutine(InterruptSource.DataEEPROM);
+            else
+                return;
+        }
+
+        private bool isGlobalInterruptEnableBitSet()
+        {
+            return getIntconRegister().isBitSet(7);
+        }
+
+        private bool isThereAnIntInterruptRequest()
+        {
+            //TODO: Implementation of INT Interrupt
+            return false;
+        }
+
+        private bool isThereATimer0InterruptRequest()
+        {
+            return ( isTimer0OverflowInterruptEnabled() && isTimer0OverflowInterruptFlagBitSet());
+        }
+
+        private bool isThereAPortBInterruptRequest()
+        {
+            //TODO: Implementation of PortB Interrupt
+            return false;
+        }
+
+        private bool isThereAPDataEEPROMInterruptRequest()
+        {
+            //TODO: Implementation of DataEEPROM Interrupt
+            return false;
+        }
+
+        private bool isTimer0OverflowInterruptFlagBitSet()
+        {
+            return getIntconRegister().isBitSet(2);
+        }
+
+        private bool isTimer0OverflowInterruptEnabled()
+        {
+            return getIntconRegister().isBitSet(5);
+        }
+
+        public void setGlobalInterruptEnableBit()
+        {
+            getIntconRegister().setBit(7);
+        }
+
+        private void clearGlobalInterruptEnableBit()
+        {
+            getIntconRegister().clearBit(7);
+        }
+
+        private void interruptServiceRoutine(InterruptSource interruptSource)
+        {
+            clearGlobalInterruptEnableBit();
+            stack.PushOntoStack(new ProgramMemoryAddress(DeriveReturnAddress(PC)));
+            PC.Counter.Value = 0x04;   
+
+        }
+
+        public int DeriveReturnAddress(ProgramCounter PC)
+        {
+            return PC.Counter.Value + 1;
         }
       
         /// <summary>

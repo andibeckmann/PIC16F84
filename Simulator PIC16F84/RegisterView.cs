@@ -14,7 +14,6 @@ namespace Simulator_PIC16F84
     {
         RegisterFileMap registerMap;
         int[] mappingArray;
-        public event EventHandler TimerInterrupt;
         RegisterBox workingRegisterBox;
         WorkingRegister W;
         RegisterBox ARegRegisterBox;

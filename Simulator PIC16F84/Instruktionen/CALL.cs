@@ -30,19 +30,14 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             this.k = k;
 
-            execute(PC, Stack);
+            execute(Reg, PC, Stack);
         }
 
-    protected void execute(ProgramCounter PC, Stack Stack)
+    protected void execute(RegisterFileMap Reg, ProgramCounter PC, Stack Stack)
     {
-        Stack.PushOntoStack(new ProgramMemoryAddress(DeriveReturnAddress(PC)));
+        Stack.PushOntoStack(new ProgramMemoryAddress(Reg.DeriveReturnAddress(PC)));
         PC.Counter.Value = k - 1;   
         //TODO: PC LATCH Wasauchimmer
-    }
-
-    private int DeriveReturnAddress(ProgramCounter PC)
-    {
-        return PC.Counter.Value + 1;//TODO Value++ oder Value + 1? benötigt es eine eigene Methode?
     }
 
     protected override void execute(WorkingRegister W, RegisterFileMap Reg)

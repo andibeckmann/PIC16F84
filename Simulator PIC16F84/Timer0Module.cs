@@ -86,11 +86,23 @@ namespace Simulator_PIC16F84
 
         private void IncrementWithPrescaler()
         {
-            if (checkPrescaler())
+            if (prescalerConditionFulfilled())
             {
+                checkOverflowcondition();
                 tmr0Reg.IncrementRegister();
                 internalCount = (byte)(internalCount + 1);
             }
+        }
+
+        private void checkOverflowcondition()
+        {
+            if ( tmr0Reg.Value == 255 )
+                setTimer0InterruptFlagBit();
+        }
+
+        private void setTimer0InterruptFlagBit()
+        {
+            intconReg.setBit(2);
         }
 
         public void incrementInTimerMode()
@@ -103,7 +115,7 @@ namespace Simulator_PIC16F84
                 inhibitCycles--;
         }
 
-        private bool checkPrescaler()
+        private bool prescalerConditionFulfilled()
         {
             if (prescaler.isAssignedToTMR0())
                 if (!prescaler.IncrementPrescaler())
