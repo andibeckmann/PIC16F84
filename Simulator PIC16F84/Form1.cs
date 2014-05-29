@@ -23,7 +23,6 @@ namespace Simulator_PIC16F84
         ProgramMemoryMap UserMemorySpace;
         ProgramMemoryView ProgramView;
         WorkingRegister W;
-        ProgramCounter PC;
         Stack Stack;
         StackView StackView;
         RegisterView registerView;
@@ -57,7 +56,7 @@ namespace Simulator_PIC16F84
             W = new WorkingRegister(-1);
 
             setupStack();
-            RegisterMap = new RegisterFileMap(PC, Stack);
+            RegisterMap = new RegisterFileMap(Stack);
 
             setupWorkingRegisterBox();
             setupRegisterBoxA();
@@ -69,7 +68,6 @@ namespace Simulator_PIC16F84
             setupRegisterView();
             setupProgramView();
 
-            PC = new ProgramCounter(RegisterMap);
             breakPoints = new List<int>();
             setupCrystalFrequency();
         }
@@ -335,7 +333,7 @@ namespace Simulator_PIC16F84
                     sr.Close();
                     ProgramView.loadProgram(fileContent);
                     UserMemorySpace = ProgramView.getBinaryCode();
-                    PC.Clear();
+                    RegisterMap.PC.Clear();
 
                 }
                 catch (Exception ex)
@@ -357,7 +355,7 @@ namespace Simulator_PIC16F84
 
         private void ExecuteCycle(object source, ElapsedEventArgs e)
         {
-            var index = FindRowForPC(PC.Counter.Address);
+            var index = FindRowForPC(RegisterMap.PC.Counter.Address);
             if(breakPoints.Contains(index))
             {
                 crystalFrequency.Stop();
@@ -370,8 +368,8 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
-            UserMemorySpace.ProgramMemory[PC.Counter.Address].DecodeInstruction(RegisterMap, W, PC, Stack);
-            PC.InkrementPC();
+            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
+            RegisterMap.PC.InkrementPC();
             RegisterMap.checkForInterrupt();
             SetSelection(index);
         }
@@ -451,7 +449,7 @@ namespace Simulator_PIC16F84
             crystalFrequency.Stop();
             watchdogFrequency.Stop();
             RegisterMap.ClearWatchdogTimer();
-            PC.Clear();
+            RegisterMap.PC.Clear();
             SetSelection(0);
             RegisterMap.ClearRegister();
             RegisterMap.Init();
@@ -467,7 +465,7 @@ namespace Simulator_PIC16F84
 
         private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var index = FindRowForPC(PC.Counter.Address);
+            var index = FindRowForPC(RegisterMap.PC.Counter.Address);
             ExecuteSingleCycle(index);
         }
 

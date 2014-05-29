@@ -16,10 +16,11 @@ namespace Simulator_PIC16F84
         private byte portAOldValue;
         private enum InterruptSource { INT, TMR0, PortB, DataEEPROM };
         private Stack stack;
+        public ProgramCounter PC { get; set; }
 
-        public RegisterFileMap(ProgramCounter PC, Stack stack)
+        public RegisterFileMap(Stack stack)
         {
-            this.PC = PC;
+            this.PC = new ProgramCounter(this);
             this.stack = stack;
             fillMappingArray();
             registerList = new RegisterByte[256];
@@ -385,8 +386,7 @@ namespace Simulator_PIC16F84
         {
             clearGlobalInterruptEnableBit();
             stack.PushOntoStack(new ProgramMemoryAddress(DeriveReturnAddress(PC)));
-            PC.Counter.Address = 0x04;   
-
+            PC.Counter.Address = 0x04;
         }
 
         public int DeriveReturnAddress(ProgramCounter PC)
@@ -438,8 +438,5 @@ namespace Simulator_PIC16F84
                 "Der Wert für BitNumber " + BitNumber.ToString() + " war nicht im zulässigen Bereich! (BitNumber = (min)0 - (max)7)");
             }
         }
-
-
-        public ProgramCounter PC { get; set; }
     } 
 }
