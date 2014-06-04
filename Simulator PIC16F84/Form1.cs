@@ -29,11 +29,13 @@ namespace Simulator_PIC16F84
         WatchdogTimer WDT;
         Prescaler Prescaler;
         RegisterView registerView;
+        RunTimeCounter runTimeCounterView;
         System.Timers.Timer crystalFrequency;
         List<int> breakPoints;
         int frequency = 10;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
+        int runTimeCounter = 0;
 
         /// <summary>
         /// Working Register
@@ -52,14 +54,17 @@ namespace Simulator_PIC16F84
 
             W = new WorkingRegister(-1);
 
-            RegisterMap = new RegisterFileMap(PC);
+            RegisterMap = new RegisterFileMap(PC); //TODO PC muss hier eigentlich raus..was macht der da eigentlich?
+            RegisterMap.CycleExecute += new System.EventHandler(CycleExecute);
 
             /// Working Register View
             WBox = new RegisterBox(W);
             WBox.MdiParent = this;
             WBox.Show();         
 
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
+            PC = new ProgramCounter(RegisterMap);
+
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg);
             RegisterMap.Init();
             W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.
@@ -84,13 +89,19 @@ namespace Simulator_PIC16F84
             BReg.Location = new Point(750, 500);
             BReg.Show();
 
+            ///RunTimeCounterView
+            runTimeCounterView = new RunTimeCounter();
+            runTimeCounterView.MdiParent = this;
+            runTimeCounterView.StartPosition = FormStartPosition.Manual;
+            runTimeCounterView.Location = new Point(950, 500);
+            runTimeCounterView.Show();
+
             UserMemorySpace = new ProgramMemoryMap();
             ProgramView = new ProgramMemoryView(UserMemorySpace, this);
             ProgramView.MdiParent = this;
             ProgramView.SetDesktopLocation(size.Width + 18, 0);
             ProgramView.Show();
 
-            PC = new ProgramCounter(RegisterMap);
             //Stack
             Stack = new Stack();
             StackView = new StackView(Stack);
@@ -169,6 +180,19 @@ namespace Simulator_PIC16F84
             } 
         }
 
+        public void CycleExecute(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate { CycleExecute(this, EventArgs.Empty); });
+            }
+            else
+            {
+                runTimeCounter += frequency;
+                runTimeCounterView.UpdateLabel(runTimeCounter);
+            }
+        }
+
         private void textBoxSlider_Changed(object sender, System.EventArgs e)
         {
             var resultString = Regex.Match(this.textBoxSlider.Text, @"\d+").Value;
@@ -181,7 +205,7 @@ namespace Simulator_PIC16F84
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            //TODO ups... gut, dass hier rein gar nichts steht :D
         }
 
         private void schliessenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -345,6 +369,7 @@ namespace Simulator_PIC16F84
             RegisterMap.Init();
             registerView.ClearColors();
             Stack.ClearStack();
+            runTimeCounter = 0;
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -369,7 +394,7 @@ namespace Simulator_PIC16F84
 
         private void registerFileMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W);
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg);
             RegisterMap.Init();
             W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.

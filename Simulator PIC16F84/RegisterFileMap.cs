@@ -13,6 +13,8 @@ namespace Simulator_PIC16F84
         private TimerStatus timerMode;
         private int inhibitCycles;
 
+        public EventHandler CycleExecute;
+
         public byte Timer {
             get
             {
@@ -46,8 +48,12 @@ namespace Simulator_PIC16F84
             }
         }
 
-        public void IncrementTimer()
+        public void ExecuteCycle()
         {
+            if(CycleExecute != null)
+            {
+                CycleExecute(this, EventArgs.Empty);
+            }
             if (timerMode == TimerStatus.TIMER)
             {
                 if (inhibitCycles <= 0)
