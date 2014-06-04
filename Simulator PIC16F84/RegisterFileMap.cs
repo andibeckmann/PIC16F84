@@ -10,116 +10,61 @@ namespace Simulator_PIC16F84
     {
         private RegisterByte[] registerList;
         public int[] mappingArray;
-        private TimerStatus timerMode;
-        private int inhibitCycles;
+        private Timer0Module timer0;
+        private WatchdogTimer WDT;
+        private Prescaler prescaler;
+        private byte portAOldValue;
+        private enum InterruptSource { INT, TMR0, PortB, DataEEPROM };
+        private Stack stack;
+        public ProgramCounter PC { get; set; }
 
-        public EventHandler CycleExecute;
-
-        public byte Timer {
-            get
-            {
-                return registerList[0x01].Value;
-            }
-            set
-            {
-                inhibitCycles = 2;
-                registerList[0x01].Value = value;
-            }
-        }
-
-        public void SetTimerMode()
+        public RegisterFileMap(Stack stack)
         {
-            timerMode = TimerStatus.TIMER;
-            if(IsBitSet(registerList[0x81].Value, 5))
-            {
-            registerList[0x81].Value = ClearBit(registerList[0x81].Value, 5);
-            //Clear Bit 5 in 81h
-            }
-        }
-
-
-        public void SetCounterMode()
-        {
-            timerMode = TimerStatus.COUNTER;
-            if (!IsBitSet(registerList[0x81].Value, 5))
-            {
-                registerList[0x81].Value = SetBit(registerList[0x81].Value, 5);
-                //Set Bit 5 in 81h
-            }
-        }
-
-        public void ExecuteCycle()
-        {
-            if(CycleExecute != null)
-            {
-                CycleExecute(this, EventArgs.Empty);
-            }
-            if (timerMode == TimerStatus.TIMER)
-            {
-                if (inhibitCycles <= 0)
-                {
-                    registerList[0x01].IncrementRegister();
-                }
-                else
-                {
-                    inhibitCycles--;
-                }
-            }
-        }
-
-        public void IncrementCounter()
-        {
-            if (timerMode == TimerStatus.COUNTER)
-            {
-                registerList[0x01].IncrementRegister();
-            }
-        }
-
-        public void TimerInterrupt()
-        {
-            if (!IsBitSet(registerList[0x0b].Value, 2) && IsBitSet(registerList[0x0b].Value, 7))
-            {
-                registerList[0x0b].Value = ClearBit(registerList[0x0b].Value, 7);
-                registerList[0x0b].Value = SetBit(registerList[0x0b].Value, 2);
-                PC.Counter.Value = 0x04;
-                
-                //TODO push return address on stack
-            }
-        }
-
-        public void EnableTimerInterrupt()
-        {
-            registerList[0x0b].Value = SetBit(registerList[0x0b].Value, 5);
-        }
-
-        public void DisableTimerInterrupt()
-        {
-            registerList[0x0b].Value = ClearBit(registerList[0x0b].Value, 5);
-        }
-
-        public void Overflow(object sender, int index)
-        {
-            if(index == 1 && IsBitSet(registerList[0x0b].Value, 5))
-            {
-                TimerInterrupt();
-            }
-        }
-
-        public bool IsBitSet(byte value, int pos)
-        {
-            return (((value >> pos) & 0x1) == 0x1);
-        }
-
-        public RegisterFileMap(ProgramCounter PC)
-        {
-            this.PC = PC;
+            this.PC = new ProgramCounter(this);
+            this.stack = stack;
             fillMappingArray();
             registerList = new RegisterByte[256];
+            portAOldValue = 0;
             for (int var = 0; var < registerList.Length; var++ )
             {
                 registerList[var] = new RegisterByte(var);
-                registerList[var].Overflow += new System.EventHandler<int>(Overflow);
             }
+
+            //Timer0 MOdule, Watchdogtimer und Prescaler
+            prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
+            WDT = new WatchdogTimer(this, prescaler);
+            timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
+        }
+
+        public bool isTimeOutBitSet()
+        {
+            return getStatusRegister().isBitSet(4);
+        }
+
+        public void ClearWatchdogTimer()
+        {
+            WDT.ClearWatchdogTimer();
+        }
+
+        public void WDTTimeOut()
+        {
+            setTimeOutBit();
+        }
+
+        private void setTimeOutBit()
+        {
+            getStatusRegister().clearBit(4);
+        }
+
+        public void checkOptionRegisterSettings()
+        {
+            prescaler.checkPrescalerSettings();
+            timer0.checkTimerMode();
+        }
+
+        public void checkTimerRegister()
+        {
+            timer0.checkTimer();
         }
 
         private void fillMappingArray()
@@ -170,14 +115,24 @@ namespace Simulator_PIC16F84
         {
             if (index == 0)
                 return readINDFReg();
-            if (isRegisterBankSelectBitSet() && index < 0x80)
+            else if (isRegisterBankSelectBitSet() && index < 0x80)
                 index = mappingArray[index + 0x80];
             else
                 index = mappingArray[index];
             return this.registerList[index];
         }
 
-        public RegisterByte getStatusRegisterContent()
+        public bool timer0InCounterMode()
+        {
+            return timer0.isInCounterMode();
+        }
+
+        public RegisterByte getTMR0Register()
+        {
+            return registerList[1];
+        }
+
+        public RegisterByte getStatusRegister()
         {
             return registerList[3];
         }
@@ -190,6 +145,20 @@ namespace Simulator_PIC16F84
         public RegisterByte getBRegister()
         {
             return registerList[6];
+        }
+
+        public RegisterByte getOptionRegister()
+        {
+            return registerList[0x81];
+        }
+
+        /// <summary>
+        /// Interrupt Control Register (Intcon)
+        /// </summary>
+        /// <returns></returns>
+        public RegisterByte getIntconRegister()
+        {
+            return registerList[0x0B];
         }
 
         internal void SetCarryBit()
@@ -300,7 +269,135 @@ namespace Simulator_PIC16F84
         {
             registerList.Where(item => item.Index == registerToChange.Index).Select(item => item.Value = registerToChange.Value);
         }
-        
+
+        public void incrementTimer()
+        {
+            timer0.incrementInTimerMode();
+        }
+
+        public void incrementCounter()
+        {
+            timer0.incrementInCounterMode();       
+        }
+
+        public void EnableTimerInterrupt()
+        {
+            getIntconRegister().setBit(5);
+        }
+
+        public void DisableTimerInterrupt()
+        {
+            getIntconRegister().clearBit(5);
+        }
+
+        public void clearWatchdogTimer()
+        {
+            WDT.ClearWatchdogTimer();
+        }
+
+        public void clearWatchdogPrescaler()
+        {
+            if( !prescaler.isAssignedToTMR0() )
+                prescaler.clearPrescaler();
+        }
+
+        public void checkForFallingAndRisingEdgesOnPortA()
+        {
+            //Check for Rising or Falling Edges for Timer 0 Module Counter Mode
+            if (getOptionRegister().isBitSet(4))
+            {
+                if (getARegister().checkForFallingEdge(portAOldValue, 4))
+                    incrementCounter();
+            }
+            else
+            {
+                if (getARegister().checkForRisingEdge(portAOldValue, 4))
+                    incrementCounter();
+            }
+             portAOldValue = getARegister().Value;
+        }
+
+        public void checkForInterrupt()
+        {
+            if ( !isGlobalInterruptEnableBitSet() )
+                return;
+
+            if (isThereAnIntInterruptRequest())
+                interruptServiceRoutine(InterruptSource.INT);
+            else if (isThereATimer0InterruptRequest())
+                interruptServiceRoutine(InterruptSource.TMR0);
+            else if (isThereAPortBInterruptRequest())
+                interruptServiceRoutine(InterruptSource.PortB);
+            else if (isThereAPDataEEPROMInterruptRequest())
+                interruptServiceRoutine(InterruptSource.DataEEPROM);
+            else
+                return;
+        }
+
+        private bool isGlobalInterruptEnableBitSet()
+        {
+            return getIntconRegister().isBitSet(7);
+        }
+
+        private bool isThereAnIntInterruptRequest()
+        {
+            //TODO: Implementation of INT Interrupt
+            return false;
+        }
+
+        private bool isThereATimer0InterruptRequest()
+        {
+            return ( isTimer0OverflowInterruptEnabled() && isTimer0OverflowInterruptFlagBitSet());
+        }
+
+        private bool isThereAPortBInterruptRequest()
+        {
+            //TODO: Implementation of PortB Interrupt
+            return false;
+        }
+
+        private bool isThereAPDataEEPROMInterruptRequest()
+        {
+            //TODO: Implementation of DataEEPROM Interrupt
+            return false;
+        }
+
+        private bool isTimer0OverflowInterruptFlagBitSet()
+        {
+            return getIntconRegister().isBitSet(2);
+        }
+
+        private bool isTimer0OverflowInterruptEnabled()
+        {
+            return getIntconRegister().isBitSet(5);
+        }
+
+        public void setGlobalInterruptEnableBit()
+        {
+            getIntconRegister().setBit(7);
+        }
+
+        private void clearGlobalInterruptEnableBit()
+        {
+            getIntconRegister().clearBit(7);
+        }
+
+        private void interruptServiceRoutine(InterruptSource interruptSource)
+        {
+            clearGlobalInterruptEnableBit();
+            stack.PushOntoStack(new ProgramMemoryAddress(DeriveReturnAddress(PC)));
+            PC.Counter.Address = 0x04;
+        }
+
+        public int DeriveReturnAddress(ProgramCounter PC)
+        {
+            return PC.Counter.Address + 1;
+        }
+
+        public void incrementWatchdogTimer()
+        {
+            WDT.IncrementWatchdogTimer();
+        }
       
         /// <summary>
         /// Setzt ein bestimmtes Bit in einem Byte.
@@ -341,15 +438,5 @@ namespace Simulator_PIC16F84
                 "Der Wert für BitNumber " + BitNumber.ToString() + " war nicht im zulässigen Bereich! (BitNumber = (min)0 - (max)7)");
             }
         }
-
-
-        public ProgramCounter PC { get; set; }
-    }
-
-    public enum TimerStatus
-    {
-        TIMER,
-        COUNTER
-    }
- 
+    } 
 }

@@ -44,7 +44,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
             if (result == 0)
             {
-                PC.Counter.Value++;
+                PC.Counter.Address++;
                 NOP Operation = new NOP(Reg);
             }
          }

@@ -26,7 +26,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
             public ADDWF(int file, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
             {
-                this.f = f;
+                this.f = file;
                 this.d = d;
 
                 execute(W, Reg);
@@ -37,11 +37,10 @@ namespace Simulator_PIC16F84.Instruktionen
                 var result = W.Value + Reg.getRegister(f).Value;
 
                 /// Zero-Bit Logik
-                if (result == 0)
+                if (result == 0 || result == 256)
                    Reg.SetZeroBit();
                 else
-                    Reg.ResetZeroBit();
-
+                   Reg.ResetZeroBit();
 
                 /// Carry-Bit Logik
                 if (result > 0xFF)
@@ -49,29 +48,17 @@ namespace Simulator_PIC16F84.Instruktionen
                 else
                     Reg.ResetCarryBit();
 
-                /// Unterscheidung Working Reg oder File Reg
-                if (d)
-                {
-                    /// Digit Carry Logik
-                    if ((Reg.getRegister(f).Value & 0x0F) + W.Value > 0x0f)
-                        Reg.SetDigitCarryBit();
-                    else
-                       Reg.ResetDigitCarryBit();
-
-                    /// Resultat Ablegen
-                   Reg.getRegister(f).Value = (byte)result;
-                }
+                /// Digit Carry Logik
+                if ((Reg.getRegister(f).Value & 0x0F) + (W.Value & 0x0F) > 0x0f)
+                    Reg.SetDigitCarryBit();
                 else
-                {
-                    /// Digit Carry Logik
-                    if ((W.Value & 0x0F) + Reg.getRegister(f).Value > 0x0f)
-                       Reg.SetDigitCarryBit();
-                    else
-                       Reg.ResetDigitCarryBit();
+                    Reg.ResetDigitCarryBit();
 
-                    /// Resultat Ablegen
+                /// Resultat Ablegen, Unterscheidung Working Reg oder File Reg
+                if (d)
+                   Reg.getRegister(f).Value = (byte)result;
+                else
                     W.Value = (byte)result;
-                }
             }
     }
 }

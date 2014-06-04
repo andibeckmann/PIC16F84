@@ -8,23 +8,37 @@ namespace Simulator_PIC16F84
 {
     public class ProgramMemoryAddress
     {
-        private int value;
+        private int address;
 
         public ProgramMemoryAddress()
         {
-            value = 0;
+            address = 0;
         }
 
         public ProgramMemoryAddress(int address)
         {
-            value = 0;
-            this.Value = address;
+            this.address = address;
         }
 
-        public int Value
+        public void setBit(int pos)
         {
-            get { return value; }
-            set { this.value = value;
+            address = (byte)((int)address | (0x01 << pos));
+        }
+
+        public bool isBitSet(int pos)
+        {
+            return (((address >> pos) & 0x1) == 0x1);
+        }
+
+        public int Address
+        {
+            get { return address; }
+            set
+            {
+                if ( value < 0x3FFF && value >= 0 )
+                    this.address = value;
+                else
+                   throw new ArgumentOutOfRangeException();
             }
         }
     }

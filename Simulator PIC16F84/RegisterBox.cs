@@ -15,7 +15,7 @@ namespace Simulator_PIC16F84
     {
         private WorkingRegister W;
         private RegisterByte RegByte;
-        private int sizeOfField = 15;
+        private int sizeOfField = 19;
         private int marginSmall = 5;
         private int marginTop = 20;
 
@@ -50,7 +50,26 @@ namespace Simulator_PIC16F84
             this.MaximizeBox = false;
 
             if (W != null)
-                this.Text = "Working Register";
+                this.Text = "WORKING Register";
+            else if (RegByte.Index == 3)
+            {
+                this.Text = "STATUS Register";
+                this.Height += sizeOfField;
+            }
+            else if (RegByte.Index == 5)
+                this.Text = "PORT A Register";
+            else if (RegByte.Index == 6)
+                this.Text = "PORT B Register";
+            else if (RegByte.Index == 0x81)
+            {
+                this.Text = "OPTION Register";
+                this.Height += sizeOfField;
+            }
+            else if (RegByte.Index == 0x0B)
+            {
+                this.Text = "INTCON Register";
+                this.Height += sizeOfField;
+            }
             else
                 this.Text = "Register " + RegByte.Index;
         }
@@ -62,6 +81,7 @@ namespace Simulator_PIC16F84
             textBox.Width = marginSmall * 7 + sizeOfField * 8;
             textBox.TextChanged += new System.EventHandler(textbox_TextChanged);
             textBox.Name = "Value";
+            textBox.TextAlign = HorizontalAlignment.Right;
             this.Controls.Add(textBox);
         }
 
@@ -80,7 +100,82 @@ namespace Simulator_PIC16F84
             checkbox.Width = sizeOfField;
             checkbox.Name = "Bit " + (7 - index);
             checkbox.CheckedChanged += new System.EventHandler(CheckBoxChanged);
+
+            if (RegByte != null)
+                createLabels(index);
             this.Controls.Add(checkbox);
+        }
+
+        private void createLabels(int index)
+        {
+            Label label = new Label();
+            label.Location = new System.Drawing.Point((sizeOfField + marginSmall) * index + 3, marginTop * 2 + marginSmall);
+            label.Width = sizeOfField;
+            label.Font = new Font("Arial", 5);
+            if (RegByte.Index == 3)
+                getStatusRegLabels(7 - index, label);
+            if (RegByte.Index == 0x81)
+                getOptionRegLabels(7 - index, label);
+            if (RegByte.Index == 0x0B)
+                getIntconRegLabels(7 - index, label);
+            this.Controls.Add(label);
+        }
+
+        private static void getStatusRegLabels(int index, Label label)
+        {
+            //Status Reg Labels
+            if (index == 0)
+                label.Text = "C";
+            else if (index == 1)
+                label.Text = "DC";
+            else if (index == 2)
+                label.Text = "Z";
+            else if (index == 3)
+                label.Text = "PD";
+            else if (index == 4)
+                label.Text = "TO";
+            else if (index == 5)
+                label.Text = "RP0";
+            else
+                label.Text = "  -";
+        }
+
+        private static void getOptionRegLabels(int index, Label label)
+        {
+            //Option Reg Labels
+            if (index < 3)
+                label.Text = "PS" + index;
+            else if (index == 3)
+                label.Text = "PSA";
+            else if (index == 4)
+                label.Text = "T0SE";
+            else if (index == 5)
+                label.Text = "T0CS";
+            else if (index == 6)
+                label.Text = "INTEDG";
+            else
+                label.Text = "RBPU";
+        }
+
+        private static void getIntconRegLabels(int index, Label label)
+        {
+            //Option Reg Labels
+            if (index == 0)
+                label.Text = "RBIF";
+            else if (index == 1)
+                label.Text = "INTF";
+            else if (index == 2)
+                label.Text = "T0IF";
+            else if (index == 3)
+                label.Text = "RBIE";
+            else if (index == 4)
+                label.Text = "INTE";
+            else if (index == 5)
+                label.Text = "T0IE";
+            else if (index == 6)
+                label.Text = "EEIE";
+            else
+                label.Text = "GIE";
         }
 
         private void textbox_TextChanged(object sender, EventArgs e)
@@ -100,21 +195,15 @@ namespace Simulator_PIC16F84
 
         private void fileRegChanged(TextBox textBox)
         {
-            var name = textBox.Name;
-            name = name.Substring(5);
-            int id;
-            if (int.TryParse(name, out id))
+            int content;
+            try
             {
-                int content;
-                try
-                {
-                    content = Convert.ToInt32(textBox.Text, 16);
-                    RegByte.Value = (byte)content;
-                }
-                catch
-                {
-                    // TODO
-                }
+                content = Convert.ToInt32(textBox.Text, 16);
+                RegByte.Value = (byte)content;
+            }
+            catch
+            {
+                // TODO
             }
         }
 

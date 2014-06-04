@@ -30,18 +30,18 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-           Reg.SetZeroBit();
-
-            var result = Reg.getRegister(f).Value--;
+            var result = Reg.getRegister(f).Value - 1;
 
             if (d)
             {
-               Reg.getRegister(f).Value = result;
+               Reg.getRegister(f).Value = (byte) result;
             }
             else
             {
-                W.Value = result;
+                W.Value = (byte) result;
             }
+            if (result == 0)
+                Reg.SetZeroBit();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Simulator_PIC16F84
             {
                 StackAddresses[i] = StackAddresses[i + 1];
             }
-            StackAddresses[7].Value = 0;
+            StackAddresses[7].Address = 0;
             this.StackChanged(this, EventArgs.Empty);
             return topOfStack;
         }
@@ -55,7 +55,7 @@ namespace Simulator_PIC16F84
         {
             foreach (var item in StackAddresses)
 	        {
-                item.Value = 0;
+                item.Address = 0;
 	        }
         }
     }

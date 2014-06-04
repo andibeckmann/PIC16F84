@@ -59,10 +59,9 @@ namespace Simulator_PIC16F84.Instruktionen
         /// </summary>
         protected Stack Stack;
 
-
         public BaseOperation(RegisterFileMap Reg)
         {
-            Reg.ExecuteCycle();
+            Reg.incrementTimer();
         }
 
         /// <summary>

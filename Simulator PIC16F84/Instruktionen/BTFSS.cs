@@ -35,7 +35,7 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             if( IsBitSet(Reg.getRegister(f).Value, b))
             {
-                PC.Counter.Value++;
+                PC.Counter.Address++;
                 new NOP(Reg);
             }
         }

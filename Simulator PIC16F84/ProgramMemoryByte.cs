@@ -22,7 +22,7 @@ namespace Simulator_PIC16F84
             set { this.value = value; }
         }
 
-        public void DecodeInstruction(RegisterFileMap Reg, WorkingRegister W, ProgramCounter PC, Stack Stack, WatchdogTimer WDT, Prescaler Prescaler)
+        public void DecodeInstruction(RegisterFileMap Reg, WorkingRegister W, ProgramCounter PC, Stack Stack)
         {
             int k;
             int f;
@@ -101,11 +101,7 @@ namespace Simulator_PIC16F84
             //MOVF Instruktion
             if ((value & (int)0x3F00) == (int)0x0800)
             {
-                f = value & (int)0x7F;
-                if ((value & 0x80) == 0x80)
-                    d = true;
-                else
-                    d = false;
+                ExtractFileRegisterAndDestinationBit(out f, out d);
                 MOVF Operation = new MOVF(f, d, W, Reg);
             }
 
@@ -209,7 +205,7 @@ namespace Simulator_PIC16F84
             //CLRWDT Instruktion
             if ((value & (int)0xFFFF) == (int)0x0064)
             {
-                CLRWDT Operation = new CLRWDT(W, WDT, Prescaler, Reg);
+                CLRWDT Operation = new CLRWDT(W, Reg);
             }
 
             //GOTO Instruktion
@@ -255,7 +251,7 @@ namespace Simulator_PIC16F84
             //SLEEP Instruktion
             if ((value & (int)0x3FFF) == (int)0x0063)
             {
-                SLEEP Operation = new SLEEP(W, Reg, WDT, Prescaler);
+                SLEEP Operation = new SLEEP(W, Reg);
             }
 
             //SUBLW Instruktion

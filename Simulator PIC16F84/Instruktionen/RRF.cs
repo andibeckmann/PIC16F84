@@ -30,6 +30,7 @@ namespace Simulator_PIC16F84.Instruktionen
         public RRF(int f, bool d, WorkingRegister W, RegisterFileMap Reg) : base(Reg)
         {
             this.f = f;
+            this.d = d;
             CarryReminder = false;
 
             execute(W, Reg);

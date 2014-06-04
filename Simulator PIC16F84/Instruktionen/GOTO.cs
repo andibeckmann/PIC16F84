@@ -26,14 +26,14 @@ namespace Simulator_PIC16F84.Instruktionen
         public GOTO(byte k, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
         {
             this.k = k;
-            Reg.ExecuteCycle();
+            Reg.incrementTimer();
 
             execute(PC);
         }
 
         protected void execute(ProgramCounter PC)
         {
-            PC.Counter.Value = k - 1;
+            PC.Counter.Address = k - 1;
 
             //TODO: PCLATH - siehe Beschreibung, wurde hier noch komplett ignoriert
         }

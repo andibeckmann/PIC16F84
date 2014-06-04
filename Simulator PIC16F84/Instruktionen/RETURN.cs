@@ -25,14 +25,14 @@ namespace Simulator_PIC16F84.Instruktionen
         public RETURN(ProgramCounter PC, Stack Stack, RegisterFileMap Reg) : base(Reg)
         {
             this.Stack = Stack;
-            Reg.ExecuteCycle();
+            Reg.incrementTimer();
 
             execute(PC);
         }
 
         protected void execute(ProgramCounter PC)
         {
-            PC.Counter.Value = Stack.PullFromStack().Value;
+            PC.Counter.Address = Stack.PullFromStack().Address - 1;
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)

@@ -11,11 +11,6 @@ namespace Simulator_PIC16F84
         private byte value;
 
         public event EventHandler<int> RegisterChanged;
-        public event EventHandler<int> Overflow;
-
-        public bool[] fallingEdges = new bool[8];
-        public bool[] risingEdges = new bool[8];
-
         public int Index { get; set; }
 
         public RegisterByte(int index)
@@ -24,32 +19,15 @@ namespace Simulator_PIC16F84
             this.Index = index;
         }
 
-        public byte Value {
+        public byte Value
+        {
             get { return value; }
             set
             {
-                CheckRisingAndFallingEdges(this.value, value);
-                this.value = value; 
+                this.value = value;
                 if (this.RegisterChanged != null)
                 {
                     this.RegisterChanged(this, Index);
-                }
-            }
-        }
-
-        private void CheckRisingAndFallingEdges(byte oldValue, byte newValue)
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                fallingEdges[i] = false;
-                risingEdges[i] = false;
-                if(IsBitSet(oldValue, i) && !IsBitSet(newValue, i))
-                {
-                    fallingEdges[i] = true;
-                }
-                else if (!IsBitSet(oldValue, i) && IsBitSet(newValue, i))
-                {
-                    risingEdges[i] = true;
                 }
             }
         }
@@ -68,24 +46,42 @@ namespace Simulator_PIC16F84
         {
             if (value == 255)
             {
-                if (this.Overflow != null)
-                {
-                    this.Overflow(this, Index);
-                }
                 ClearRegister();
                 return Value;
             }
             return ++Value;
         }
 
-        public bool IsBitSet(int pos)
+        public bool isBitSet(int pos)
         {
             return ( ( ( value >> pos ) & 0x1 ) == 0x1 );
+        }
+
+        public void clearBit(int pos)
+        {
+            value = (byte) (value & (0xFE << pos));
+        }
+
+        public void setBit(int pos)
+        {
+            value = (byte)((int)value | (0x01 << pos));
         }
 
         public byte FormComplement()
         {
             return ((byte) ((int) value ^ 0xff));
+        }
+
+        public bool checkForFallingEdge(byte oldValue, int bitPosition)
+        {
+            var bytevalue = 0x01 << bitPosition;
+            return (!isBitSet(bitPosition) && ((oldValue & bytevalue) == bytevalue));
+        }
+
+        public bool checkForRisingEdge(byte oldValue, int bitPosition)
+        {
+            var bytevalue = 0x01 << bitPosition;
+            return (isBitSet(bitPosition) && ((oldValue & bytevalue) != bytevalue));
         }
 
         /// <summary>
@@ -98,7 +94,6 @@ namespace Simulator_PIC16F84
         {
             return (byteValue & (1 << bit)) != 0;
         }
-
     }
 
 }

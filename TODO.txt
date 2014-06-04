@@ -1,0 +1,22 @@
+##############################
+# TODO
+##############################
+
+
+0. Laufzeitzähler
+1. Breakpoints: Breakpoints auf erste und letzte Zeile funktionieren nicht
+2. Anweisung (Start, Einzelschritt, etc.) ohne geladenes Programm wirft Exception
+3. Exception fliegt falls man das Programm zu schließen versucht, während Schritte ausgeführt werden
+4. Man kann nur einmal Programm laden. Beim zweiten Mal explodiert irgendwas...
+5. Breakpoints: Programm hält nicht am Haltepunkt, sondern an der Instruktion davor.
+6. Program View: Die Ansicht sollte die ausgeführten Instruktionen möglichst oben anzeigen (derzeit ist es nur die unterste Zeile) damit man sehen kann, was als nächstes kommt.
+7. Alle Views lassen sich nur am Anfang fehlerfrei aufrufen. Wenn man sie einmal geschlossen hat, ist die dahinterliegende Logik zerschossen.
+8. Adresse 0 im Register wird derzeit beim Resetten aus irgendeinem Grund mit Werten belegt. o.0
+9. Exception beim Timerinterrupt
+10. - done -
+11. ProgramView ist etwas zu groß fürs Fenster (in Breite) Anpassen.
+12. Externer Takt anlegen (?) zBsp für SimTest3 - der Counter Mode Pin
+13. - done -
+14. - done -
+15. Hinzufügen von Werten über die Textboxen: Umständlich, IBeam sitzt vorne und nimmt dann erstmal keine Zahlen an, etc. -> Bei Eingabe alte Werte selektieren und so schneller löschen
+16. Das Programm rutscht manchmal eiskalt durch das EInstellen der Optionen usw. durch (bsp: Optionenregister in simtest04 sollte komplett gecleart werden - bei ca. jedem dritten durchlauf ist es aber auf 0xff) Scheint besonders beim ersten Mal (also direkt nach dem Laden) sehr häufig zu passieren... aber nicht immer.

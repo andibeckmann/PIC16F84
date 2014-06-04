@@ -23,30 +23,32 @@ namespace Simulator_PIC16F84
         ProgramMemoryMap UserMemorySpace;
         ProgramMemoryView ProgramView;
         WorkingRegister W;
-        ProgramCounter PC;
         Stack Stack;
         StackView StackView;
-        WatchdogTimer WDT;
-        Prescaler Prescaler;
         RegisterView registerView;
         RunTimeCounter runTimeCounterView;
         System.Timers.Timer crystalFrequency;
+        System.Timers.Timer watchdogFrequency;
         List<int> breakPoints;
         int frequency = 10;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
-        int runTimeCounter = 0;
+        ProgramMemoryAddress ConfigurationBits;
 
         /// <summary>
-        /// Working Register
+        /// Detailansicht spezieller Register
         /// </summary>
         RegisterBox WBox;
         RegisterBox AReg;
         RegisterBox BReg;
+        RegisterBox Status;
+        RegisterBox Option;
+        RegisterBox Intcon;
 
         public Main()
         {
             InitializeComponent();
+            InitConfigurationBits();
             InitializeSlider();
             IsMdiContainer = true;
             this.WindowState = FormWindowState.Maximized;
@@ -54,17 +56,82 @@ namespace Simulator_PIC16F84
 
             W = new WorkingRegister(-1);
 
-            RegisterMap = new RegisterFileMap(PC); //TODO PC muss hier eigentlich raus..was macht der da eigentlich?
-            RegisterMap.CycleExecute += new System.EventHandler(CycleExecute);
+            setupStack();
+            RegisterMap = new RegisterFileMap(Stack);
 
-            /// Working Register View
-            WBox = new RegisterBox(W);
-            WBox.MdiParent = this;
-            WBox.Show();         
+            setupWorkingRegisterBox();
+            setupRegisterBoxA();
+            setupRegisterBoxB();
+            setupStatusBox();
+            setupOptionRegister();
+            setupIntconRegister();
 
-            PC = new ProgramCounter(RegisterMap);
+            setupRegisterView();
+            setupProgramView();
 
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg);
+            breakPoints = new List<int>();
+            setupCrystalFrequency();
+        }
+
+        /// <summary>
+        /// The configuration bits can be programmed (read as '0'),
+        /// or left unprogrammed (read as '1'), to select various
+        /// device configurations. These bits are mapped in
+        /// program memory location 2007h.
+        /// Address 2007h is beyond the user program memory
+        /// space and it belongs to the special test/configuration
+        /// memory space (2000h - 3FFFh): This space can only
+        /// be accessed during programming.
+        /// </summary>
+        private void InitConfigurationBits()
+        {
+            ConfigurationBits = new ProgramMemoryAddress(0x2007);
+            //FOSC1:FOSC0: Oscillator Selection bits - 11 = RC oscillator
+            // 11 = RC oscillator
+            // 10 = HS oscillator
+            // 01 = XT oscillator
+            // 00 = LP oscillator
+            ConfigurationBits.setBit(0);
+            ConfigurationBits.setBit(1);
+            //WDTE: Watchdog Timer Enable bit
+            // 1 = WDT enabled
+            // 0 = WDT disabled
+            ConfigurationBits.setBit(2);
+            //PWRTE: Power-up Timer Enable bit
+            // 1 = Power-up Timer is disabled
+            // 0 = Power-up Timer is enabled
+            ConfigurationBits.setBit(3);
+            //CP: Code Protection bit (bits 4-13)
+            // 1 = Code protection disabled
+            // 0 = All program memory is code protected
+            ConfigurationBits.Address = ConfigurationBits.Address | 0x1FF0;
+        }
+
+        private bool isWatchdogTimerEnabled()
+        {
+            return ConfigurationBits.isBitSet(1);
+        }
+
+        private void setupCrystalFrequency()
+        {
+            crystalFrequency = new System.Timers.Timer(10);
+            crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
+            watchdogFrequency = new System.Timers.Timer(1);
+            watchdogFrequency.Elapsed += new System.Timers.ElapsedEventHandler(watchdogTimerPeriodElapsed);
+        }
+
+        private void setupProgramView()
+        {
+            UserMemorySpace = new ProgramMemoryMap();
+            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
+            ProgramView.Location = new Point(300, 0);
+            ProgramView.MdiParent = this;
+            ProgramView.Show();
+        }
+
+        private void setupRegisterView()
+        {
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg, Status, Option, Intcon);
             RegisterMap.Init();
             W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.
@@ -73,51 +140,61 @@ namespace Simulator_PIC16F84
             registerView.ClearColors();
             // Display the new form.
             registerView.Show();
-            var size = registerView.Size;
+        }
 
-            ///A-Register View
-            AReg = new RegisterBox(RegisterMap.getARegister());
-            AReg.MdiParent = this;
-            AReg.StartPosition = FormStartPosition.Manual;
-            AReg.Location = new Point(525, 500);
-            AReg.Show();
+        private void setupStatusBox()
+        {
+            Status = new RegisterBox(RegisterMap.getStatusRegister());
+            Status.MdiParent = this;
+            Status.StartPosition = FormStartPosition.Manual;
+            Status.Location = new Point(300, 600);
+            Status.Show();
+        }
 
+        private void setupRegisterBoxB()
+        {
             ///B-Register View
             BReg = new RegisterBox(RegisterMap.getBRegister());
             BReg.MdiParent = this;
             BReg.StartPosition = FormStartPosition.Manual;
             BReg.Location = new Point(750, 500);
             BReg.Show();
+        }
 
-            ///RunTimeCounterView
-            runTimeCounterView = new RunTimeCounter();
-            runTimeCounterView.MdiParent = this;
-            runTimeCounterView.StartPosition = FormStartPosition.Manual;
-            runTimeCounterView.Location = new Point(950, 500);
-            runTimeCounterView.Show();
+        private void setupRegisterBoxA()
+        {
+            ///A-Register View
+            AReg = new RegisterBox(RegisterMap.getARegister());
+            AReg.MdiParent = this;
+            AReg.StartPosition = FormStartPosition.Manual;
+            AReg.Location = new Point(525, 500);
+            AReg.Show();
+        }
 
-            UserMemorySpace = new ProgramMemoryMap();
-            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
-            ProgramView.MdiParent = this;
-            ProgramView.SetDesktopLocation(size.Width + 18, 0);
-            ProgramView.Show();
+        private void setupWorkingRegisterBox()
+        {
+            /// Working Register View
+            WBox = new RegisterBox(W);
+            WBox.MdiParent = this;
+            WBox.Show();
+        }
 
-            //Stack
-            Stack = new Stack();
-            StackView = new StackView(Stack);
-            StackView.MdiParent = this;
-            StackView.Show();
-            //Watchdogtimer
-            WDT = new WatchdogTimer();
-            Prescaler = new Prescaler();
-            breakPoints = new List<int>();
-            crystalFrequency = new System.Timers.Timer(10);
-            crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
+        private void setupOptionRegister()
+        {
+            Option = new RegisterBox(RegisterMap.getOptionRegister());
+            Option.MdiParent = this;
+            Option.StartPosition = FormStartPosition.Manual;
+            Option.Location = new Point(525, 600);
+            Option.Show();
+        }
 
-            
-            
-
-
+        private void setupIntconRegister()
+        {
+            Intcon = new RegisterBox(RegisterMap.getIntconRegister());
+            Intcon.MdiParent = this;
+            Intcon.StartPosition = FormStartPosition.Manual;
+            Intcon.Location = new Point(750, 600);
+            Intcon.Show();
         }
 
         private void InitializeSlider()
@@ -178,19 +255,6 @@ namespace Simulator_PIC16F84
                 frequency = value;
                 crystalFrequency.Interval = frequency;
             } 
-        }
-
-        public void CycleExecute(object sender, EventArgs e)
-        {
-            if (InvokeRequired)
-            {
-                BeginInvoke((MethodInvoker)delegate { CycleExecute(this, EventArgs.Empty); });
-            }
-            else
-            {
-                runTimeCounter += frequency;
-                runTimeCounterView.UpdateLabel(runTimeCounter);
-            }
         }
 
         private void textBoxSlider_Changed(object sender, System.EventArgs e)
@@ -270,7 +334,7 @@ namespace Simulator_PIC16F84
                     sr.Close();
                     ProgramView.loadProgram(fileContent);
                     UserMemorySpace = ProgramView.getBinaryCode();
-                    PC.Clear();
+                    RegisterMap.PC.Clear();
 
                 }
                 catch (Exception ex)
@@ -292,10 +356,11 @@ namespace Simulator_PIC16F84
 
         private void ExecuteCycle(object source, ElapsedEventArgs e)
         {
-            var index = FindRowForPC(PC.Counter.Value);
+            var index = FindRowForPC(RegisterMap.PC.Counter.Address);
             if(breakPoints.Contains(index))
             {
                 crystalFrequency.Stop();
+                watchdogFrequency.Stop();
                 return;
             }
             ExecuteSingleCycle(index);
@@ -304,9 +369,25 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
-            UserMemorySpace.ProgramMemory[PC.Counter.Value].DecodeInstruction(RegisterMap, W, PC, Stack, WDT, Prescaler);
-            PC.InkrementPC();
+            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
+            RegisterMap.PC.InkrementPC();
+            RegisterMap.checkForInterrupt();
             SetSelection(index);
+        }
+
+        private void watchdogTimerPeriodElapsed(object source, ElapsedEventArgs e)
+        {
+            if (isWatchdogTimerEnabled())
+            {
+                RegisterMap.incrementWatchdogTimer();
+                checkForTimeOut();
+            }
+        }
+
+        private void checkForTimeOut()
+        {
+            if (!RegisterMap.isTimeOutBitSet())
+                deviceReset();
         }
 
         private void SetSelection(int index)
@@ -355,15 +436,21 @@ namespace Simulator_PIC16F84
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var index = FindRowForPC(PC.Counter.Value);
-            ExecuteSingleCycle(index);
             crystalFrequency.Start();
+            watchdogFrequency.Start();
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            deviceReset();
+        }
+
+        private void deviceReset()
+        {
             crystalFrequency.Stop();
-            PC.Clear();
+            watchdogFrequency.Stop();
+            RegisterMap.ClearWatchdogTimer();
+            RegisterMap.PC.Clear();
             SetSelection(0);
             RegisterMap.ClearRegister();
             RegisterMap.Init();
@@ -375,37 +462,31 @@ namespace Simulator_PIC16F84
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             crystalFrequency.Stop();
+            watchdogFrequency.Stop();
         }
 
         private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var index = FindRowForPC(PC.Counter.Value);
+            var index = FindRowForPC(RegisterMap.PC.Counter.Address);
             ExecuteSingleCycle(index);
         }
 
         private void programMemoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            UserMemorySpace = new ProgramMemoryMap();
-            ProgramView = new ProgramMemoryView(UserMemorySpace, this);
-            ProgramView.Location = new Point(300, 0);
-            ProgramView.MdiParent = this;
-            ProgramView.Show();
+            setupProgramView();
         }
 
         private void registerFileMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg);
-            RegisterMap.Init();
-            W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
-            // Set the Parent Form of the Child window.
-            registerView.MdiParent = this;
-            registerView.Size = new Size { Height = this.Size.Height - 150, Width = 275 };
-            registerView.ClearColors();
-            // Display the new form.
-            registerView.Show();
+            setupRegisterView();
         }
 
         private void stackToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setupStack();
+        }
+
+        private void setupStack()
         {
             Stack = new Stack();
             StackView = new StackView(Stack);
@@ -415,27 +496,27 @@ namespace Simulator_PIC16F84
 
         private void workingRegisterToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            WBox = new RegisterBox(W);
-            WBox.MdiParent = this;
-            WBox.Show();       
+            setupWorkingRegisterBox();   
         }
 
         private void aRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AReg = new RegisterBox(RegisterMap.getARegister());
-            AReg.MdiParent = this;
-            AReg.StartPosition = FormStartPosition.Manual;
-            AReg.Location = new Point(525, 500);
-            AReg.Show();
+            setupRegisterBoxA();
         }
 
         private void bRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BReg = new RegisterBox(RegisterMap.getBRegister());
-            BReg.MdiParent = this;
-            BReg.StartPosition = FormStartPosition.Manual;
-            BReg.Location = new Point(750, 500);
-            BReg.Show();
+            setupRegisterBoxB();
+        }
+
+        private void optionRegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setupOptionRegister();
+        }
+
+        private void intconToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setupIntconRegister();
         }
 
     }
