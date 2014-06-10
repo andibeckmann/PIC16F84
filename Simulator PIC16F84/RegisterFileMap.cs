@@ -14,7 +14,6 @@ namespace Simulator_PIC16F84
         private WatchdogTimer WDT;
         private Prescaler prescaler;
         private byte portAOldValue;
-        private enum InterruptSource { INT, TMR0, PortB, DataEEPROM };
         private Stack stack;
         private ProgramMemoryAddress ConfigurationBits;
         public ProgramCounter PC { get; set; }
@@ -351,21 +350,18 @@ namespace Simulator_PIC16F84
             if ( !isGlobalInterruptEnableBitSet() )
                 return;
 
-            if (isThereAnIntInterruptRequest())
-                interruptServiceRoutine(InterruptSource.INT);
-            else if (isThereATimer0InterruptRequest())
-                interruptServiceRoutine(InterruptSource.TMR0);
-            else if (isThereAPortBInterruptRequest())
-                interruptServiceRoutine(InterruptSource.PortB);
-            else if (isThereAPDataEEPROMInterruptRequest())
-                interruptServiceRoutine(InterruptSource.DataEEPROM);
-            else
-                return;
+            if (isThereAnInterruptRequest())
+                interruptServiceRoutine();
         }
 
         private bool isGlobalInterruptEnableBitSet()
         {
             return getIntconRegister().isBitSet(7);
+        }
+
+        private bool isThereAnInterruptRequest()
+        {
+            return (isThereAnIntInterruptRequest() || isThereATimer0InterruptRequest() || isThereAPortBInterruptRequest() || isThereAPDataEEPROMInterruptRequest() );
         }
 
         private bool isThereAnIntInterruptRequest()
@@ -411,11 +407,11 @@ namespace Simulator_PIC16F84
             getIntconRegister().clearBit(7);
         }
 
-        private void interruptServiceRoutine(InterruptSource interruptSource)
+        private void interruptServiceRoutine()
         {
             clearGlobalInterruptEnableBit();
             stack.PushOntoStack(new ProgramMemoryAddress(DeriveReturnAddress(PC)));
-            PC.Counter.Address = 0x04;
+            PC.Counter.Address = 0x04 - 1;
         }
 
         public int DeriveReturnAddress(ProgramCounter PC)
