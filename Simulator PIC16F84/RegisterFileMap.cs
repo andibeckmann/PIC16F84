@@ -54,12 +54,17 @@ namespace Simulator_PIC16F84
 
         public void WDTTimeOut()
         {
-            setTimeOutBit();
+            clearTimeOutBit();
         }
 
-        private void setTimeOutBit()
+        private void clearTimeOutBit()
         {
             getStatusRegister().clearBit(4);
+        }
+
+        public void setTimeOutBit()
+        {
+            getStatusRegister().setBit(4);
         }
 
         public void checkOptionRegisterSettings()
@@ -143,6 +148,11 @@ namespace Simulator_PIC16F84
             return registerList[3];
         }
 
+        private void setStatusToWDTReset()
+        {
+            registerList[3].Value = (byte) (registerList[3].Value & 0x08);
+        }
+
         public RegisterByte getARegister()
         {
             return registerList[5];
@@ -165,6 +175,11 @@ namespace Simulator_PIC16F84
         public RegisterByte getIntconRegister()
         {
             return registerList[0x0B];
+        }
+
+        private void setIntconToWDTReset()
+        {
+            registerList[0x0B].Value = (byte)(registerList[0x0B].Value & 0x0E);
         }
 
         internal void SetCarryBit()
@@ -231,14 +246,9 @@ namespace Simulator_PIC16F84
             registerList[3].Value = (byte) (registerList[3].Value & 0xF7);
         }
 
-        public void SetTimeOutBit()
+        private void clearPCLATH()
         {
-            registerList[3].Value = (byte) (registerList[3].Value | 0x10);
-        }
-
-        public void ResetTimeOutBit()
-        {
-            registerList[3].Value = (byte) (registerList[3].Value & 0xEF);
+            registerList[0x0A].Value = 0x00;
         }
 
         public void Init()
@@ -403,6 +413,33 @@ namespace Simulator_PIC16F84
         public void incrementWatchdogTimer()
         {
             WDT.IncrementWatchdogTimer();
+        }
+
+        public void WatchDogTimerReset()
+        {
+            PC.Clear();
+            setStatusToWDTReset();
+            clearPCLATH();
+            setIntconToWDTReset();
+            getOptionRegister().Value = 0xFF;
+            getTRISA().Value = 0x1F;
+            getTRISB().Value = 0xFF;
+            getEECON1().Value = 0x00;
+        }
+
+        public RegisterByte getTRISA()
+        {
+            return registerList[0x85];
+        }
+
+        public RegisterByte getTRISB()
+        {
+            return registerList[0x86];
+        }
+
+        public RegisterByte getEECON1()
+        {
+            return registerList[0x88];
         }
       
         /// <summary>

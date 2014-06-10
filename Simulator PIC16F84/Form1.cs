@@ -334,9 +334,10 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
+            checkForTimeOut();
+            RegisterMap.checkForInterrupt();
             UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
             RegisterMap.PC.InkrementPC();
-            RegisterMap.checkForInterrupt();
             SetSelection(index);
         }
 
@@ -345,14 +346,16 @@ namespace Simulator_PIC16F84
             if (isWatchdogTimerEnabled())
             {
                 RegisterMap.incrementWatchdogTimer();
-                checkForTimeOut();
             }
         }
 
         private void checkForTimeOut()
         {
             if (!RegisterMap.isTimeOutBitSet())
-                deviceReset();
+            {
+                WatchDogTimerReset();
+                RegisterMap.setTimeOutBit();
+            }
         }
 
         private void SetSelection(int index)
@@ -407,10 +410,76 @@ namespace Simulator_PIC16F84
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            deviceReset();
+            resetSimulation();
         }
 
-        private void deviceReset()
+        /// <summary>
+        /// Power-on Reset (POR)
+        /// The PIC16F84A differentiates between various kinds of RESET, one of which is the POR.
+        /// Reset conditions for all registers during POR are:
+        /// W Register      : xxxx xxxx
+        /// INDF            : ---- ----
+        /// TMR0            : xxxx xxxx
+        /// PCL             : 0000 0000
+        /// STATUS          : 0001 1xxx
+        /// FSR             : xxxx xxxx
+        /// PORTA           : ---x xxxx
+        /// PORTB           : xxxx xxxx
+        /// EEDATA          : xxxx xxxx
+        /// EEADR           : xxxx xxxx
+        /// PCLATH          : ---0 0000
+        /// INTCON          : 0000 000x
+        /// INDF            : ---- ----
+        /// OPTION_REG      : 1111 1111
+        /// PCL             : 0000 0000
+        /// STATUS          : 0001 1xxx
+        /// FSR             : xxxx xxxx
+        /// TRISA           : ---1 1111
+        /// TRISB           : 1111 1111
+        /// EECON1          : ---0 x000
+        /// EECON2          : ---- ----
+        /// PCLATH          : ---0 0000
+        /// INTCON          : 0000 000x
+        /// </summary>
+        private void PowerOnReset()
+        {
+//TODO: Implement!
+        }
+
+        /// <summary>
+        /// Watchdog Timer Reset (during normal operation)
+        /// The PIC16F84A differentiates between various kinds of RESET, one of which is the WDT Reset.
+        /// Reset conditions for all registers during WDT Reset are:
+        /// W Register      : uuuu uuuu
+        /// INDF            : ---- ----
+        /// TMR0            : uuuu uuuu
+        /// PCL             : 0000 0000
+        /// STATUS          : 0000 1uuu
+        /// FSR             : uuuu uuuu
+        /// PORTA           : ---u uuuu
+        /// PORTB           : uuuu uuuu
+        /// EEDATA          : uuuu uuuu
+        /// EEADR           : uuuu uuuu
+        /// PCLATH          : ---0 0000
+        /// INTCON          : 0000 000u
+        /// INDF            : ---- ----
+        /// OPTION_REG      : 1111 1111
+        /// PCL             : 0000 0000
+        /// STATUS          : 0000 1uuu
+        /// FSR             : uuuu uuuu
+        /// TRISA           : ---1 1111
+        /// TRISB           : 1111 1111
+        /// EECON1          : ---0 q000
+        /// EECON2          : ---- ----
+        /// PCLATH          : ---0 0000
+        /// INTCON          : 0000 000u
+        /// </summary>
+        private void WatchDogTimerReset()
+        {
+            RegisterMap.WatchDogTimerReset();         
+        }
+
+        private void resetSimulation()
         {
             crystalFrequency.Stop();
             watchdogFrequency.Stop();
@@ -421,7 +490,8 @@ namespace Simulator_PIC16F84
             RegisterMap.Init();
             registerView.ClearColors();
             Stack.ClearStack();
-//            runTimeCounter = 0;
+            W.ClearRegister();
+            //          runTimeCounter = 0;
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)

@@ -34,7 +34,7 @@ namespace Simulator_PIC16F84.Instruktionen
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
             Reg.ResetPowerDownBit();
-            Reg.SetTimeOutBit();
+            Reg.setTimeOutBit();
 
             Reg.clearWatchdogTimer();
             Reg.clearWatchdogPrescaler();
