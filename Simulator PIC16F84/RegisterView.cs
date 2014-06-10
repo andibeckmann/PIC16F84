@@ -160,7 +160,11 @@ namespace Simulator_PIC16F84
                     registerMap.checkForFallingAndRisingEdgesOnPortA();
             }
             else if (index == 0x06)
+            {
+                registerMap.checkForIntInterrupt();
+                registerMap.checkForPortBInterrupt();
                 checkRegister(BRegRegisterBox, registerMap.getBRegister());
+            }
             else if (index == 0x03)
                 checkRegister(StatusRegisterBox, registerMap.getStatusRegister());
             else if (index == 0x0B)

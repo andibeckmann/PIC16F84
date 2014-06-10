@@ -14,6 +14,7 @@ namespace Simulator_PIC16F84
         private WatchdogTimer WDT;
         private Prescaler prescaler;
         private byte portAOldValue;
+        private byte portBOldValue;
         private Stack stack;
         private ProgramMemoryAddress ConfigurationBits;
         public ProgramCounter PC { get; set; }
@@ -24,8 +25,9 @@ namespace Simulator_PIC16F84
             this.stack = stack;
             this.ConfigurationBits = ConfigurationBits;
             fillMappingArray();
-            registerList = new RegisterByte[256];
-            portAOldValue = 0;
+            this.registerList = new RegisterByte[256];
+            this.portAOldValue = 0;
+            this.portBOldValue = 0;
             for (int var = 0; var < registerList.Length; var++ )
             {
                 registerList[var] = new RegisterByte(var);
@@ -35,12 +37,6 @@ namespace Simulator_PIC16F84
             prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
             WDT = new WatchdogTimer(this, prescaler);
             timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
-        }
-
-
-        private void setUpExtraRegisterViews()
-        {
-
         }
 
         public bool isTimeOutBitSet()
@@ -329,9 +325,11 @@ namespace Simulator_PIC16F84
                 prescaler.clearPrescaler();
         }
 
+        /// <summary>
+        /// Check for Rising or Falling Edges for Timer 0 Module Counter Mode
+        /// </summary>
         public void checkForFallingAndRisingEdgesOnPortA()
         {
-            //Check for Rising or Falling Edges for Timer 0 Module Counter Mode
             if (getOptionRegister().isBitSet(4))
             {
                 if (getARegister().checkForFallingEdge(portAOldValue, 4))
@@ -343,6 +341,78 @@ namespace Simulator_PIC16F84
                     incrementCounter();
             }
              portAOldValue = getARegister().Value;
+        }
+
+        /// <summary>
+        /// INT INTERRUPT
+        /// 
+        /// External interrupt on RB0/INT pin is edge triggered:
+        /// either rising if INTEDG bit (OPTION_REG<6>) is set,
+        /// or falling if INTEDG bit is clear.
+        /// When a valid edge
+        /// appears on the RB0/INT pin, the INTF bit
+        /// (INTCON<1>) is set. This interrupt can be disabled by
+        /// clearing control bit INTE (INTCON<4>).
+        /// </summary>
+        public void checkForIntInterrupt()
+        {
+            if (isIntInterruptEnabled() && isGlobalInterruptEnableBitSet())
+            {
+                if (isIntEdgBitSet())
+                {
+                    if ( getBRegister().checkForRisingEdge(portBOldValue, 0))
+                        setIntFBit();
+                }
+                else
+                {
+                    if (getBRegister().checkForFallingEdge(portBOldValue, 0))
+                        setIntFBit();
+                }
+            }
+            portBOldValue = getBRegister().Value;
+        }
+
+        /// <summary>
+        /// PORTB INTERRUPT
+        /// 
+        /// An input change on PORTB<7:4> sets flag bit RBIF
+        /// (INTCON<0>). The interrupt can be enabled/disabled
+        /// by setting/clearing enable bit RBIE (INTCON<3>)
+        /// (Section 4.2).
+        /// </summary>
+        public void checkForPortBInterrupt()
+        {
+            if ( isRBInterruptEnabled() && isGlobalInterruptEnableBitSet() )
+                if ( checkForPortBInterruptInputChange())
+                    setRBInterruptFlag();
+        }
+
+        /// <summary>
+        /// PORT B INTERRUPT CONDITION
+        /// 
+        /// The Port B interrupt is triggered by input changes
+        /// on PORTB<7:4>.
+        /// For Port B to work as input, the corresponding bit
+        /// in the TRISB-Register needs to be set to 1.
+        /// </summary>
+        /// <returns></returns>
+        private bool checkForPortBInterruptInputChange()
+        {
+            byte changedBits = (byte) ( portBOldValue ^ getBRegister().Value );
+            byte inputChange = (byte) ( changedBits & getTRISB().Value );
+            if ( (inputChange & 0xF0) != 0x00 )
+                return true;
+            return false;
+        }
+
+        private void setIntFBit()
+        {
+            getIntconRegister().setBit(1);
+        }
+
+        private void clearIntFBit()
+        {
+            getIntconRegister().clearBit(1);
         }
 
         public void checkForInterrupt()
@@ -367,7 +437,6 @@ namespace Simulator_PIC16F84
         private bool isThereAnIntInterruptRequest()
         {
             return (isIntInterruptEnabled() && isIntInterruptFlagBitSet());
-            return false;
         }
 
         private bool isThereATimer0InterruptRequest()
@@ -377,8 +446,7 @@ namespace Simulator_PIC16F84
 
         private bool isThereAPortBInterruptRequest()
         {
-            //TODO: Implementation of PortB Interrupt
-            return false;
+            return (isRBInterruptEnabled() && isRBInterruptFlagSet());
         }
 
         private bool isThereAPDataEEPROMInterruptRequest()
@@ -402,9 +470,29 @@ namespace Simulator_PIC16F84
             return getIntconRegister().isBitSet(4);
         }
 
+        private bool isIntEdgBitSet()
+        {
+            return getOptionRegister().isBitSet(6);
+        }
+
         private bool isIntInterruptFlagBitSet()
         {
             return getIntconRegister().isBitSet(1);
+        }
+
+        private bool isRBInterruptEnabled()
+        {
+            return getIntconRegister().isBitSet(3);
+        }
+
+        private bool isRBInterruptFlagSet()
+        {
+            return getOptionRegister().isBitSet(0);
+        }
+
+        private void setRBInterruptFlag()
+        {
+            getOptionRegister().setBit(0);
         }
 
         public void setGlobalInterruptEnableBit()
