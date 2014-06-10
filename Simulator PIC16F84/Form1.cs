@@ -38,7 +38,7 @@ namespace Simulator_PIC16F84
         /// <summary>
         /// Detailansicht spezieller Register
         /// </summary>
-        RegisterBox WBox;
+        RegisterBox WReg;
         RegisterBox AReg;
         RegisterBox BReg;
         RegisterBox Status;
@@ -59,12 +59,12 @@ namespace Simulator_PIC16F84
             setupStack();
             RegisterMap = new RegisterFileMap(Stack);
 
-            setupWorkingRegisterBox();
-            setupRegisterBoxA();
-            setupRegisterBoxB();
-            setupStatusBox();
-            setupOptionRegister();
-            setupIntconRegister();
+            WReg = setupWorkingRegisterBox(W, new Point(300,500));
+            AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515,500));
+            BReg = setupRegisterBox(RegisterMap.getBRegister(), new Point(730, 500));
+            Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
+            Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(515, 610));
+            Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(730, 610));
 
             setupRegisterView();
             setupProgramView();
@@ -131,7 +131,7 @@ namespace Simulator_PIC16F84
 
         private void setupRegisterView()
         {
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg, Status, Option, Intcon);
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WReg, W, AReg, BReg, Status, Option, Intcon);
             RegisterMap.Init();
             W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.
@@ -142,59 +142,24 @@ namespace Simulator_PIC16F84
             registerView.Show();
         }
 
-        private void setupStatusBox()
+        private RegisterBox setupWorkingRegisterBox(WorkingRegister W, Point location)
         {
-            Status = new RegisterBox(RegisterMap.getStatusRegister());
-            Status.MdiParent = this;
-            Status.StartPosition = FormStartPosition.Manual;
-            Status.Location = new Point(300, 600);
-            Status.Show();
+            RegisterBox WReg = new RegisterBox(W);
+            WReg.MdiParent = this;
+            WReg.StartPosition = FormStartPosition.Manual;
+            WReg.Location = location;
+            WReg.Show();
+            return WReg;
         }
 
-        private void setupRegisterBoxB()
+        private RegisterBox setupRegisterBox(RegisterByte register, Point location)
         {
-            ///B-Register View
-            BReg = new RegisterBox(RegisterMap.getBRegister());
-            BReg.MdiParent = this;
-            BReg.StartPosition = FormStartPosition.Manual;
-            BReg.Location = new Point(750, 500);
-            BReg.Show();
-        }
-
-        private void setupRegisterBoxA()
-        {
-            ///A-Register View
-            AReg = new RegisterBox(RegisterMap.getARegister());
-            AReg.MdiParent = this;
-            AReg.StartPosition = FormStartPosition.Manual;
-            AReg.Location = new Point(525, 500);
-            AReg.Show();
-        }
-
-        private void setupWorkingRegisterBox()
-        {
-            /// Working Register View
-            WBox = new RegisterBox(W);
-            WBox.MdiParent = this;
-            WBox.Show();
-        }
-
-        private void setupOptionRegister()
-        {
-            Option = new RegisterBox(RegisterMap.getOptionRegister());
-            Option.MdiParent = this;
-            Option.StartPosition = FormStartPosition.Manual;
-            Option.Location = new Point(525, 600);
-            Option.Show();
-        }
-
-        private void setupIntconRegister()
-        {
-            Intcon = new RegisterBox(RegisterMap.getIntconRegister());
-            Intcon.MdiParent = this;
-            Intcon.StartPosition = FormStartPosition.Manual;
-            Intcon.Location = new Point(750, 600);
-            Intcon.Show();
+            RegisterBox Reg = new RegisterBox(register);
+            Reg.MdiParent = this;
+            Reg.StartPosition = FormStartPosition.Manual;
+            Reg.Location = location;
+            Reg.Show();
+            return Reg;
         }
 
         private void InitializeSlider()
@@ -496,27 +461,32 @@ namespace Simulator_PIC16F84
 
         private void workingRegisterToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            setupWorkingRegisterBox();   
+            WReg = setupWorkingRegisterBox(W, new Point(300, 500));
         }
 
         private void aRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupRegisterBoxA();
+            AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515, 500));
         }
 
         private void bRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupRegisterBoxB();
+            BReg = setupRegisterBox(RegisterMap.getBRegister(), new Point(730, 500));
         }
 
         private void optionRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupOptionRegister();
+            Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(515, 610));
         }
 
         private void intconToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupIntconRegister();
+            Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(730, 610));
+        }
+
+        private void statusRegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
         }
 
     }

@@ -22,7 +22,6 @@ namespace Simulator_PIC16F84
         public RegisterBox(WorkingRegister W)
         {
             this.W = W;
-            this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(300, 500);
             constructRegisterBox();
         }

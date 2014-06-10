@@ -40,6 +40,9 @@
             this.workingRegisterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.intconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.anweisungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,9 +52,6 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.intconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -158,6 +158,27 @@
             this.bRegisterToolStripMenuItem.Text = "Port B";
             this.bRegisterToolStripMenuItem.Click += new System.EventHandler(this.bRegisterToolStripMenuItem_Click);
             // 
+            // statusRegisterToolStripMenuItem
+            // 
+            this.statusRegisterToolStripMenuItem.Name = "statusRegisterToolStripMenuItem";
+            this.statusRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.statusRegisterToolStripMenuItem.Text = "Status";
+            this.statusRegisterToolStripMenuItem.Click += new System.EventHandler(this.statusRegisterToolStripMenuItem_Click);
+            // 
+            // optionRegisterToolStripMenuItem
+            // 
+            this.optionRegisterToolStripMenuItem.Name = "optionRegisterToolStripMenuItem";
+            this.optionRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.optionRegisterToolStripMenuItem.Text = "Option";
+            this.optionRegisterToolStripMenuItem.Click += new System.EventHandler(this.optionRegisterToolStripMenuItem_Click);
+            // 
+            // intconToolStripMenuItem
+            // 
+            this.intconToolStripMenuItem.Name = "intconToolStripMenuItem";
+            this.intconToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.intconToolStripMenuItem.Text = "Intcon";
+            this.intconToolStripMenuItem.Click += new System.EventHandler(this.intconToolStripMenuItem_Click);
+            // 
             // anweisungenToolStripMenuItem
             // 
             this.anweisungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -231,26 +252,6 @@
             this.projektToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
             this.projektToolStripMenuItem.Text = "Projekt Aufgabenstellung";
             this.projektToolStripMenuItem.Click += new System.EventHandler(this.projektToolStripMenuItem_Click);
-            // 
-            // statusRegisterToolStripMenuItem
-            // 
-            this.statusRegisterToolStripMenuItem.Name = "statusRegisterToolStripMenuItem";
-            this.statusRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.statusRegisterToolStripMenuItem.Text = "Status";
-            // 
-            // optionRegisterToolStripMenuItem
-            // 
-            this.optionRegisterToolStripMenuItem.Name = "optionRegisterToolStripMenuItem";
-            this.optionRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.optionRegisterToolStripMenuItem.Text = "Option";
-            this.optionRegisterToolStripMenuItem.Click += new System.EventHandler(this.optionRegisterToolStripMenuItem_Click);
-            // 
-            // intconToolStripMenuItem
-            // 
-            this.intconToolStripMenuItem.Name = "intconToolStripMenuItem";
-            this.intconToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.intconToolStripMenuItem.Text = "Intcon";
-            this.intconToolStripMenuItem.Click += new System.EventHandler(this.intconToolStripMenuItem_Click);
             // 
             // Main
             // 

@@ -36,6 +36,12 @@ namespace Simulator_PIC16F84
             timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
         }
 
+
+        private void setUpExtraRegisterViews()
+        {
+
+        }
+
         public bool isTimeOutBitSet()
         {
             return getStatusRegister().isBitSet(4);
