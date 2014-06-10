@@ -16,12 +16,14 @@ namespace Simulator_PIC16F84
         private byte portAOldValue;
         private enum InterruptSource { INT, TMR0, PortB, DataEEPROM };
         private Stack stack;
+        private ProgramMemoryAddress ConfigurationBits;
         public ProgramCounter PC { get; set; }
 
-        public RegisterFileMap(Stack stack)
+        public RegisterFileMap(Stack stack, ProgramMemoryAddress ConfigurationBits)
         {
             this.PC = new ProgramCounter(this);
             this.stack = stack;
+            this.ConfigurationBits = ConfigurationBits;
             fillMappingArray();
             registerList = new RegisterByte[256];
             portAOldValue = 0;
@@ -286,9 +288,20 @@ namespace Simulator_PIC16F84
             registerList.Where(item => item.Index == registerToChange.Index).Select(item => item.Value = registerToChange.Value);
         }
 
-        public void incrementTimer()
+        public void instructionCycleTimeElapsed()
         {
-            timer0.incrementInTimerMode();
+            if ( !timer0.isInCounterMode() ) 
+                timer0.incrementInTimerMode();
+           
+            if (isWatchdogTimerEnabled())
+            {
+                incrementWatchdogTimer();
+            }
+        }
+
+        private bool isWatchdogTimerEnabled()
+        {
+            return ConfigurationBits.isBitSet(1);
         }
 
         public void incrementCounter()

@@ -28,7 +28,6 @@ namespace Simulator_PIC16F84
         RegisterView registerView;
         RunTimeCounter runTimeCounterView;
         System.Timers.Timer crystalFrequency;
-        System.Timers.Timer watchdogFrequency;
         List<int> breakPoints;
         int frequency = 10;
         private System.Windows.Forms.TrackBar frequencySlider;
@@ -57,7 +56,7 @@ namespace Simulator_PIC16F84
             W = new WorkingRegister(-1);
 
             setupStack();
-            RegisterMap = new RegisterFileMap(Stack);
+            RegisterMap = new RegisterFileMap(Stack, ConfigurationBits);
 
             WReg = setupWorkingRegisterBox(W, new Point(300,500));
             AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515,500));
@@ -107,17 +106,10 @@ namespace Simulator_PIC16F84
             ConfigurationBits.Address = ConfigurationBits.Address | 0x1FF0;
         }
 
-        private bool isWatchdogTimerEnabled()
-        {
-            return ConfigurationBits.isBitSet(1);
-        }
-
         private void setupCrystalFrequency()
         {
             crystalFrequency = new System.Timers.Timer(10);
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
-            watchdogFrequency = new System.Timers.Timer(1);
-            watchdogFrequency.Elapsed += new System.Timers.ElapsedEventHandler(watchdogTimerPeriodElapsed);
         }
 
         private void setupProgramView()
@@ -325,7 +317,6 @@ namespace Simulator_PIC16F84
             if(breakPoints.Contains(index))
             {
                 crystalFrequency.Stop();
-                watchdogFrequency.Stop();
                 return;
             }
             ExecuteSingleCycle(index);
@@ -339,14 +330,6 @@ namespace Simulator_PIC16F84
             UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
             RegisterMap.PC.InkrementPC();
             SetSelection(index);
-        }
-
-        private void watchdogTimerPeriodElapsed(object source, ElapsedEventArgs e)
-        {
-            if (isWatchdogTimerEnabled())
-            {
-                RegisterMap.incrementWatchdogTimer();
-            }
         }
 
         private void checkForTimeOut()
@@ -405,7 +388,6 @@ namespace Simulator_PIC16F84
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             crystalFrequency.Start();
-            watchdogFrequency.Start();
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -482,7 +464,6 @@ namespace Simulator_PIC16F84
         private void resetSimulation()
         {
             crystalFrequency.Stop();
-            watchdogFrequency.Stop();
             RegisterMap.ClearWatchdogTimer();
             RegisterMap.PC.Clear();
             SetSelection(0);
@@ -497,7 +478,6 @@ namespace Simulator_PIC16F84
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             crystalFrequency.Stop();
-            watchdogFrequency.Stop();
         }
 
         private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)

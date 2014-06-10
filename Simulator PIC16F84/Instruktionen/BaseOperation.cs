@@ -61,7 +61,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         public BaseOperation(RegisterFileMap Reg)
         {
-            Reg.incrementTimer();
+            Reg.instructionCycleTimeElapsed();
         }
 
         /// <summary>

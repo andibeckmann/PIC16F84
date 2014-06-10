@@ -107,8 +107,6 @@ namespace Simulator_PIC16F84
 
         public void incrementInTimerMode()
         {
-            if ( !(timerMode == TimerMode.TIMER) )
-                return;
             if (inhibitCycles <= 0)
                 IncrementWithPrescaler();
             else
