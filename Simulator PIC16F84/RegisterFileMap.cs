@@ -366,7 +366,7 @@ namespace Simulator_PIC16F84
 
         private bool isThereAnIntInterruptRequest()
         {
-            //TODO: Implementation of INT Interrupt
+            return (isIntInterruptEnabled() && isIntInterruptFlagBitSet());
             return false;
         }
 
@@ -395,6 +395,16 @@ namespace Simulator_PIC16F84
         private bool isTimer0OverflowInterruptEnabled()
         {
             return getIntconRegister().isBitSet(5);
+        }
+
+        private bool isIntInterruptEnabled()
+        {
+            return getIntconRegister().isBitSet(4);
+        }
+
+        private bool isIntInterruptFlagBitSet()
+        {
+            return getIntconRegister().isBitSet(1);
         }
 
         public void setGlobalInterruptEnableBit()
