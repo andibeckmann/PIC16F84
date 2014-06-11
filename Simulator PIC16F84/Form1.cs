@@ -325,9 +325,9 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
+            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
             checkForTimeOut();
             RegisterMap.checkForInterrupt();
-            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
             RegisterMap.PC.InkrementPC();
             SetSelection(index);
         }

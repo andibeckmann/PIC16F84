@@ -15,6 +15,7 @@ namespace Simulator_PIC16F84
         private Prescaler prescaler;
         private byte portAOldValue;
         private byte portBOldValue;
+        private byte portBOldValue2;
         private Stack stack;
         private ProgramMemoryAddress ConfigurationBits;
         public ProgramCounter PC { get; set; }
@@ -28,6 +29,7 @@ namespace Simulator_PIC16F84
             this.registerList = new RegisterByte[256];
             this.portAOldValue = 0;
             this.portBOldValue = 0;
+            this.portBOldValue2 = 0;
             for (int var = 0; var < registerList.Length; var++ )
             {
                 registerList[var] = new RegisterByte(var);
@@ -382,8 +384,8 @@ namespace Simulator_PIC16F84
         /// </summary>
         public void checkForPortBInterrupt()
         {
-            if ( isRBInterruptEnabled() && isGlobalInterruptEnableBitSet() )
-                if ( checkForPortBInterruptInputChange())
+            if (isGlobalInterruptEnableBitSet() && isRBInterruptEnabled())
+                if (checkForPortBInterruptInputChange())
                     setRBInterruptFlag();
         }
 
@@ -398,11 +400,12 @@ namespace Simulator_PIC16F84
         /// <returns></returns>
         private bool checkForPortBInterruptInputChange()
         {
-            byte changedBits = (byte) ( portBOldValue ^ getBRegister().Value );
+            byte changedBits = (byte) ( portBOldValue2 ^ getBRegister().Value );
             byte inputChange = (byte) ( changedBits & getTRISB().Value );
-            if ( (inputChange & 0xF0) != 0x00 )
+            if ((inputChange & 0xF0) != 0x00)
                 return true;
             return false;
+            portBOldValue2 = getBRegister().Value;
         }
 
         private void setIntFBit()
@@ -436,12 +439,12 @@ namespace Simulator_PIC16F84
 
         private bool isThereAnIntInterruptRequest()
         {
-            return (isIntInterruptEnabled() && isIntInterruptFlagBitSet());
+            return (isIntInterruptFlagBitSet() && isIntInterruptEnabled());
         }
 
         private bool isThereATimer0InterruptRequest()
         {
-            return ( isTimer0OverflowInterruptEnabled() && isTimer0OverflowInterruptFlagBitSet());
+            return ( isTimer0OverflowInterruptFlagBitSet() && isTimer0OverflowInterruptEnabled());
         }
 
         private bool isThereAPortBInterruptRequest()
@@ -487,12 +490,12 @@ namespace Simulator_PIC16F84
 
         private bool isRBInterruptFlagSet()
         {
-            return getOptionRegister().isBitSet(0);
+            return getIntconRegister().isBitSet(0);
         }
 
         private void setRBInterruptFlag()
         {
-            getOptionRegister().setBit(0);
+            getIntconRegister().setBit(0);
         }
 
         public void setGlobalInterruptEnableBit()

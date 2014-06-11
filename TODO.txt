@@ -21,8 +21,9 @@
 15. Hinzufügen von Werten über die Textboxen: Umständlich, IBeam sitzt vorne und nimmt dann erstmal keine Zahlen an, etc. -> Bei Eingabe alte Werte selektieren und so schneller löschen?
 16. Das Programm rutscht manchmal eiskalt durch das EInstellen der Optionen usw. durch (bsp: Optionenregister in simtest04 sollte komplett gecleart werden - bei ca. jedem dritten durchlauf ist es aber auf 0xff) Scheint besonders beim ersten Mal (also direkt nach dem Laden) sehr häufig zu passieren... aber nicht immer.
 17. SimTest01: StackView wird anscheinend beim Device Reset nicht mit zurückgesetzt. Erster Eintrag im Stack ist nach dem Reset (innterhalb des CALLs) immer noch sichtbar.
-18. INT/RB0 Interrupt
+18. - done -
+19. Richtige Funktionsweise PCL und PCLATH (SimTest07)
 
 Unter Bearbeitung:
 0. Laufzeitzähler - Olli
-18. INT/RB0 Interrupt - Andi
+19. Richtige Funktionsweise PCL und PCLATH (SimTest07) - Andi
