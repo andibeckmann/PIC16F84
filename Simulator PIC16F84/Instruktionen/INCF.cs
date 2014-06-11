@@ -33,10 +33,16 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = Reg.getRegister(f).Value + 1;
+            var result = Reg.getRegister(f).IncrementRegister();
 
             if (d)
             {
+                /// Sonderbehandlung PCL: Resultat muss auch auf den 13bit-Program Counter abgebildet werden, nicht nur auf PC-Reg
+                if (f == 0x02)
+                {
+                    Reg.PC.Counter.Address = derivePCAddress(Reg).Address + 1;
+                }
+                else
                 Reg.getRegister(f).Value = (byte)result;
             }
             else
