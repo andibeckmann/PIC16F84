@@ -547,6 +547,11 @@ namespace Simulator_PIC16F84
             return registerList[0x86];
         }
 
+        public RegisterByte getPCLATH()
+        {
+            return registerList[0x0A];
+        }
+
         public RegisterByte getEECON1()
         {
             return registerList[0x88];

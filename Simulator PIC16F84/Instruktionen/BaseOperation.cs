@@ -104,6 +104,18 @@ namespace Simulator_PIC16F84.Instruktionen
             return (byte) (byteValue & ~(1 << bit));
         }
 
+        /// <summary>
+        ///     /// Operation:  (PC) + 1 -> TOS,
+        ///                     k -> PC&lt;10:0>,
+        ///                     CLATH&lt;4:3>) -> PC&lt;12:11>
+        /// </summary>
+        protected ProgramMemoryAddress deriveAddress(RegisterFileMap Reg)
+        {
+            int lower11Bits = k & 0x7FF;
+            int upper2Bits = (Reg.getPCLATH().Value & 0x18)>>3;
+            int combinedAddress = (upper2Bits << 11) + lower11Bits;
 
+            return new ProgramMemoryAddress(combinedAddress);
+        }
     }
 }

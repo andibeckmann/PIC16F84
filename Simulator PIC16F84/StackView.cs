@@ -80,7 +80,7 @@ namespace Simulator_PIC16F84
             for (int index = 0; index < 8; index++)
             {
                 var textBoxArray = this.Controls.Find("Stack Level " + index, true);
-                textBoxArray[0].Text = Stack.getStackValues(index).Address.ToString("X2");
+                textBoxArray[0].Text = Stack.getStackValues(index).Address.ToString("X3");
             }
         }
     }
