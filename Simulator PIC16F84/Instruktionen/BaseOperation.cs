@@ -119,9 +119,8 @@ namespace Simulator_PIC16F84.Instruktionen
         }
 
         /// <summary>
-        ///     /// Operation:  (PC) + 1 -> TOS,
-        ///                     k -> PC&lt;10:0>,
-        ///                     CLATH&lt;4:3>) -> PC&lt;12:11>
+        ///  Beziehe für Operation auf dem ProgramCounter den 13bit-Wert des PC
+        ///  Zusammengesetzt aus Register PCL (untere 8bit) und PCLATH (obere 5 bit).
         /// </summary>
         protected ProgramMemoryAddress derivePCAddress(RegisterFileMap Reg)
         {

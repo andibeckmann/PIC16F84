@@ -22,8 +22,14 @@
 16. Das Programm rutscht manchmal eiskalt durch das EInstellen der Optionen usw. durch (bsp: Optionenregister in simtest04 sollte komplett gecleart werden - bei ca. jedem dritten durchlauf ist es aber auf 0xff) Scheint besonders beim ersten Mal (also direkt nach dem Laden) sehr häufig zu passieren... aber nicht immer.
 17. SimTest01: StackView wird anscheinend beim Device Reset nicht mit zurückgesetzt. Erster Eintrag im Stack ist nach dem Reset (innterhalb des CALLs) immer noch sichtbar.
 18. - done -
-19. Richtige Funktionsweise PCL und PCLATH (SimTest07)
+19. - done -
+20. EEPROM - 5 Punkte
 
 Unter Bearbeitung:
 0. Laufzeitzähler - Olli
-19. Richtige Funktionsweise PCL und PCLATH (SimTest07) - Andi
+20. EEPROM - Andi
+
+
+
+Done:
+19. Richtige Funktionsweise PCL und PCLATH (SimTest07)
