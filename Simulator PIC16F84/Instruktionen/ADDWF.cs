@@ -60,7 +60,7 @@ namespace Simulator_PIC16F84.Instruktionen
                     /// Sonderbehandlung PCL: Resultat muss auch auf den 13bit-Program Counter abgebildet werden, nicht nur auf PC-Reg
                     if (f == 0x02)
                     {
-                        Reg.PC.Counter.Address = W.Value + Reg.PC.Counter.Address;
+                        Reg.PC.Counter.Address = W.Value + derivePCAddress(Reg).Address;
                         return;
                     }
                     Reg.getRegister(f).Value = (byte)result;
