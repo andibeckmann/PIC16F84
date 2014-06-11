@@ -199,7 +199,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3800) == (int)0x2000)
             {
                 k = value & (int)0x7FF;
-                CALL Operation = new CALL((byte)k, PC, Stack, Reg);
+                CALL Operation = new CALL(k, PC, Stack, Reg);
             }
 
             //CLRWDT Instruktion
@@ -212,7 +212,7 @@ namespace Simulator_PIC16F84
             if ((value & (int)0x3800) == (int)0x2800)
             {
                 k = value & (int)0x7FF;
-                GOTO Operation = new GOTO((byte)k, PC, Reg);
+                GOTO Operation = new GOTO(k, PC, Reg);
             }
 
             //IORLW Instruktion

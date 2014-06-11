@@ -84,7 +84,7 @@ namespace Simulator_PIC16F84
         /// </summary>
         private void InitConfigurationBits()
         {
-            ConfigurationBits = new ProgramMemoryAddress(0x2007);
+            ConfigurationBits = new ProgramMemoryAddress(0);
             //FOSC1:FOSC0: Oscillator Selection bits - 11 = RC oscillator
             // 11 = RC oscillator
             // 10 = HS oscillator

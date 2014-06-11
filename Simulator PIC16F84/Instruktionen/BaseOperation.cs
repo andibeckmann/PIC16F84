@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
         /// <summary>
         /// Literal field, constant data or label
         /// </summary>
-        protected byte k;
+        protected int k;
 
         /// <summary>
         /// Destination select;

@@ -23,7 +23,7 @@ namespace Simulator_PIC16F84.Instruktionen
     public class GOTO : BaseOperation
     {
 
-        public GOTO(byte k, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
+        public GOTO(int k, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
         {
             this.k = k;
             Reg.instructionCycleTimeElapsed();
