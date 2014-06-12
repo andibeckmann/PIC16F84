@@ -148,15 +148,20 @@ namespace Simulator_PIC16F84
         /// </summary>
         /// <param name="index">Gibt die Speicherzelle des Byte an</param>
         /// <returns>gewählte Speicherzelle</returns>
-        public RegisterByte getRegister(int index)
+        public RegisterByte getRegister(int index, bool ignoreBankSelection)
         {
             if (index == 0)
                 return readINDFReg();
-            else if (isRegisterBankSelectBitSet() && index < 0x80)
+            else if (!ignoreBankSelection && isRegisterBankSelectBitSet() && index < 0x80)
                 index = mappingArray[index + 0x80];
             else
                 index = mappingArray[index];
             return this.registerList[index];
+        }
+
+        public RegisterByte getRegister(int index)
+        {
+            return getRegister(index, false);
         }
 
         public bool timer0InCounterMode()

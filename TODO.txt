@@ -26,10 +26,12 @@
 20. - done -
 21. - done -
 22. - done -
+23. Latchfunktion der Ausgaberegister (incl. Visualisierung)
+
 
 Unter Bearbeitung:
 0. Laufzeitzähler - Olli
-21.  -  Andi
+23. Latches - Andi
 
 
 

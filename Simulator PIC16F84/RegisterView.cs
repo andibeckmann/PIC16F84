@@ -230,11 +230,8 @@ namespace Simulator_PIC16F84
                         ///allerdings sind einige spezielle Register (Status, PCL, etc.) in beiden Bänken miteinander
                         ///verbunden. Die getRegister-Methode greift auf das dafür erstellte Mappingarray zu und
                         ///berücksichtigt diese speziellen Register (allerdings auch eine evtl. indirekte Adressierung
-                        ///via Bankumschaltung, deshalb muss Bank0 separat abgefragt werden.
-                        if (i < 0x80)
-                            textBoxArray[0].Text = registerMap.getRegisterList[i].Value.ToString("X2");
-                        else
-                            textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
+                        ///via Bankumschaltung, deshalb wird das ignoreBankSelection-Bit gesetzt.
+                        textBoxArray[0].Text = registerMap.getRegister(i, true).Value.ToString("X2");
                         textBoxArray[0].BackColor = Color.Red;
                     }
                 }

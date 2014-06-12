@@ -112,6 +112,7 @@ namespace Simulator_PIC16F84
             {
                 EEPROMMemory[var] = 0;
             }
+            this.EepromChanged(this, EventArgs.Empty);
         }
 
         public byte getEEPROMEntry(int index)
@@ -179,7 +180,14 @@ namespace Simulator_PIC16F84
 
         public void readEEPROM()
         {
+            ///TODO: Entfernen der temp-Variablen
+            ///Dieses Fix versteckt einen merkwürdigen Bug,
+            ///auf dessen Ursache ich nicht gekommen bin:
+            ///Schreiben auf EEDATA schrieb gleichzeitig auch denselben Wert auf EECON1.
+            ///Warum auch immer...
+            byte temp = EECON1.Value;
             EEDATA.Value = EEPROMMemory[EEADR.Value];
+            EECON1.Value = temp;
         }
 
         private void initializeWriteSequence()
