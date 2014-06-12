@@ -43,6 +43,7 @@ namespace Simulator_PIC16F84
         RegisterBox Status;
         RegisterBox Option;
         RegisterBox Intcon;
+        RegisterBox EECON1;
 
         public Main()
         {
@@ -64,6 +65,7 @@ namespace Simulator_PIC16F84
             Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
             Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(515, 610));
             Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(730, 610));
+            EECON1 = setupRegisterBox(RegisterMap.getEECON1(), new Point(300,720));
 
             setupRegisterView();
             setupProgramView();
@@ -123,7 +125,7 @@ namespace Simulator_PIC16F84
 
         private void setupRegisterView()
         {
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WReg, W, AReg, BReg, Status, Option, Intcon);
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WReg, W, AReg, BReg, Status, Option, Intcon, EECON1);
             RegisterMap.Init();
             W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.
@@ -328,6 +330,7 @@ namespace Simulator_PIC16F84
             UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
             checkForTimeOut();
             RegisterMap.checkForInterrupt();
+            RegisterMap.checkEEPROMFunctionality();
             RegisterMap.PC.InkrementPC();
             SetSelection(index);
         }

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EEPROM.cs" />
     <Compile Include="Instruktionen\ADDLW.cs" />
     <Compile Include="Instruktionen\ADDWF.cs" />
     <Compile Include="Instruktionen\ANDLW.cs" />

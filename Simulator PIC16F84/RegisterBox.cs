@@ -63,6 +63,8 @@ namespace Simulator_PIC16F84
                 this.Text = "OPTION Register";
             else if (RegByte.Index == 0x0B)
                 this.Text = "INTCON Register";
+            else if (RegByte.Index == 0x88)
+                this.Text = "EECON1 Register";
             else
                 this.Text = "Register " + RegByte.Index;
         }
@@ -115,6 +117,8 @@ namespace Simulator_PIC16F84
                 getOptionRegLabels(7 - index, label);
             else if (RegByte.Index == 0x0B)
                 getIntconRegLabels(7 - index, label);
+            else if (RegByte.Index == 0x88)
+                getEecon1RegLabels(7 - index, label);
             this.Controls.Add(label);
         }
 
@@ -231,6 +235,27 @@ namespace Simulator_PIC16F84
                 label.Text = "EEIE";
             else
                 label.Text = "GIE";
+        }
+
+        /// <summary>
+        /// Sets an explanatory text for an EEPROM Control Register Label
+        /// </summary>
+        /// <param name="index">Index for Bit-Number of the Label</param>
+        /// <param name="label">Label which will receive the text</param>
+        private static void getEecon1RegLabels(int index, Label label)
+        {
+            if (index == 0)
+                label.Text = "RD";
+            else if (index == 1)
+                label.Text = "WR";
+            else if (index == 2)
+                label.Text = "WREN";
+            else if (index == 3)
+                label.Text = "WRERR";
+            else if (index == 4)
+                label.Text = "EEIF";
+            else
+                label.Text = "-";
         }
 
         private void textbox_TextChanged(object sender, EventArgs e)

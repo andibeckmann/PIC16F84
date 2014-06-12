@@ -23,13 +23,15 @@
 17. SimTest01: StackView wird anscheinend beim Device Reset nicht mit zurückgesetzt. Erster Eintrag im Stack ist nach dem Reset (innterhalb des CALLs) immer noch sichtbar.
 18. - done -
 19. - done -
-20. EEPROM - 5 Punkte
+20. - done -
+21. Bug: EEPROM Read ist in der RegisterView nicht sichtbar. Stattdessen taucht immer der Wert 0x10 oder 0x11 auf...
 
 Unter Bearbeitung:
 0. Laufzeitzähler - Olli
-20. EEPROM - Andi
+21. + EEPROM Interrupts -  Andi
 
 
 
 Done:
 19. Richtige Funktionsweise PCL und PCLATH (SimTest07)
+20. EEPROM - 5 Punkte

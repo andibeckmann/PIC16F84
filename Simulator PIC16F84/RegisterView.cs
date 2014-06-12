@@ -21,8 +21,9 @@ namespace Simulator_PIC16F84
         RegisterBox StatusRegisterBox;
         RegisterBox OptionRegisterBox;
         RegisterBox IntconRegisterBox;
+        RegisterBox Eecon1RegisterBox;
 
-        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W, RegisterBox AReg, RegisterBox BReg, RegisterBox Status, RegisterBox Option, RegisterBox Intcon)
+        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W, RegisterBox AReg, RegisterBox BReg, RegisterBox Status, RegisterBox Option, RegisterBox Intcon, RegisterBox Eecon1)
         {
             int sizeOfField = 25;
 
@@ -34,6 +35,7 @@ namespace Simulator_PIC16F84
             this.StatusRegisterBox = Status;
             this.OptionRegisterBox = Option;
             this.IntconRegisterBox = Intcon;
+            this.Eecon1RegisterBox = Eecon1;
 
             InitializeComponent();
             this.StartPosition = FormStartPosition.Manual;
@@ -173,6 +175,10 @@ namespace Simulator_PIC16F84
             {
                 checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
                 registerMap.checkOptionRegisterSettings();
+            }
+            else if (index == 0x88)
+            {
+                checkRegister(Eecon1RegisterBox, registerMap.getEECON1());
             }
         }
 

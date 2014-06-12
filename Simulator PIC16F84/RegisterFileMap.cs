@@ -18,6 +18,7 @@ namespace Simulator_PIC16F84
         private byte portBOldValue2;
         private Stack stack;
         private ProgramMemoryAddress ConfigurationBits;
+        private EEPROM EepromMemory;
         public ProgramCounter PC { get; set; }
 
         public RegisterFileMap(Stack stack, ProgramMemoryAddress ConfigurationBits)
@@ -26,19 +27,40 @@ namespace Simulator_PIC16F84
             this.stack = stack;
             this.ConfigurationBits = ConfigurationBits;
             fillMappingArray();
-            this.registerList = new RegisterByte[256];
             this.portAOldValue = 0;
             this.portBOldValue = 0;
             this.portBOldValue2 = 0;
-            for (int var = 0; var < registerList.Length; var++ )
-            {
-                registerList[var] = new RegisterByte(var);
-            }
+            createRegisterMap();
+            createEepromMemory();
 
             //Timer0 MOdule, Watchdogtimer und Prescaler
             prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
             WDT = new WatchdogTimer(this, prescaler);
             timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
+        }
+
+        private void createRegisterMap()
+        {
+            this.registerList = new RegisterByte[256];
+            for (int var = 0; var < registerList.Length; var++)
+            {
+                registerList[var] = new RegisterByte(var);
+            }
+        }
+
+        private void createEepromMemory()
+        {
+            this.EepromMemory = new EEPROM(getEECON1(),getEECON2(),getEEADR(),getEEDATA());
+        }
+
+        public void checkEEPROMFunctionality()
+        {
+            EepromMemory.checkEEPROMFunctionality();
+        }
+
+        public void writeEEDATA(byte value)
+        {
+            getEEDATA().Value = value;
         }
 
         public bool isTimeOutBitSet()
@@ -403,9 +425,11 @@ namespace Simulator_PIC16F84
             byte changedBits = (byte) ( portBOldValue2 ^ getBRegister().Value );
             byte inputChange = (byte) ( changedBits & getTRISB().Value );
             if ((inputChange & 0xF0) != 0x00)
+            {
+                portBOldValue2 = getBRegister().Value;
                 return true;
+            }
             return false;
-            portBOldValue2 = getBRegister().Value;
         }
 
         private void setIntFBit()
@@ -555,6 +579,21 @@ namespace Simulator_PIC16F84
         public RegisterByte getEECON1()
         {
             return registerList[0x88];
+        }
+
+        public RegisterByte getEECON2()
+        {
+            return registerList[0x89];
+        }
+
+        public RegisterByte getEEDATA()
+        {
+            return registerList[0x08];
+        }
+
+        public RegisterByte getEEADR()
+        {
+            return registerList[0x09];
         }
       
         /// <summary>
