@@ -43,6 +43,7 @@
             this.statusRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.intconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eECON1RegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.anweisungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +53,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eEPROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -98,7 +100,8 @@
             this.registerFileMapToolStripMenuItem,
             this.programMemoryToolStripMenuItem,
             this.stackToolStripMenuItem,
-            this.workingRegisterToolStripMenuItem});
+            this.workingRegisterToolStripMenuItem,
+            this.eEPROMToolStripMenuItem});
             this.ansichtToolStripMenuItem.Name = "ansichtToolStripMenuItem";
             this.ansichtToolStripMenuItem.Size = new System.Drawing.Size(59, 19);
             this.ansichtToolStripMenuItem.Text = "Ansicht";
@@ -132,7 +135,8 @@
             this.bRegisterToolStripMenuItem,
             this.statusRegisterToolStripMenuItem,
             this.optionRegisterToolStripMenuItem,
-            this.intconToolStripMenuItem});
+            this.intconToolStripMenuItem,
+            this.eECON1RegisterToolStripMenuItem});
             this.workingRegisterToolStripMenuItem.Name = "workingRegisterToolStripMenuItem";
             this.workingRegisterToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.workingRegisterToolStripMenuItem.Text = "Register";
@@ -140,44 +144,51 @@
             // workingRegisterToolStripMenuItem1
             // 
             this.workingRegisterToolStripMenuItem1.Name = "workingRegisterToolStripMenuItem1";
-            this.workingRegisterToolStripMenuItem1.Size = new System.Drawing.Size(199, 22);
-            this.workingRegisterToolStripMenuItem1.Text = "Working (Accumulator)";
+            this.workingRegisterToolStripMenuItem1.Size = new System.Drawing.Size(173, 22);
+            this.workingRegisterToolStripMenuItem1.Text = "WORKING Register";
             this.workingRegisterToolStripMenuItem1.Click += new System.EventHandler(this.workingRegisterToolStripMenuItem1_Click);
             // 
             // aRegisterToolStripMenuItem
             // 
             this.aRegisterToolStripMenuItem.Name = "aRegisterToolStripMenuItem";
-            this.aRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.aRegisterToolStripMenuItem.Text = "Port A";
+            this.aRegisterToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.aRegisterToolStripMenuItem.Text = "PORTA Register";
             this.aRegisterToolStripMenuItem.Click += new System.EventHandler(this.aRegisterToolStripMenuItem_Click);
             // 
             // bRegisterToolStripMenuItem
             // 
             this.bRegisterToolStripMenuItem.Name = "bRegisterToolStripMenuItem";
-            this.bRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.bRegisterToolStripMenuItem.Text = "Port B";
+            this.bRegisterToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.bRegisterToolStripMenuItem.Text = "PORTB Register";
             this.bRegisterToolStripMenuItem.Click += new System.EventHandler(this.bRegisterToolStripMenuItem_Click);
             // 
             // statusRegisterToolStripMenuItem
             // 
             this.statusRegisterToolStripMenuItem.Name = "statusRegisterToolStripMenuItem";
-            this.statusRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.statusRegisterToolStripMenuItem.Text = "Status";
+            this.statusRegisterToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.statusRegisterToolStripMenuItem.Text = "STATUS Register";
             this.statusRegisterToolStripMenuItem.Click += new System.EventHandler(this.statusRegisterToolStripMenuItem_Click);
             // 
             // optionRegisterToolStripMenuItem
             // 
             this.optionRegisterToolStripMenuItem.Name = "optionRegisterToolStripMenuItem";
-            this.optionRegisterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.optionRegisterToolStripMenuItem.Text = "Option";
+            this.optionRegisterToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.optionRegisterToolStripMenuItem.Text = "OPTION Register";
             this.optionRegisterToolStripMenuItem.Click += new System.EventHandler(this.optionRegisterToolStripMenuItem_Click);
             // 
             // intconToolStripMenuItem
             // 
             this.intconToolStripMenuItem.Name = "intconToolStripMenuItem";
-            this.intconToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.intconToolStripMenuItem.Text = "Intcon";
+            this.intconToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.intconToolStripMenuItem.Text = "INTCON Register";
             this.intconToolStripMenuItem.Click += new System.EventHandler(this.intconToolStripMenuItem_Click);
+            // 
+            // eECON1RegisterToolStripMenuItem
+            // 
+            this.eECON1RegisterToolStripMenuItem.Name = "eECON1RegisterToolStripMenuItem";
+            this.eECON1RegisterToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.eECON1RegisterToolStripMenuItem.Text = "EECON1 Register";
+            this.eECON1RegisterToolStripMenuItem.Click += new System.EventHandler(this.eECON1RegisterToolStripMenuItem_Click);
             // 
             // anweisungenToolStripMenuItem
             // 
@@ -253,6 +264,13 @@
             this.projektToolStripMenuItem.Text = "Projekt Aufgabenstellung";
             this.projektToolStripMenuItem.Click += new System.EventHandler(this.projektToolStripMenuItem_Click);
             // 
+            // eEPROMToolStripMenuItem
+            // 
+            this.eEPROMToolStripMenuItem.Name = "eEPROMToolStripMenuItem";
+            this.eEPROMToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.eEPROMToolStripMenuItem.Text = "EEPROM";
+            this.eEPROMToolStripMenuItem.Click += new System.EventHandler(this.eEPROMToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,6 +317,8 @@
         private System.Windows.Forms.ToolStripMenuItem statusRegisterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionRegisterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem intconToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem eECON1RegisterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem eEPROMToolStripMenuItem;
 
     }
 }

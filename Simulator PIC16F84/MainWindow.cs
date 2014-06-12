@@ -26,6 +26,7 @@ namespace Simulator_PIC16F84
         Stack Stack;
         StackView StackView;
         RegisterView registerView;
+        EEPROMView eepromView;
         RunTimeCounter runTimeCounterView;
         System.Timers.Timer crystalFrequency;
         List<int> breakPoints;
@@ -69,6 +70,7 @@ namespace Simulator_PIC16F84
 
             setupRegisterView();
             setupProgramView();
+            setupEEPROMView();
 
             breakPoints = new List<int>();
             setupCrystalFrequency();
@@ -134,6 +136,13 @@ namespace Simulator_PIC16F84
             registerView.ClearColors();
             // Display the new form.
             registerView.Show();
+        }
+
+        private void setupEEPROMView()
+        {
+            eepromView = new EEPROMView(RegisterMap.getEepromMemory());
+            eepromView.MdiParent = this;
+            eepromView.Show();
         }
 
         private RegisterBox setupWorkingRegisterBox(WorkingRegister W, Point location)
@@ -475,6 +484,7 @@ namespace Simulator_PIC16F84
             registerView.ClearColors();
             Stack.ClearStack();
             W.ClearRegister();
+            RegisterMap.getEepromMemory().clearEEPROM();
             //          runTimeCounter = 0;
         }
 
@@ -540,6 +550,16 @@ namespace Simulator_PIC16F84
         private void statusRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
+        }
+
+        private void eECON1RegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EECON1 = setupRegisterBox(RegisterMap.getEECON1(), new Point(300, 720));
+        }
+
+        private void eEPROMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setupEEPROMView();
         }
 
     }

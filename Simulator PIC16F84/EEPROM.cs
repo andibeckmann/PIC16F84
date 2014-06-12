@@ -13,6 +13,7 @@ namespace Simulator_PIC16F84
         private RegisterByte EECON2;
         private RegisterByte EEADR;
         private RegisterByte EEDATA;
+        public event EventHandler EepromChanged;
         private bool eecon2Clear;
         private enum WriteSequence { Idle, Initialized, ListeningForWRBit };
         WriteSequence writeSequenceStatus;
@@ -29,6 +30,7 @@ namespace Simulator_PIC16F84
             this.EECON2 = EECON2;
             this.EEADR = EEADR;
             this.EEDATA = EEDATA;
+            this.eecon2Clear = false;
             this.writeSequenceStatus = WriteSequence.Idle;
             this.EEPROMMemory = new byte[64];
             for (int var = 0; var < EEPROMMemory.Length; var++)
@@ -102,6 +104,21 @@ namespace Simulator_PIC16F84
             }
         }
 
+        public void clearEEPROM()
+        {
+            writeSequenceStatus = WriteSequence.Idle;
+            eecon2Clear = false;
+            for (int var = 0; var < EEPROMMemory.Length; var++)
+            {
+                EEPROMMemory[var] = 0;
+            }
+        }
+
+        public byte getEEPROMEntry(int index)
+        {
+            return EEPROMMemory[index];
+        }
+
         private bool isWriteSequenceListeningForWriteControlBit()
         {
             return writeSequenceStatus == WriteSequence.ListeningForWRBit;
@@ -127,6 +144,7 @@ namespace Simulator_PIC16F84
         private void writeToEEPROM()
         {
             EEPROMMemory[EEADR.Value] = EEDATA.Value;
+            this.EepromChanged(this, EventArgs.Empty);
         }
 
         private void clearWriteControlBit()

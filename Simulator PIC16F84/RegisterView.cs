@@ -52,17 +52,17 @@ namespace Simulator_PIC16F84
 
         private void createRegisterPattern(RegisterFileMap RegisterMap, int sizeOfField)
         {
-            for (int i = 0; i < 8; i++)
+            for (int column = 0; column < 8; column++)
             {
-                createLabels(sizeOfField, i);
+                createLabels(sizeOfField, column);
             }
-            for (int i = 0; i < 32; i++)
+            for (int row = 0; row < 32; row++)
             {
-                createColumn0Label(sizeOfField, i);
+                createColumn0Label(sizeOfField, row);
 
-                for (int m = 0; m < 8; m++)
+                for (int textColumn = 0; textColumn < 8; textColumn++)
                 {
-                    createTextBox(RegisterMap, sizeOfField, i, m);
+                    createTextBox(RegisterMap, sizeOfField, row, textColumn);
                 }
             }
         }
@@ -226,7 +226,15 @@ namespace Simulator_PIC16F84
                     var textBoxArray = this.Controls.Find("Byte " + i, true);
                     if (textBoxArray.Length > 0)
                     {
-                        textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
+                        ///Korrektes Belegen der Registereinträge (getRegisterList liefert Register direkt zurück,
+                        ///allerdings sind einige spezielle Register (Status, PCL, etc.) in beiden Bänken miteinander
+                        ///verbunden. Die getRegister-Methode greift auf das dafür erstellte Mappingarray zu und
+                        ///berücksichtigt diese speziellen Register (allerdings auch eine evtl. indirekte Adressierung
+                        ///via Bankumschaltung, deshalb muss Bank0 separat abgefragt werden.
+                        if (i < 0x80)
+                            textBoxArray[0].Text = registerMap.getRegisterList[i].Value.ToString("X2");
+                        else
+                            textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
                         textBoxArray[0].BackColor = Color.Red;
                     }
                 }

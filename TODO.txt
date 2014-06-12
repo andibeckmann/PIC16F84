@@ -24,14 +24,17 @@
 18. - done -
 19. - done -
 20. - done -
-21. Bug: EEPROM Read ist in der RegisterView nicht sichtbar. Stattdessen taucht immer der Wert 0x10 oder 0x11 auf...
+21. - done -
+22. - done -
 
 Unter Bearbeitung:
 0. Laufzeitz‰hler - Olli
-21. + EEPROM Interrupts -  Andi
+21.  -  Andi
 
 
 
 Done:
 19. Richtige Funktionsweise PCL und PCLATH (SimTest07)
 20. EEPROM - 5 Punkte
+21. Bug: EEPROM Read ist in der RegisterView nicht sichtbar. Stattdessen taucht immer der Wert 0x10 oder 0x11 auf... - anm: Fehler lag in der RegView. Bei Bankumschaltung laﬂ auch die View nur noch Werte aus Bank1
+22. EEPROM Interrupts und EECON1 RegisterBox

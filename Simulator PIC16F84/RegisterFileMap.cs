@@ -53,6 +53,11 @@ namespace Simulator_PIC16F84
             this.EepromMemory = new EEPROM(getEECON1(),getEECON2(),getEEADR(),getEEDATA());
         }
 
+        public EEPROM getEepromMemory()
+        {
+            return EepromMemory;
+        }
+
         public void checkEEPROMFunctionality()
         {
             EepromMemory.checkEEPROMFunctionality();
@@ -468,7 +473,7 @@ namespace Simulator_PIC16F84
 
         private bool isThereATimer0InterruptRequest()
         {
-            return ( isTimer0OverflowInterruptFlagBitSet() && isTimer0OverflowInterruptEnabled());
+            return ( isTimer0InterruptFlagSet() && isTimer0OverflowInterruptEnabled());
         }
 
         private bool isThereAPortBInterruptRequest()
@@ -478,13 +483,22 @@ namespace Simulator_PIC16F84
 
         private bool isThereAPDataEEPROMInterruptRequest()
         {
-            //TODO: Implementation of DataEEPROM Interrupt
-            return false;
+            return (isEEPROMInterruptEnabled() && isEEPROMInterruptFlagSet());
         }
 
-        private bool isTimer0OverflowInterruptFlagBitSet()
+        private bool isEEPROMInterruptFlagSet()
+        {
+            return getEECON1().isBitSet(4);
+        }
+
+        private bool isTimer0InterruptFlagSet()
         {
             return getIntconRegister().isBitSet(2);
+        }
+
+        private bool isEEPROMInterruptEnabled()
+        {
+            return getIntconRegister().isBitSet(6);
         }
 
         private bool isTimer0OverflowInterruptEnabled()
