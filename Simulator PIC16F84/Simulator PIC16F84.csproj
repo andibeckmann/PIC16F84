@@ -45,10 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EEPROM.cs" />
-    <Compile Include="EEPROMView.cs">
+    <Compile Include="Views\EEPROMView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EEPROMView.Designer.cs">
+    <Compile Include="Views\EEPROMView.Designer.cs">
       <DependentUpon>EEPROMView.cs</DependentUpon>
     </Compile>
     <Compile Include="Instruktionen\ADDLW.cs" />
@@ -93,57 +93,57 @@
     <Compile Include="ProgramMemoryAddress.cs" />
     <Compile Include="ProgramMemoryByte.cs" />
     <Compile Include="ProgramMemoryMap.cs" />
-    <Compile Include="ProgramMemoryView.cs">
+    <Compile Include="Views\ProgramMemoryView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProgramMemoryView.Designer.cs">
+    <Compile Include="Views\ProgramMemoryView.Designer.cs">
       <DependentUpon>ProgramMemoryView.cs</DependentUpon>
     </Compile>
-    <Compile Include="RegisterBox.cs">
+    <Compile Include="Views\RegisterBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegisterBox.Designer.cs">
+    <Compile Include="Views\RegisterBox.Designer.cs">
       <DependentUpon>RegisterBox.cs</DependentUpon>
     </Compile>
     <Compile Include="RegisterByte.cs" />
     <Compile Include="RegisterFileMap.cs" />
-    <Compile Include="MainWindow.cs">
+    <Compile Include="Views\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindow.Designer.cs">
+    <Compile Include="Views\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterView.cs">
+    <Compile Include="Views\RegisterView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RegisterView.Designer.cs">
+    <Compile Include="Views\RegisterView.Designer.cs">
       <DependentUpon>RegisterView.cs</DependentUpon>
     </Compile>
-    <Compile Include="RunTimeCounter.cs">
+    <Compile Include="Views\RunTimeCounter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RunTimeCounter.Designer.cs">
+    <Compile Include="Views\RunTimeCounter.Designer.cs">
       <DependentUpon>RunTimeCounter.cs</DependentUpon>
     </Compile>
     <Compile Include="Stack.cs" />
-    <Compile Include="StackView.cs">
+    <Compile Include="Views\StackView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StackView.Designer.cs">
+    <Compile Include="Views\StackView.Designer.cs">
       <DependentUpon>StackView.cs</DependentUpon>
     </Compile>
     <Compile Include="Timer0Module.cs" />
     <Compile Include="WatchdogTimer.cs" />
     <Compile Include="WorkingRegister.cs" />
-    <EmbeddedResource Include="EEPROMView.resx">
+    <EmbeddedResource Include="Views\EEPROMView.resx">
       <DependentUpon>EEPROMView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainWindow.resx">
+    <EmbeddedResource Include="Views\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProgramMemoryView.resx">
+    <EmbeddedResource Include="Views\ProgramMemoryView.resx">
       <DependentUpon>ProgramMemoryView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -156,16 +156,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RegisterBox.resx">
+    <EmbeddedResource Include="Views\RegisterBox.resx">
       <DependentUpon>RegisterBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RegisterView.resx">
+    <EmbeddedResource Include="Views\RegisterView.resx">
       <DependentUpon>RegisterView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RunTimeCounter.resx">
+    <EmbeddedResource Include="Views\RunTimeCounter.resx">
       <DependentUpon>RunTimeCounter.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StackView.resx">
+    <EmbeddedResource Include="Views\StackView.resx">
       <DependentUpon>StackView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
