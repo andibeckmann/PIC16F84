@@ -87,6 +87,7 @@
     <Compile Include="Instruktionen\SWAPF.cs" />
     <Compile Include="Instruktionen\XORLW.cs" />
     <Compile Include="Instruktionen\XORWF.cs" />
+    <Compile Include="InterruptService.cs" />
     <Compile Include="Prescaler.cs" />
     <Compile Include="ProgramCounter.cs" />
     <Compile Include="ProgramMemoryAddress.cs" />

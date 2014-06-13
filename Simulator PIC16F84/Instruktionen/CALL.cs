@@ -35,7 +35,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
     protected void execute(RegisterFileMap Reg, ProgramCounter PC, Stack Stack)
     {
-        Stack.PushOntoStack(new ProgramMemoryAddress(Reg.DeriveReturnAddress(PC)));
+        Stack.PushOntoStack(new ProgramMemoryAddress(PC.DeriveReturnAddress()));
         PC.Counter.Address = deriveAddress(Reg).Address - 1;
     }
 

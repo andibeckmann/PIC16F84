@@ -23,7 +23,6 @@ namespace Simulator_PIC16F84
         ProgramMemoryMap UserMemorySpace;
         ProgramMemoryView ProgramView;
         WorkingRegister W;
-        Stack Stack;
         StackView StackView;
         RegisterView registerView;
         EEPROMView eepromView;
@@ -33,7 +32,6 @@ namespace Simulator_PIC16F84
         int frequency = 10;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
-        ProgramMemoryAddress ConfigurationBits;
 
         /// <summary>
         /// Detailansicht spezieller Register
@@ -49,65 +47,33 @@ namespace Simulator_PIC16F84
         public Main()
         {
             InitializeComponent();
-            InitConfigurationBits();
             InitializeSlider();
             IsMdiContainer = true;
             this.WindowState = FormWindowState.Maximized;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
             W = new WorkingRegister(-1);
+            RegisterMap = new RegisterFileMap();
 
-            setupStack();
-            RegisterMap = new RegisterFileMap(Stack, ConfigurationBits);
-
-            WReg = setupWorkingRegisterBox(W, new Point(300,500));
-            AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515,500));
-            BReg = setupRegisterBox(RegisterMap.getBRegister(), new Point(730, 500));
-            Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
-            Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(515, 610));
-            Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(730, 610));
-            EECON1 = setupRegisterBox(RegisterMap.getEECON1(), new Point(300,720));
-
+            setUpSpecialRegisterBoxes();
             setupRegisterView();
             setupProgramView();
+            setupStackView();
             setupEEPROMView();
 
             breakPoints = new List<int>();
             setupCrystalFrequency();
         }
 
-        /// <summary>
-        /// The configuration bits can be programmed (read as '0'),
-        /// or left unprogrammed (read as '1'), to select various
-        /// device configurations. These bits are mapped in
-        /// program memory location 2007h.
-        /// Address 2007h is beyond the user program memory
-        /// space and it belongs to the special test/configuration
-        /// memory space (2000h - 3FFFh): This space can only
-        /// be accessed during programming.
-        /// </summary>
-        private void InitConfigurationBits()
+        private void setUpSpecialRegisterBoxes()
         {
-            ConfigurationBits = new ProgramMemoryAddress(0);
-            //FOSC1:FOSC0: Oscillator Selection bits - 11 = RC oscillator
-            // 11 = RC oscillator
-            // 10 = HS oscillator
-            // 01 = XT oscillator
-            // 00 = LP oscillator
-            ConfigurationBits.setBit(0);
-            ConfigurationBits.setBit(1);
-            //WDTE: Watchdog Timer Enable bit
-            // 1 = WDT enabled
-            // 0 = WDT disabled
-            ConfigurationBits.setBit(2);
-            //PWRTE: Power-up Timer Enable bit
-            // 1 = Power-up Timer is disabled
-            // 0 = Power-up Timer is enabled
-            ConfigurationBits.setBit(3);
-            //CP: Code Protection bit (bits 4-13)
-            // 1 = Code protection disabled
-            // 0 = All program memory is code protected
-            ConfigurationBits.Address = ConfigurationBits.Address | 0x1FF0;
+            WReg = setupWorkingRegisterBox(W, new Point(300, 500));
+            AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515, 500));
+            BReg = setupRegisterBox(RegisterMap.getBRegister(), new Point(730, 500));
+            Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
+            Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(515, 610));
+            Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(730, 610));
+            EECON1 = setupRegisterBox(RegisterMap.getEECON1(), new Point(300, 720));
         }
 
         private void setupCrystalFrequency()
@@ -336,7 +302,7 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
-            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
+            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, RegisterMap.getStack());
             checkForTimeOut();
             RegisterMap.checkForInterrupt();
             RegisterMap.checkEEPROMFunctionality();
@@ -440,34 +406,6 @@ namespace Simulator_PIC16F84
 //TODO: Implement!
         }
 
-        /// <summary>
-        /// Watchdog Timer Reset (during normal operation)
-        /// The PIC16F84A differentiates between various kinds of RESET, one of which is the WDT Reset.
-        /// Reset conditions for all registers during WDT Reset are:
-        /// W Register      : uuuu uuuu
-        /// INDF            : ---- ----
-        /// TMR0            : uuuu uuuu
-        /// PCL             : 0000 0000
-        /// STATUS          : 0000 1uuu
-        /// FSR             : uuuu uuuu
-        /// PORTA           : ---u uuuu
-        /// PORTB           : uuuu uuuu
-        /// EEDATA          : uuuu uuuu
-        /// EEADR           : uuuu uuuu
-        /// PCLATH          : ---0 0000
-        /// INTCON          : 0000 000u
-        /// INDF            : ---- ----
-        /// OPTION_REG      : 1111 1111
-        /// PCL             : 0000 0000
-        /// STATUS          : 0000 1uuu
-        /// FSR             : uuuu uuuu
-        /// TRISA           : ---1 1111
-        /// TRISB           : 1111 1111
-        /// EECON1          : ---0 q000
-        /// EECON2          : ---- ----
-        /// PCLATH          : ---0 0000
-        /// INTCON          : 0000 000u
-        /// </summary>
         private void WatchDogTimerReset()
         {
             RegisterMap.WatchDogTimerReset();         
@@ -482,7 +420,7 @@ namespace Simulator_PIC16F84
             RegisterMap.ClearRegister();
             RegisterMap.Init();
             registerView.ClearColors();
-            Stack.ClearStack();
+            RegisterMap.getStack().ClearStack();
             W.ClearRegister();
             RegisterMap.getEepromMemory().clearEEPROM();
             //          runTimeCounter = 0;
@@ -511,13 +449,12 @@ namespace Simulator_PIC16F84
 
         private void stackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupStack();
+            setupStackView();
         }
 
-        private void setupStack()
+        private void setupStackView()
         {
-            Stack = new Stack();
-            StackView = new StackView(Stack);
+            StackView = new StackView(RegisterMap.getStack());
             StackView.MdiParent = this;
             StackView.Show();
         }

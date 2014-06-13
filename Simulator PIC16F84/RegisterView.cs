@@ -159,7 +159,7 @@ namespace Simulator_PIC16F84
             {
                 checkRegister(ARegRegisterBox, registerMap.getARegister());
                 if ( registerMap.timer0InCounterMode())
-                    registerMap.checkForFallingAndRisingEdgesOnPortA();
+                    registerMap.checkCountingConditions();
             }
             else if (index == 0x06)
             {

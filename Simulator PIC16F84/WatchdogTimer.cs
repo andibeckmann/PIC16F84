@@ -9,13 +9,13 @@ namespace Simulator_PIC16F84
     public class WatchdogTimer
     {
         private int timer;
-        private RegisterFileMap Reg;
+        private RegisterByte status;
         private Prescaler prescaler;
 
-        public WatchdogTimer(RegisterFileMap Reg, Prescaler prescaler)
+        public WatchdogTimer(Prescaler prescaler, RegisterByte status)
         {
             timer = 0;
-            this.Reg = Reg;
+            this.status = status;
             this.prescaler = prescaler;
         }
 
@@ -71,7 +71,17 @@ namespace Simulator_PIC16F84
 
         private void WDTTimeOut()
         {
-            Reg.WDTTimeOut();
+            clearTimeOutBit();
+        }
+
+        private void clearTimeOutBit()
+        {
+            status.clearBit(4);
+        }
+
+        public void setTimeOutBit()
+        {
+            status.setBit(4);
         }
     }
 }

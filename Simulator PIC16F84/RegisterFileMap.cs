@@ -9,34 +9,64 @@ namespace Simulator_PIC16F84
     public class RegisterFileMap
     {
         private RegisterByte[] registerList;
+        private InterruptService interruptServiceRoutine;
         public int[] mappingArray;
         private Timer0Module timer0;
         private WatchdogTimer WDT;
         private Prescaler prescaler;
-        private byte portAOldValue;
-        private byte portBOldValue;
-        private byte portBOldValue2;
         private Stack stack;
         private ProgramMemoryAddress ConfigurationBits;
         private EEPROM EepromMemory;
         public ProgramCounter PC { get; set; }
 
-        public RegisterFileMap(Stack stack, ProgramMemoryAddress ConfigurationBits)
+        public RegisterFileMap()
         {
+            InitConfigurationBits();
             this.PC = new ProgramCounter(this);
-            this.stack = stack;
-            this.ConfigurationBits = ConfigurationBits;
+            stack = new Stack();
             fillMappingArray();
-            this.portAOldValue = 0;
-            this.portBOldValue = 0;
-            this.portBOldValue2 = 0;
             createRegisterMap();
             createEepromMemory();
+            this.interruptServiceRoutine = new InterruptService(getIntconRegister(), getBRegister(), getOptionRegister(), getEECON1(), getTRISB(), stack, PC);
 
             //Timer0 MOdule, Watchdogtimer und Prescaler
             prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
-            WDT = new WatchdogTimer(this, prescaler);
-            timer0 = new Timer0Module(getTMR0Register(), getOptionRegister(), getIntconRegister(), prescaler);
+            WDT = new WatchdogTimer(prescaler, getStatusRegister());
+            timer0 = new Timer0Module(getTMR0Register(), getARegister(), getOptionRegister(), getIntconRegister(), prescaler);
+        }
+
+        /// <summary>
+        /// The configuration bits can be programmed (read as '0'),
+        /// or left unprogrammed (read as '1'), to select various
+        /// device configurations. These bits are mapped in
+        /// program memory location 2007h.
+        /// Address 2007h is beyond the user program memory
+        /// space and it belongs to the special test/configuration
+        /// memory space (2000h - 3FFFh): This space can only
+        /// be accessed during programming.
+        /// </summary>
+        private void InitConfigurationBits()
+        {
+            ConfigurationBits = new ProgramMemoryAddress(0);
+            //FOSC1:FOSC0: Oscillator Selection bits - 11 = RC oscillator
+            // 11 = RC oscillator
+            // 10 = HS oscillator
+            // 01 = XT oscillator
+            // 00 = LP oscillator
+            ConfigurationBits.setBit(0);
+            ConfigurationBits.setBit(1);
+            //WDTE: Watchdog Timer Enable bit
+            // 1 = WDT enabled
+            // 0 = WDT disabled
+            ConfigurationBits.setBit(2);
+            //PWRTE: Power-up Timer Enable bit
+            // 1 = Power-up Timer is disabled
+            // 0 = Power-up Timer is enabled
+            ConfigurationBits.setBit(3);
+            //CP: Code Protection bit (bits 4-13)
+            // 1 = Code protection disabled
+            // 0 = All program memory is code protected
+            ConfigurationBits.Address = ConfigurationBits.Address | 0x1FF0;
         }
 
         private void createRegisterMap()
@@ -63,11 +93,6 @@ namespace Simulator_PIC16F84
             EepromMemory.checkEEPROMFunctionality();
         }
 
-        public void writeEEDATA(byte value)
-        {
-            getEEDATA().Value = value;
-        }
-
         public bool isTimeOutBitSet()
         {
             return getStatusRegister().isBitSet(4);
@@ -76,21 +101,6 @@ namespace Simulator_PIC16F84
         public void ClearWatchdogTimer()
         {
             WDT.ClearWatchdogTimer();
-        }
-
-        public void WDTTimeOut()
-        {
-            clearTimeOutBit();
-        }
-
-        private void clearTimeOutBit()
-        {
-            getStatusRegister().clearBit(4);
-        }
-
-        public void setTimeOutBit()
-        {
-            getStatusRegister().setBit(4);
         }
 
         public void checkOptionRegisterSettings()
@@ -167,6 +177,11 @@ namespace Simulator_PIC16F84
         public bool timer0InCounterMode()
         {
             return timer0.isInCounterMode();
+        }
+
+        public void checkCountingConditions()
+        {
+            timer0.checkForFallingAndRisingEdgesOnPortA();
         }
 
         public RegisterByte getTMR0Register()
@@ -333,11 +348,6 @@ namespace Simulator_PIC16F84
             return ConfigurationBits.isBitSet(1);
         }
 
-        public void incrementCounter()
-        {
-            timer0.incrementInCounterMode();       
-        }
-
         public void EnableTimerInterrupt()
         {
             getIntconRegister().setBit(5);
@@ -359,215 +369,39 @@ namespace Simulator_PIC16F84
                 prescaler.clearPrescaler();
         }
 
-        /// <summary>
-        /// Check for Rising or Falling Edges for Timer 0 Module Counter Mode
-        /// </summary>
-        public void checkForFallingAndRisingEdgesOnPortA()
-        {
-            if (getOptionRegister().isBitSet(4))
-            {
-                if (getARegister().checkForFallingEdge(portAOldValue, 4))
-                    incrementCounter();
-            }
-            else
-            {
-                if (getARegister().checkForRisingEdge(portAOldValue, 4))
-                    incrementCounter();
-            }
-             portAOldValue = getARegister().Value;
-        }
-
-        /// <summary>
-        /// INT INTERRUPT
-        /// 
-        /// External interrupt on RB0/INT pin is edge triggered:
-        /// either rising if INTEDG bit (OPTION_REG<6>) is set,
-        /// or falling if INTEDG bit is clear.
-        /// When a valid edge
-        /// appears on the RB0/INT pin, the INTF bit
-        /// (INTCON<1>) is set. This interrupt can be disabled by
-        /// clearing control bit INTE (INTCON<4>).
-        /// </summary>
-        public void checkForIntInterrupt()
-        {
-            if (isIntInterruptEnabled() && isGlobalInterruptEnableBitSet())
-            {
-                if (isIntEdgBitSet())
-                {
-                    if ( getBRegister().checkForRisingEdge(portBOldValue, 0))
-                        setIntFBit();
-                }
-                else
-                {
-                    if (getBRegister().checkForFallingEdge(portBOldValue, 0))
-                        setIntFBit();
-                }
-            }
-            portBOldValue = getBRegister().Value;
-        }
-
-        /// <summary>
-        /// PORTB INTERRUPT
-        /// 
-        /// An input change on PORTB<7:4> sets flag bit RBIF
-        /// (INTCON<0>). The interrupt can be enabled/disabled
-        /// by setting/clearing enable bit RBIE (INTCON<3>)
-        /// (Section 4.2).
-        /// </summary>
-        public void checkForPortBInterrupt()
-        {
-            if (isGlobalInterruptEnableBitSet() && isRBInterruptEnabled())
-                if (checkForPortBInterruptInputChange())
-                    setRBInterruptFlag();
-        }
-
-        /// <summary>
-        /// PORT B INTERRUPT CONDITION
-        /// 
-        /// The Port B interrupt is triggered by input changes
-        /// on PORTB<7:4>.
-        /// For Port B to work as input, the corresponding bit
-        /// in the TRISB-Register needs to be set to 1.
-        /// </summary>
-        /// <returns></returns>
-        private bool checkForPortBInterruptInputChange()
-        {
-            byte changedBits = (byte) ( portBOldValue2 ^ getBRegister().Value );
-            byte inputChange = (byte) ( changedBits & getTRISB().Value );
-            if ((inputChange & 0xF0) != 0x00)
-            {
-                portBOldValue2 = getBRegister().Value;
-                return true;
-            }
-            return false;
-        }
-
-        private void setIntFBit()
-        {
-            getIntconRegister().setBit(1);
-        }
-
-        private void clearIntFBit()
-        {
-            getIntconRegister().clearBit(1);
-        }
-
-        public void checkForInterrupt()
-        {
-            if ( !isGlobalInterruptEnableBitSet() )
-                return;
-
-            if (isThereAnInterruptRequest())
-                interruptServiceRoutine();
-        }
-
-        private bool isGlobalInterruptEnableBitSet()
-        {
-            return getIntconRegister().isBitSet(7);
-        }
-
-        private bool isThereAnInterruptRequest()
-        {
-            return (isThereAnIntInterruptRequest() || isThereATimer0InterruptRequest() || isThereAPortBInterruptRequest() || isThereAPDataEEPROMInterruptRequest() );
-        }
-
-        private bool isThereAnIntInterruptRequest()
-        {
-            return (isIntInterruptFlagBitSet() && isIntInterruptEnabled());
-        }
-
-        private bool isThereATimer0InterruptRequest()
-        {
-            return ( isTimer0InterruptFlagSet() && isTimer0OverflowInterruptEnabled());
-        }
-
-        private bool isThereAPortBInterruptRequest()
-        {
-            return (isRBInterruptEnabled() && isRBInterruptFlagSet());
-        }
-
-        private bool isThereAPDataEEPROMInterruptRequest()
-        {
-            return (isEEPROMInterruptEnabled() && isEEPROMInterruptFlagSet());
-        }
-
-        private bool isEEPROMInterruptFlagSet()
-        {
-            return getEECON1().isBitSet(4);
-        }
-
-        private bool isTimer0InterruptFlagSet()
-        {
-            return getIntconRegister().isBitSet(2);
-        }
-
-        private bool isEEPROMInterruptEnabled()
-        {
-            return getIntconRegister().isBitSet(6);
-        }
-
-        private bool isTimer0OverflowInterruptEnabled()
-        {
-            return getIntconRegister().isBitSet(5);
-        }
-
-        private bool isIntInterruptEnabled()
-        {
-            return getIntconRegister().isBitSet(4);
-        }
-
-        private bool isIntEdgBitSet()
-        {
-            return getOptionRegister().isBitSet(6);
-        }
-
-        private bool isIntInterruptFlagBitSet()
-        {
-            return getIntconRegister().isBitSet(1);
-        }
-
-        private bool isRBInterruptEnabled()
-        {
-            return getIntconRegister().isBitSet(3);
-        }
-
-        private bool isRBInterruptFlagSet()
-        {
-            return getIntconRegister().isBitSet(0);
-        }
-
-        private void setRBInterruptFlag()
-        {
-            getIntconRegister().setBit(0);
-        }
-
-        public void setGlobalInterruptEnableBit()
-        {
-            getIntconRegister().setBit(7);
-        }
-
-        private void clearGlobalInterruptEnableBit()
-        {
-            getIntconRegister().clearBit(7);
-        }
-
-        private void interruptServiceRoutine()
-        {
-            clearGlobalInterruptEnableBit();
-            stack.PushOntoStack(new ProgramMemoryAddress(DeriveReturnAddress(PC)));
-            PC.Counter.Address = 0x04 - 1;
-        }
-
-        public int DeriveReturnAddress(ProgramCounter PC)
-        {
-            return PC.Counter.Address + 1;
-        }
-
         public void incrementWatchdogTimer()
         {
             WDT.IncrementWatchdogTimer();
         }
 
+        /// <summary>
+        /// Watchdog Timer Reset (during normal operation)
+        /// The PIC16F84A differentiates between various kinds of RESET, one of which is the WDT Reset.
+        /// Reset conditions for all registers during WDT Reset are:
+        /// W Register      : uuuu uuuu
+        /// INDF            : ---- ----
+        /// TMR0            : uuuu uuuu
+        /// PCL             : 0000 0000
+        /// STATUS          : 0000 1uuu
+        /// FSR             : uuuu uuuu
+        /// PORTA           : ---u uuuu
+        /// PORTB           : uuuu uuuu
+        /// EEDATA          : uuuu uuuu
+        /// EEADR           : uuuu uuuu
+        /// PCLATH          : ---0 0000
+        /// INTCON          : 0000 000u
+        /// INDF            : ---- ----
+        /// OPTION_REG      : 1111 1111
+        /// PCL             : 0000 0000
+        /// STATUS          : 0000 1uuu
+        /// FSR             : uuuu uuuu
+        /// TRISA           : ---1 1111
+        /// TRISB           : 1111 1111
+        /// EECON1          : ---0 q000
+        /// EECON2          : ---- ----
+        /// PCLATH          : ---0 0000
+        /// INTCON          : 0000 000u
+        /// </summary>
         public void WatchDogTimerReset()
         {
             PC.Clear();
@@ -613,6 +447,36 @@ namespace Simulator_PIC16F84
         public RegisterByte getEEADR()
         {
             return registerList[0x09];
+        }
+
+        public void checkForInterrupt()
+        {
+            interruptServiceRoutine.executeRoutine();
+        }
+
+        public void checkForIntInterrupt()
+        {
+            interruptServiceRoutine.checkForIntInterrupt();
+        }
+
+        public void checkForPortBInterrupt()
+        {
+            interruptServiceRoutine.checkForPortBInterrupt();
+        }
+
+        public void setGlobalInterruptEnableBit()
+        {
+            interruptServiceRoutine.setGlobalInterruptEnableBit();
+        }
+
+        public void setTimeOutBit()
+        {
+            WDT.setTimeOutBit();
+        }
+
+        public Stack getStack()
+        {
+            return stack;
         }
       
         /// <summary>
