@@ -31,6 +31,7 @@ namespace Simulator_PIC16F84
         System.Timers.Timer watchdogFrequency;
         List<int> breakPoints;
         int frequency = 10;
+        double runTimeCounter;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
         ProgramMemoryAddress ConfigurationBits;
