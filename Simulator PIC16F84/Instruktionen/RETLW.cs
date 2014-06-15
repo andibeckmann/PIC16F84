@@ -24,7 +24,7 @@ namespace Simulator_PIC16F84.Instruktionen
         
         protected void execute(WorkingRegister W, ProgramCounter PC, Stack stack)
         {
-            W.Value = k;
+            W.Value = (byte)k;
 
             PC.Counter.Address = stack.PullFromStack().Address - 1;
         }
@@ -34,7 +34,7 @@ namespace Simulator_PIC16F84.Instruktionen
             this.k = k;
 
             execute(W, PC, stack);
-            Reg.incrementTimer();
+            Reg.instructionCycleTimeElapsed();
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)

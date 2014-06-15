@@ -9,13 +9,13 @@ namespace Simulator_PIC16F84
     public class WatchdogTimer
     {
         private int timer;
-        private RegisterFileMap Reg;
+        private RegisterByte status;
         private Prescaler prescaler;
 
-        public WatchdogTimer(RegisterFileMap Reg, Prescaler prescaler)
+        public WatchdogTimer(Prescaler prescaler, RegisterByte status)
         {
             timer = 0;
-            this.Reg = Reg;
+            this.status = status;
             this.prescaler = prescaler;
         }
 
@@ -27,7 +27,7 @@ namespace Simulator_PIC16F84
 
         private void checkTimeOutCondition()
         {
-            if (timer > getWatchDogTimerLimit())
+            if (timer > calculateWatchDogTimerLimit())
             {
                 if (prescaler.isAssignedToWatchDogTimer())
                     checkForPrescalerTimeOut();
@@ -43,9 +43,25 @@ namespace Simulator_PIC16F84
                 WDTTimeOut();
         }
 
-        private int getWatchDogTimerLimit()
+        /// <summary>
+        /// Calculates the WDT's time-out period in [ms]
+        /// 
+        /// The WDT has a nominal time-out period of 18 ms, (with 
+        /// no prescaler). The time-out periods vary with
+        /// temperature, VDD and process variations from part to
+        /// part (see DC specs).
+        /// 
+        /// PIC operating speed - 200 ns instruction cycle
+        /// therefore, the WDT increments once every 200ns (1/5000 ms)
+        /// therefore the WDT needs to have incremented 18 * 5 * 1000
+        /// in order to reach 18 ms
+        /// </summary>
+        /// <returns></returns>
+        private int calculateWatchDogTimerLimit()
         {
-            return 12000;
+            // geforderter Wert in SimTest04 ist dummerweise was völlig anderes, als was die Rechnung ergibt - statt 90 000 nur 17 949, also 1/5... Ging Lehmann aus irgendeinem grund davon aus, dass die Instruktionszyklen 1000ns statt 200ns lang sind?
+            return 0x175f * 3;
+            //return (18 * 5 * 1000);
         }
 
         public void ClearWatchdogTimer()
@@ -55,7 +71,17 @@ namespace Simulator_PIC16F84
 
         private void WDTTimeOut()
         {
-            Reg.WDTTimeOut();
+            clearTimeOutBit();
+        }
+
+        private void clearTimeOutBit()
+        {
+            status.clearBit(4);
+        }
+
+        public void setTimeOutBit()
+        {
+            status.setBit(4);
         }
     }
 }

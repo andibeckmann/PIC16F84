@@ -59,12 +59,12 @@ namespace Simulator_PIC16F84
 
         public void clearBit(int pos)
         {
-            value = (byte) (value & (0xFE << pos));
+            Value = (byte) (value & ~( 1 << pos));
         }
 
         public void setBit(int pos)
         {
-            value = (byte)((int)value | (0x01 << pos));
+            Value = (byte)((int)value | (0x01 << pos));
         }
 
         public byte FormComplement()

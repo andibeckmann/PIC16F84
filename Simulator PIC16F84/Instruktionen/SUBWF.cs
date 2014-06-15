@@ -56,6 +56,12 @@ namespace Simulator_PIC16F84.Instruktionen
             /// Resultat ablegen, Unterscheidung Working Reg oder File Reg
             if (d)
             {
+                /// Sonderbehandlung PCL: Resultat muss auch auf den 13bit-Program Counter abgebildet werden, nicht nur auf PC-Reg
+                if (f == 0x02)
+                {
+                    Reg.PC.Counter.Address = derivePCAddress(Reg).Address - W.Value;
+                }
+                else
                 Reg.getRegister(f).Value = (byte)result;
             }
             else

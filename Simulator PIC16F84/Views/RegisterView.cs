@@ -21,8 +21,9 @@ namespace Simulator_PIC16F84
         RegisterBox StatusRegisterBox;
         RegisterBox OptionRegisterBox;
         RegisterBox IntconRegisterBox;
+        RegisterBox Eecon1RegisterBox;
 
-        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W, RegisterBox AReg, RegisterBox BReg, RegisterBox Status, RegisterBox Option, RegisterBox Intcon)
+        public RegisterView(ref RegisterFileMap RegisterMap, int[] mappingArray, RegisterBox registerBox, WorkingRegister W, RegisterBox AReg, RegisterBox BReg, RegisterBox Status, RegisterBox Option, RegisterBox Intcon, RegisterBox Eecon1)
         {
             int sizeOfField = 25;
 
@@ -34,6 +35,7 @@ namespace Simulator_PIC16F84
             this.StatusRegisterBox = Status;
             this.OptionRegisterBox = Option;
             this.IntconRegisterBox = Intcon;
+            this.Eecon1RegisterBox = Eecon1;
 
             InitializeComponent();
             this.StartPosition = FormStartPosition.Manual;
@@ -50,17 +52,17 @@ namespace Simulator_PIC16F84
 
         private void createRegisterPattern(RegisterFileMap RegisterMap, int sizeOfField)
         {
-            for (int i = 0; i < 8; i++)
+            for (int column = 0; column < 8; column++)
             {
-                createLabels(sizeOfField, i);
+                createLabels(sizeOfField, column);
             }
-            for (int i = 0; i < 32; i++)
+            for (int row = 0; row < 32; row++)
             {
-                createColumn0Label(sizeOfField, i);
+                createColumn0Label(sizeOfField, row);
 
-                for (int m = 0; m < 8; m++)
+                for (int textColumn = 0; textColumn < 8; textColumn++)
                 {
-                    createTextBox(RegisterMap, sizeOfField, i, m);
+                    createTextBox(RegisterMap, sizeOfField, row, textColumn);
                 }
             }
         }
@@ -157,10 +159,14 @@ namespace Simulator_PIC16F84
             {
                 checkRegister(ARegRegisterBox, registerMap.getARegister());
                 if ( registerMap.timer0InCounterMode())
-                    registerMap.checkForFallingAndRisingEdgesOnPortA();
+                    registerMap.checkCountingConditions();
             }
             else if (index == 0x06)
+            {
+                registerMap.checkForIntInterrupt();
+                registerMap.checkForPortBInterrupt();
                 checkRegister(BRegRegisterBox, registerMap.getBRegister());
+            }
             else if (index == 0x03)
                 checkRegister(StatusRegisterBox, registerMap.getStatusRegister());
             else if (index == 0x0B)
@@ -169,6 +175,10 @@ namespace Simulator_PIC16F84
             {
                 checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
                 registerMap.checkOptionRegisterSettings();
+            }
+            else if (index == 0x88)
+            {
+                checkRegister(Eecon1RegisterBox, registerMap.getEECON1());
             }
         }
 
@@ -216,7 +226,12 @@ namespace Simulator_PIC16F84
                     var textBoxArray = this.Controls.Find("Byte " + i, true);
                     if (textBoxArray.Length > 0)
                     {
-                        textBoxArray[0].Text = registerMap.getRegister(i).Value.ToString("X2");
+                        ///Korrektes Belegen der Registereinträge (getRegisterList liefert Register direkt zurück,
+                        ///allerdings sind einige spezielle Register (Status, PCL, etc.) in beiden Bänken miteinander
+                        ///verbunden. Die getRegister-Methode greift auf das dafür erstellte Mappingarray zu und
+                        ///berücksichtigt diese speziellen Register (allerdings auch eine evtl. indirekte Adressierung
+                        ///via Bankumschaltung, deshalb wird das ignoreBankSelection-Bit gesetzt.
+                        textBoxArray[0].Text = registerMap.getRegister(i, true).Value.ToString("X2");
                         textBoxArray[0].BackColor = Color.Red;
                     }
                 }

@@ -23,102 +23,64 @@ namespace Simulator_PIC16F84
         ProgramMemoryMap UserMemorySpace;
         ProgramMemoryView ProgramView;
         WorkingRegister W;
-        Stack Stack;
         StackView StackView;
         RegisterView registerView;
+        EEPROMView eepromView;
         RunTimeCounter runTimeCounterView;
         System.Timers.Timer crystalFrequency;
-        System.Timers.Timer watchdogFrequency;
         List<int> breakPoints;
         int frequency = 10;
         double runTimeCounter;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
-        ProgramMemoryAddress ConfigurationBits;
 
         /// <summary>
         /// Detailansicht spezieller Register
         /// </summary>
-        RegisterBox WBox;
+        RegisterBox WReg;
         RegisterBox AReg;
         RegisterBox BReg;
         RegisterBox Status;
         RegisterBox Option;
         RegisterBox Intcon;
+        RegisterBox EECON1;
 
         public Main()
         {
             InitializeComponent();
-            InitConfigurationBits();
             InitializeSlider();
             IsMdiContainer = true;
             this.WindowState = FormWindowState.Maximized;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
             W = new WorkingRegister(-1);
+            RegisterMap = new RegisterFileMap();
 
-            setupStack();
-            RegisterMap = new RegisterFileMap(Stack);
-
-            setupWorkingRegisterBox();
-            setupRegisterBoxA();
-            setupRegisterBoxB();
-            setupStatusBox();
-            setupOptionRegister();
-            setupIntconRegister();
-
+            setUpSpecialRegisterBoxes();
             setupRegisterView();
             setupProgramView();
+            setupStackView();
+            setupEEPROMView();
 
             breakPoints = new List<int>();
             setupCrystalFrequency();
         }
 
-        /// <summary>
-        /// The configuration bits can be programmed (read as '0'),
-        /// or left unprogrammed (read as '1'), to select various
-        /// device configurations. These bits are mapped in
-        /// program memory location 2007h.
-        /// Address 2007h is beyond the user program memory
-        /// space and it belongs to the special test/configuration
-        /// memory space (2000h - 3FFFh): This space can only
-        /// be accessed during programming.
-        /// </summary>
-        private void InitConfigurationBits()
+        private void setUpSpecialRegisterBoxes()
         {
-            ConfigurationBits = new ProgramMemoryAddress(0x2007);
-            //FOSC1:FOSC0: Oscillator Selection bits - 11 = RC oscillator
-            // 11 = RC oscillator
-            // 10 = HS oscillator
-            // 01 = XT oscillator
-            // 00 = LP oscillator
-            ConfigurationBits.setBit(0);
-            ConfigurationBits.setBit(1);
-            //WDTE: Watchdog Timer Enable bit
-            // 1 = WDT enabled
-            // 0 = WDT disabled
-            ConfigurationBits.setBit(2);
-            //PWRTE: Power-up Timer Enable bit
-            // 1 = Power-up Timer is disabled
-            // 0 = Power-up Timer is enabled
-            ConfigurationBits.setBit(3);
-            //CP: Code Protection bit (bits 4-13)
-            // 1 = Code protection disabled
-            // 0 = All program memory is code protected
-            ConfigurationBits.Address = ConfigurationBits.Address | 0x1FF0;
-        }
-
-        private bool isWatchdogTimerEnabled()
-        {
-            return ConfigurationBits.isBitSet(1);
+            WReg = setupWorkingRegisterBox(W, new Point(300, 500));
+            AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515, 500));
+            BReg = setupRegisterBox(RegisterMap.getBRegister(), new Point(730, 500));
+            Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
+            Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(515, 610));
+            Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(730, 610));
+            EECON1 = setupRegisterBox(RegisterMap.getEECON1(), new Point(300, 720));
         }
 
         private void setupCrystalFrequency()
         {
             crystalFrequency = new System.Timers.Timer(10);
             crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
-            watchdogFrequency = new System.Timers.Timer(1);
-            watchdogFrequency.Elapsed += new System.Timers.ElapsedEventHandler(watchdogTimerPeriodElapsed);
         }
 
         private void setupProgramView()
@@ -132,7 +94,7 @@ namespace Simulator_PIC16F84
 
         private void setupRegisterView()
         {
-            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WBox, W, AReg, BReg, Status, Option, Intcon);
+            registerView = new RegisterView(ref RegisterMap, RegisterMap.mappingArray, WReg, W, AReg, BReg, Status, Option, Intcon, EECON1);
             RegisterMap.Init();
             W.RegisterChanged += new System.EventHandler<int>(registerView.RegisterContentChanged);
             // Set the Parent Form of the Child window.
@@ -143,59 +105,31 @@ namespace Simulator_PIC16F84
             registerView.Show();
         }
 
-        private void setupStatusBox()
+        private void setupEEPROMView()
         {
-            Status = new RegisterBox(RegisterMap.getStatusRegister());
-            Status.MdiParent = this;
-            Status.StartPosition = FormStartPosition.Manual;
-            Status.Location = new Point(300, 600);
-            Status.Show();
+            eepromView = new EEPROMView(RegisterMap.getEepromMemory());
+            eepromView.MdiParent = this;
+            eepromView.Show();
         }
 
-        private void setupRegisterBoxB()
+        private RegisterBox setupWorkingRegisterBox(WorkingRegister W, Point location)
         {
-            ///B-Register View
-            BReg = new RegisterBox(RegisterMap.getBRegister());
-            BReg.MdiParent = this;
-            BReg.StartPosition = FormStartPosition.Manual;
-            BReg.Location = new Point(750, 500);
-            BReg.Show();
+            RegisterBox WReg = new RegisterBox(W);
+            WReg.MdiParent = this;
+            WReg.StartPosition = FormStartPosition.Manual;
+            WReg.Location = location;
+            WReg.Show();
+            return WReg;
         }
 
-        private void setupRegisterBoxA()
+        private RegisterBox setupRegisterBox(RegisterByte register, Point location)
         {
-            ///A-Register View
-            AReg = new RegisterBox(RegisterMap.getARegister());
-            AReg.MdiParent = this;
-            AReg.StartPosition = FormStartPosition.Manual;
-            AReg.Location = new Point(525, 500);
-            AReg.Show();
-        }
-
-        private void setupWorkingRegisterBox()
-        {
-            /// Working Register View
-            WBox = new RegisterBox(W);
-            WBox.MdiParent = this;
-            WBox.Show();
-        }
-
-        private void setupOptionRegister()
-        {
-            Option = new RegisterBox(RegisterMap.getOptionRegister());
-            Option.MdiParent = this;
-            Option.StartPosition = FormStartPosition.Manual;
-            Option.Location = new Point(525, 600);
-            Option.Show();
-        }
-
-        private void setupIntconRegister()
-        {
-            Intcon = new RegisterBox(RegisterMap.getIntconRegister());
-            Intcon.MdiParent = this;
-            Intcon.StartPosition = FormStartPosition.Manual;
-            Intcon.Location = new Point(750, 600);
-            Intcon.Show();
+            RegisterBox Reg = new RegisterBox(register);
+            Reg.MdiParent = this;
+            Reg.StartPosition = FormStartPosition.Manual;
+            Reg.Location = location;
+            Reg.Show();
+            return Reg;
         }
 
         private void InitializeSlider()
@@ -361,7 +295,6 @@ namespace Simulator_PIC16F84
             if(breakPoints.Contains(index))
             {
                 crystalFrequency.Stop();
-                watchdogFrequency.Stop();
                 return;
             }
             ExecuteSingleCycle(index);
@@ -370,25 +303,21 @@ namespace Simulator_PIC16F84
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
-            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, Stack);
-            RegisterMap.PC.InkrementPC();
+            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, RegisterMap.getStack());
+            checkForTimeOut();
             RegisterMap.checkForInterrupt();
+            RegisterMap.checkEEPROMFunctionality();
+            RegisterMap.PC.InkrementPC();
             SetSelection(index);
-        }
-
-        private void watchdogTimerPeriodElapsed(object source, ElapsedEventArgs e)
-        {
-            if (isWatchdogTimerEnabled())
-            {
-                RegisterMap.incrementWatchdogTimer();
-                checkForTimeOut();
-            }
         }
 
         private void checkForTimeOut()
         {
             if (!RegisterMap.isTimeOutBitSet())
-                deviceReset();
+            {
+                WatchDogTimerReset();
+                RegisterMap.setTimeOutBit();
+            }
         }
 
         private void SetSelection(int index)
@@ -438,32 +367,69 @@ namespace Simulator_PIC16F84
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
             crystalFrequency.Start();
-            watchdogFrequency.Start();
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            deviceReset();
+            resetSimulation();
         }
 
-        private void deviceReset()
+        /// <summary>
+        /// Power-on Reset (POR)
+        /// The PIC16F84A differentiates between various kinds of RESET, one of which is the POR.
+        /// Reset conditions for all registers during POR are:
+        /// W Register      : xxxx xxxx
+        /// INDF            : ---- ----
+        /// TMR0            : xxxx xxxx
+        /// PCL             : 0000 0000
+        /// STATUS          : 0001 1xxx
+        /// FSR             : xxxx xxxx
+        /// PORTA           : ---x xxxx
+        /// PORTB           : xxxx xxxx
+        /// EEDATA          : xxxx xxxx
+        /// EEADR           : xxxx xxxx
+        /// PCLATH          : ---0 0000
+        /// INTCON          : 0000 000x
+        /// INDF            : ---- ----
+        /// OPTION_REG      : 1111 1111
+        /// PCL             : 0000 0000
+        /// STATUS          : 0001 1xxx
+        /// FSR             : xxxx xxxx
+        /// TRISA           : ---1 1111
+        /// TRISB           : 1111 1111
+        /// EECON1          : ---0 x000
+        /// EECON2          : ---- ----
+        /// PCLATH          : ---0 0000
+        /// INTCON          : 0000 000x
+        /// </summary>
+        private void PowerOnReset()
+        {
+//TODO: Implement!
+        }
+
+        private void WatchDogTimerReset()
+        {
+            RegisterMap.WatchDogTimerReset();         
+        }
+
+        private void resetSimulation()
         {
             crystalFrequency.Stop();
-            watchdogFrequency.Stop();
             RegisterMap.ClearWatchdogTimer();
             RegisterMap.PC.Clear();
             SetSelection(0);
             RegisterMap.ClearRegister();
             RegisterMap.Init();
             registerView.ClearColors();
-            Stack.ClearStack();
-            runTimeCounter = 0;
+            RegisterMap.getStack().ClearStack();
+            W.ClearRegister();
+            RegisterMap.getEepromMemory().clearEEPROM();
+            //          runTimeCounter = 0;
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             crystalFrequency.Stop();
-            watchdogFrequency.Stop();
         }
 
         private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)
@@ -484,40 +450,54 @@ namespace Simulator_PIC16F84
 
         private void stackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupStack();
+            setupStackView();
         }
 
-        private void setupStack()
+        private void setupStackView()
         {
-            Stack = new Stack();
-            StackView = new StackView(Stack);
+            StackView = new StackView(RegisterMap.getStack());
             StackView.MdiParent = this;
             StackView.Show();
         }
 
         private void workingRegisterToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            setupWorkingRegisterBox();   
+            WReg = setupWorkingRegisterBox(W, new Point(300, 500));
         }
 
         private void aRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupRegisterBoxA();
+            AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515, 500));
         }
 
         private void bRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupRegisterBoxB();
+            BReg = setupRegisterBox(RegisterMap.getBRegister(), new Point(730, 500));
         }
 
         private void optionRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupOptionRegister();
+            Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(515, 610));
         }
 
         private void intconToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            setupIntconRegister();
+            Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(730, 610));
+        }
+
+        private void statusRegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
+        }
+
+        private void eECON1RegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EECON1 = setupRegisterBox(RegisterMap.getEECON1(), new Point(300, 720));
+        }
+
+        private void eEPROMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setupEEPROMView();
         }
 
     }

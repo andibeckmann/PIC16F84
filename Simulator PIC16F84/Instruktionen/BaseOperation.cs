@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
         /// <summary>
         /// Literal field, constant data or label
         /// </summary>
-        protected byte k;
+        protected int k;
 
         /// <summary>
         /// Destination select;
@@ -61,7 +61,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         public BaseOperation(RegisterFileMap Reg)
         {
-            Reg.incrementTimer();
+            Reg.instructionCycleTimeElapsed();
         }
 
         /// <summary>
@@ -104,6 +104,31 @@ namespace Simulator_PIC16F84.Instruktionen
             return (byte) (byteValue & ~(1 << bit));
         }
 
+        /// <summary>
+        ///     /// Operation:  (PC) + 1 -> TOS,
+        ///                     k -> PC&lt;10:0>,
+        ///                     CLATH&lt;4:3>) -> PC&lt;12:11>
+        /// </summary>
+        protected ProgramMemoryAddress deriveAddress(RegisterFileMap Reg)
+        {
+            int lower11Bits = k & 0x7FF;
+            int upper2Bits = (Reg.getPCLATH().Value & 0x18)>>3;
+            int combinedAddress = (upper2Bits << 11) + lower11Bits;
 
+            return new ProgramMemoryAddress(combinedAddress);
+        }
+
+        /// <summary>
+        ///  Beziehe für Operation auf dem ProgramCounter den 13bit-Wert des PC
+        ///  Zusammengesetzt aus Register PCL (untere 8bit) und PCLATH (obere 5 bit).
+        /// </summary>
+        protected ProgramMemoryAddress derivePCAddress(RegisterFileMap Reg)
+        {
+            int lower8Bits = Reg.getRegister(0x02).Value;
+            int upper5Bits = Reg.getPCLATH().Value & 0x1F;
+            int combinedAddress = (upper5Bits << 8) + lower8Bits;
+
+            return new ProgramMemoryAddress(combinedAddress);
+        }
     }
 }

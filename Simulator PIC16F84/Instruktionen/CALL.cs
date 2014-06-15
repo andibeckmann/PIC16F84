@@ -26,7 +26,7 @@ namespace Simulator_PIC16F84.Instruktionen
     {
         
 
-        public CALL( byte k, ProgramCounter PC, Stack Stack, RegisterFileMap Reg ) : base(Reg)
+        public CALL( int k, ProgramCounter PC, Stack Stack, RegisterFileMap Reg ) : base(Reg)
         {
             this.k = k;
 
@@ -35,9 +35,8 @@ namespace Simulator_PIC16F84.Instruktionen
 
     protected void execute(RegisterFileMap Reg, ProgramCounter PC, Stack Stack)
     {
-        Stack.PushOntoStack(new ProgramMemoryAddress(Reg.DeriveReturnAddress(PC)));
-        PC.Counter.Address = k - 1;   
-        //TODO: PC LATCH Wasauchimmer
+        Stack.PushOntoStack(new ProgramMemoryAddress(PC.DeriveReturnAddress()));
+        PC.Counter.Address = deriveAddress(Reg).Address - 1;
     }
 
     protected override void execute(WorkingRegister W, RegisterFileMap Reg)

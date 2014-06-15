@@ -44,5 +44,10 @@ namespace Simulator_PIC16F84
         {
             counter.Address = 0;
         }
+
+        public int DeriveReturnAddress()
+        {
+            return Counter.Address + 1;
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace Simulator_PIC16F84.Instruktionen
         public RETURN(ProgramCounter PC, Stack Stack, RegisterFileMap Reg) : base(Reg)
         {
             this.Stack = Stack;
-            Reg.incrementTimer();
+            Reg.instructionCycleTimeElapsed();
 
             execute(PC);
         }

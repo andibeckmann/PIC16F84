@@ -12,19 +12,23 @@ namespace Simulator_PIC16F84
         private enum TimerMode { TIMER, COUNTER };
         private TimerMode timerMode;
         private RegisterByte tmr0Reg;
+        private RegisterByte portAReg;
         private RegisterByte optionReg;
         private RegisterByte intconReg;
         private Prescaler prescaler;
         private int inhibitCycles;
         private byte internalCount;
+        private byte portAOldValue;
 
-        public Timer0Module(RegisterByte tmr0Reg, RegisterByte optionReg, RegisterByte intconReg, Prescaler prescaler)
+        public Timer0Module(RegisterByte tmr0Reg, RegisterByte portAReg, RegisterByte optionReg, RegisterByte intconReg, Prescaler prescaler)
         {
             this.tmr0Reg = tmr0Reg;
+            this.portAReg = portAReg;
             this.prescaler = prescaler;
             this.optionReg = optionReg;
             this.intconReg = intconReg;
             this.internalCount = tmr0Reg.Value;
+            this.portAOldValue = 0;
         }
 
         public void checkTimer()
@@ -96,7 +100,7 @@ namespace Simulator_PIC16F84
 
         private void checkOverflowcondition()
         {
-            if ( tmr0Reg.Value == 255 )
+            if ( tmr0Reg.Value == 255 && intconReg.isBitSet(7) && intconReg.isBitSet(5))
                 setTimer0InterruptFlagBit();
         }
 
@@ -107,8 +111,6 @@ namespace Simulator_PIC16F84
 
         public void incrementInTimerMode()
         {
-            if ( !(timerMode == TimerMode.TIMER) )
-                return;
             if (inhibitCycles <= 0)
                 IncrementWithPrescaler();
             else
@@ -129,6 +131,24 @@ namespace Simulator_PIC16F84
                 return true;
             else
                 return false;
+        }
+
+        /// <summary>
+        /// Check for Rising or Falling Edges for Timer 0 Module Counter Mode
+        /// </summary>
+        public void checkForFallingAndRisingEdgesOnPortA()
+        {
+            if (optionReg.isBitSet(4))
+            {
+                if (portAReg.checkForFallingEdge(portAOldValue, 4))
+                    incrementInCounterMode();
+            }
+            else
+            {
+                if (portAReg.checkForRisingEdge(portAOldValue, 4))
+                    incrementInCounterMode();
+            }
+            portAOldValue = portAReg.Value;
         }
     }
 }

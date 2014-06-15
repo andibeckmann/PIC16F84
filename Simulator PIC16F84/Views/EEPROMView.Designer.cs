@@ -1,6 +1,6 @@
 ﻿namespace Simulator_PIC16F84
 {
-    partial class StackView
+    partial class EEPROMView
     {
         /// <summary>
         /// Required designer variable.
@@ -30,16 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // StackView
+            // EEPROMView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(134, 212);
-            this.Location = new System.Drawing.Point(1100, 75);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "StackView";
-            this.Text = "StackView";
+            this.ClientSize = new System.Drawing.Size(264, 232);
+            this.Location = new System.Drawing.Point(1100, 500);
+            this.Name = "EEPROMView";
+            this.Text = "EEPROMView";
             this.ResumeLayout(false);
 
         }

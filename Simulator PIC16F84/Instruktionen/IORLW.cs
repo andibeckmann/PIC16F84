@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             Reg.SetZeroBit();
 
-            W.Value |= k;
+            W.Value |= (byte)k;
         }
 
         

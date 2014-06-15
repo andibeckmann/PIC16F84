@@ -22,7 +22,6 @@ namespace Simulator_PIC16F84
         public RegisterBox(WorkingRegister W)
         {
             this.W = W;
-            this.StartPosition = FormStartPosition.Manual;
             this.Location = new Point(300, 500);
             constructRegisterBox();
         }
@@ -43,33 +42,29 @@ namespace Simulator_PIC16F84
 
         private void registerBoxSettings()
         {
-            this.Height = marginTop * 4 + marginSmall;
+            this.Height = marginTop * 4 + marginSmall + sizeOfField;
             this.AutoScroll = false;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
 
             if (W != null)
-                this.Text = "WORKING Register";
-            else if (RegByte.Index == 3)
             {
-                this.Text = "STATUS Register";
-                this.Height += sizeOfField;
+                this.Text = "WORKING Register";
+                this.Height -= sizeOfField;
             }
+            else if (RegByte.Index == 3)
+                this.Text = "STATUS Register";
             else if (RegByte.Index == 5)
                 this.Text = "PORT A Register";
             else if (RegByte.Index == 6)
                 this.Text = "PORT B Register";
             else if (RegByte.Index == 0x81)
-            {
                 this.Text = "OPTION Register";
-                this.Height += sizeOfField;
-            }
             else if (RegByte.Index == 0x0B)
-            {
                 this.Text = "INTCON Register";
-                this.Height += sizeOfField;
-            }
+            else if (RegByte.Index == 0x88)
+                this.Text = "EECON1 Register";
             else
                 this.Text = "Register " + RegByte.Index;
         }
@@ -114,16 +109,26 @@ namespace Simulator_PIC16F84
             label.Font = new Font("Arial", 5);
             if (RegByte.Index == 3)
                 getStatusRegLabels(7 - index, label);
-            if (RegByte.Index == 0x81)
+            else if (RegByte.Index == 5)
+                getPortARegLabels(7 - index, label);
+            else if (RegByte.Index == 6)
+                getPortBRegLabels(7 - index, label);
+            else if (RegByte.Index == 0x81)
                 getOptionRegLabels(7 - index, label);
-            if (RegByte.Index == 0x0B)
+            else if (RegByte.Index == 0x0B)
                 getIntconRegLabels(7 - index, label);
+            else if (RegByte.Index == 0x88)
+                getEecon1RegLabels(7 - index, label);
             this.Controls.Add(label);
         }
 
+        /// <summary>
+        /// Sets an explanatory text for a Status Register Label
+        /// </summary>
+        /// <param name="index">Index for Bit-Number of the Label</param>
+        /// <param name="label">Label which will receive the text</param>
         private static void getStatusRegLabels(int index, Label label)
         {
-            //Status Reg Labels
             if (index == 0)
                 label.Text = "C";
             else if (index == 1)
@@ -140,9 +145,59 @@ namespace Simulator_PIC16F84
                 label.Text = "  -";
         }
 
+        /// <summary>
+        /// Sets an explanatory text for a PortA Register Label
+        /// </summary>
+        /// <param name="index">Index for Bit-Number of the Label</param>
+        /// <param name="label">Label which will receive the text</param>
+        private static void getPortARegLabels(int index, Label label)
+        {
+            if (index == 0)
+                label.Text = "RA0";
+            else if (index == 1)
+                label.Text = "RA1";
+            else if (index == 2)
+                label.Text = "RA2";
+            else if (index == 3)
+                label.Text = "RA3";
+            else if (index == 4)
+                label.Text = "RA4/T0CKI";
+            else
+                label.Text = "  -";
+        }
+
+        /// <summary>
+        /// Sets an explanatory text for a PortB Register Label
+        /// </summary>
+        /// <param name="index">Index for Bit-Number of the Label</param>
+        /// <param name="label">Label which will receive the text</param>
+        private static void getPortBRegLabels(int index, Label label)
+        {
+            if (index == 0)
+                label.Text = "RB0/INT";
+            else if (index == 1)
+                label.Text = "RB1";
+            else if (index == 2)
+                label.Text = "RB2";
+            else if (index == 3)
+                label.Text = "RB3";
+            else if (index == 4)
+                label.Text = "RB4";
+            else if (index == 5)
+                label.Text = "RB5";
+            else if (index == 6)
+                label.Text = "RB6";
+            else
+                label.Text = "RB7";
+        }
+
+        /// <summary>
+        /// Sets an explanatory text for an Option Register Label
+        /// </summary>
+        /// <param name="index">Index for Bit-Number of the Label</param>
+        /// <param name="label">Label which will receive the text</param>
         private static void getOptionRegLabels(int index, Label label)
         {
-            //Option Reg Labels
             if (index < 3)
                 label.Text = "PS" + index;
             else if (index == 3)
@@ -157,9 +212,13 @@ namespace Simulator_PIC16F84
                 label.Text = "RBPU";
         }
 
+        /// <summary>
+        /// Sets an explanatory text for an Interrupt Control Register Label
+        /// </summary>
+        /// <param name="index">Index for Bit-Number of the Label</param>
+        /// <param name="label">Label which will receive the text</param>
         private static void getIntconRegLabels(int index, Label label)
         {
-            //Option Reg Labels
             if (index == 0)
                 label.Text = "RBIF";
             else if (index == 1)
@@ -176,6 +235,27 @@ namespace Simulator_PIC16F84
                 label.Text = "EEIE";
             else
                 label.Text = "GIE";
+        }
+
+        /// <summary>
+        /// Sets an explanatory text for an EEPROM Control Register Label
+        /// </summary>
+        /// <param name="index">Index for Bit-Number of the Label</param>
+        /// <param name="label">Label which will receive the text</param>
+        private static void getEecon1RegLabels(int index, Label label)
+        {
+            if (index == 0)
+                label.Text = "RD";
+            else if (index == 1)
+                label.Text = "WR";
+            else if (index == 2)
+                label.Text = "WREN";
+            else if (index == 3)
+                label.Text = "WRERR";
+            else if (index == 4)
+                label.Text = "EEIF";
+            else
+                label.Text = "-";
         }
 
         private void textbox_TextChanged(object sender, EventArgs e)

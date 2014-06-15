@@ -11,12 +11,32 @@
 5. Breakpoints: Programm hält nicht am Haltepunkt, sondern an der Instruktion davor.
 6. Program View: Die Ansicht sollte die ausgeführten Instruktionen möglichst oben anzeigen (derzeit ist es nur die unterste Zeile) damit man sehen kann, was als nächstes kommt.
 7. Alle Views lassen sich nur am Anfang fehlerfrei aufrufen. Wenn man sie einmal geschlossen hat, ist die dahinterliegende Logik zerschossen.
-8. Adresse 0 im Register wird derzeit beim Resetten aus irgendeinem Grund mit Werten belegt. o.0
-9. Exception beim Timerinterrupt
+8. Adresse 0 im Register wird derzeit beim Resetten aus irgendeinem Grund manchmal mit Werten belegt. o.0
+9.  - done -
 10. - done -
-11. ProgramView ist etwas zu groß fürs Fenster (in Breite) Anpassen.
+11. - done -
 12. Externer Takt anlegen (?) zBsp für SimTest3 - der Counter Mode Pin
 13. - done -
 14. - done -
-15. Hinzufügen von Werten über die Textboxen: Umständlich, IBeam sitzt vorne und nimmt dann erstmal keine Zahlen an, etc. -> Bei Eingabe alte Werte selektieren und so schneller löschen
+15. Hinzufügen von Werten über die Textboxen: Umständlich, IBeam sitzt vorne und nimmt dann erstmal keine Zahlen an, etc. -> Bei Eingabe alte Werte selektieren und so schneller löschen?
 16. Das Programm rutscht manchmal eiskalt durch das EInstellen der Optionen usw. durch (bsp: Optionenregister in simtest04 sollte komplett gecleart werden - bei ca. jedem dritten durchlauf ist es aber auf 0xff) Scheint besonders beim ersten Mal (also direkt nach dem Laden) sehr häufig zu passieren... aber nicht immer.
+17. SimTest01: StackView wird anscheinend beim Device Reset nicht mit zurückgesetzt. Erster Eintrag im Stack ist nach dem Reset (innterhalb des CALLs) immer noch sichtbar.
+18. - done -
+19. - done -
+20. - done -
+21. - done -
+22. - done -
+23. Latchfunktion der Ausgaberegister (incl. Visualisierung)
+
+
+Unter Bearbeitung:
+0. Laufzeitzähler - Olli
+23. Latches - Andi
+
+
+
+Done:
+19. Richtige Funktionsweise PCL und PCLATH (SimTest07)
+20. EEPROM - 5 Punkte
+21. Bug: EEPROM Read ist in der RegisterView nicht sichtbar. Stattdessen taucht immer der Wert 0x10 oder 0x11 auf... - anm: Fehler lag in der RegView. Bei Bankumschaltung laß auch die View nur noch Werte aus Bank1
+22. EEPROM Interrupts und EECON1 RegisterBox

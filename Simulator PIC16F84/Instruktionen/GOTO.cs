@@ -23,19 +23,17 @@ namespace Simulator_PIC16F84.Instruktionen
     public class GOTO : BaseOperation
     {
 
-        public GOTO(byte k, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
+        public GOTO(int k, ProgramCounter PC, RegisterFileMap Reg) : base(Reg)
         {
             this.k = k;
-            Reg.incrementTimer();
+            Reg.instructionCycleTimeElapsed();
 
-            execute(PC);
+            execute(PC, Reg);
         }
 
-        protected void execute(ProgramCounter PC)
+        protected void execute(ProgramCounter PC, RegisterFileMap Reg)
         {
-            PC.Counter.Address = k - 1;
-
-            //TODO: PCLATH - siehe Beschreibung, wurde hier noch komplett ignoriert
+            PC.Counter.Address = deriveAddress(Reg).Address - 1;
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)

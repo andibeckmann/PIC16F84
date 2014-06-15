@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(WorkingRegister W)
         {
-            W.Value = k;
+            W.Value = (byte)k;
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
