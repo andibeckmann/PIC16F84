@@ -26,11 +26,11 @@ namespace Simulator_PIC16F84
         StackView StackView;
         RegisterView registerView;
         EEPROMView eepromView;
-        RunTimeCounter runTimeCounterView;
+        Label runTimeCounterView;
         System.Timers.Timer crystalFrequency;
         List<int> breakPoints;
         int frequency = 10;
-        double runTimeCounter;
+        int runTimeCounter;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
 
@@ -136,15 +136,22 @@ namespace Simulator_PIC16F84
         {
             this.textBoxSlider = new System.Windows.Forms.TextBox();
             this.frequencySlider = new System.Windows.Forms.TrackBar();
+            this.runTimeCounterView = new System.Windows.Forms.Label();
 
             // TextBox for TrackBar.Value update.
-            this.textBoxSlider.Location = new System.Drawing.Point(1180, 45+25);
+            this.textBoxSlider.Location = new System.Drawing.Point(1180, 45 + 25);
             this.textBoxSlider.Size = new System.Drawing.Size(48, 20);
             this.textBoxSlider.Text = Frequency + " ms";
             this.textBoxSlider.TextChanged += new System.EventHandler(this.textBoxSlider_Changed);
 
+            // Setup RunTimeCounter
+            runTimeCounterView.Location = new System.Drawing.Point(1180, 45 + 25 + 20);
+            runTimeCounterView.Size = new System.Drawing.Size(60, 20);
+            runTimeCounterView.TextAlign = ContentAlignment.MiddleRight;
+            UpdateRunTimeCounter(runTimeCounter);
+
             // Set up how the form should be displayed and add the controls to the form.
-            this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider });
+            this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider, this.runTimeCounterView });
 
             // Set up the TrackBar.
             this.frequencySlider.Location = new System.Drawing.Point(1180, 25);
@@ -170,6 +177,21 @@ namespace Simulator_PIC16F84
             // The SmallChange property sets how many positions to move
             // if the keyboard arrows are used to move the slider.
             frequencySlider.SmallChange = 2;
+
+        }
+
+        private void UpdateRunTimeCounter(int newValue)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate { UpdateRunTimeCounter(newValue); });
+            }
+            else
+            {
+                var seconds = newValue / 1000;
+                var milliseconds = newValue % 1000;
+                runTimeCounterView.Text = seconds + "." + milliseconds + " s";
+            }
         }
 
         private void frequencySlider_Scroll(object sender, System.EventArgs e)
@@ -189,7 +211,7 @@ namespace Simulator_PIC16F84
             {
                 frequency = value;
                 crystalFrequency.Interval = frequency;
-            } 
+            }
         }
 
         private void textBoxSlider_Changed(object sender, System.EventArgs e)
@@ -198,7 +220,7 @@ namespace Simulator_PIC16F84
             if (this.textBoxSlider.Text != "" && int.Parse(resultString) <= frequencySlider.Maximum && int.Parse(resultString) >= frequencySlider.Minimum)
             {
                 Frequency = int.Parse(resultString);
-            frequencySlider.Value = Frequency;
+                frequencySlider.Value = Frequency;
             }
         }
 
@@ -219,7 +241,7 @@ namespace Simulator_PIC16F84
 
         private static void OpenPDFResource(byte[] PDFResource, string fileName)
         {
-            
+
 
             string tempPath = Path.GetTempPath();
             tempPath += "/" + fileName + ".pdf";
@@ -292,12 +314,14 @@ namespace Simulator_PIC16F84
         private void ExecuteCycle(object source, ElapsedEventArgs e)
         {
             var index = FindRowForPC(RegisterMap.PC.Counter.Address);
-            if(breakPoints.Contains(index))
+            if (breakPoints.Contains(index))
             {
                 crystalFrequency.Stop();
                 return;
             }
             ExecuteSingleCycle(index);
+            runTimeCounter += frequency;
+            UpdateRunTimeCounter(runTimeCounter);
         }
 
         private void ExecuteSingleCycle(int index)
@@ -309,6 +333,8 @@ namespace Simulator_PIC16F84
             RegisterMap.checkEEPROMFunctionality();
             RegisterMap.PC.InkrementPC();
             SetSelection(index);
+            runTimeCounter += frequency;
+            UpdateRunTimeCounter(runTimeCounter);
         }
 
         private void checkForTimeOut()
@@ -339,7 +365,7 @@ namespace Simulator_PIC16F84
             int rowIndex = 0;
             foreach (DataGridViewRow row in this.ProgramView.dataGridView1.Rows)
             {
-                if(row.Cells[1].Value == null)
+                if (row.Cells[1].Value == null)
                 {
                     continue;
                 }
@@ -354,7 +380,7 @@ namespace Simulator_PIC16F84
 
         public void HandleBreakpoint(object sender, int index)
         {
-            if(breakPoints.Contains(index))
+            if (breakPoints.Contains(index))
             {
                 breakPoints.Remove(index);
             }
@@ -404,12 +430,12 @@ namespace Simulator_PIC16F84
         /// </summary>
         private void PowerOnReset()
         {
-//TODO: Implement!
+            //TODO: Implement!
         }
 
         private void WatchDogTimerReset()
         {
-            RegisterMap.WatchDogTimerReset();         
+            RegisterMap.WatchDogTimerReset();
         }
 
         private void resetSimulation()

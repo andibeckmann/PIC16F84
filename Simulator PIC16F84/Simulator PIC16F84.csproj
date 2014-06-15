@@ -121,12 +121,6 @@
     <Compile Include="Views\RegisterView.Designer.cs">
       <DependentUpon>RegisterView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\RunTimeCounter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\RunTimeCounter.Designer.cs">
-      <DependentUpon>RunTimeCounter.cs</DependentUpon>
-    </Compile>
     <Compile Include="Stack.cs" />
     <Compile Include="Views\StackView.cs">
       <SubType>Form</SubType>
@@ -161,9 +155,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\RegisterView.resx">
       <DependentUpon>RegisterView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\RunTimeCounter.resx">
-      <DependentUpon>RunTimeCounter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\StackView.resx">
       <DependentUpon>StackView.cs</DependentUpon>
