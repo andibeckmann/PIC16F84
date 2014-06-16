@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EEPROM.cs" />
+    <Compile Include="SerialPortCOM.cs" />
     <Compile Include="Views\EEPROMView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +123,12 @@
       <DependentUpon>RegisterView.cs</DependentUpon>
     </Compile>
     <Compile Include="Stack.cs" />
+    <Compile Include="Views\SerialCOM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\SerialCOM.Designer.cs">
+      <DependentUpon>SerialCOM.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\StackView.cs">
       <SubType>Form</SubType>
     </Compile>

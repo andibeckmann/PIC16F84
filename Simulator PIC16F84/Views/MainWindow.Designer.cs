@@ -44,6 +44,7 @@
             this.optionRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.intconToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eECON1RegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eEPROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.anweisungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +54,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.eEPROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.serialPortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,7 +64,8 @@
             this.deiMuddaToolStripMenuItem,
             this.ansichtToolStripMenuItem,
             this.anweisungenToolStripMenuItem,
-            this.hilfeToolStripMenuItem});
+            this.hilfeToolStripMenuItem,
+            this.serialPortToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
@@ -190,6 +192,13 @@
             this.eECON1RegisterToolStripMenuItem.Text = "EECON1 Register";
             this.eECON1RegisterToolStripMenuItem.Click += new System.EventHandler(this.eECON1RegisterToolStripMenuItem_Click);
             // 
+            // eEPROMToolStripMenuItem
+            // 
+            this.eEPROMToolStripMenuItem.Name = "eEPROMToolStripMenuItem";
+            this.eEPROMToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.eEPROMToolStripMenuItem.Text = "EEPROM";
+            this.eEPROMToolStripMenuItem.Click += new System.EventHandler(this.eEPROMToolStripMenuItem_Click);
+            // 
             // anweisungenToolStripMenuItem
             // 
             this.anweisungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -264,12 +273,12 @@
             this.projektToolStripMenuItem.Text = "Projekt Aufgabenstellung";
             this.projektToolStripMenuItem.Click += new System.EventHandler(this.projektToolStripMenuItem_Click);
             // 
-            // eEPROMToolStripMenuItem
+            // serialPortToolStripMenuItem
             // 
-            this.eEPROMToolStripMenuItem.Name = "eEPROMToolStripMenuItem";
-            this.eEPROMToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.eEPROMToolStripMenuItem.Text = "EEPROM";
-            this.eEPROMToolStripMenuItem.Click += new System.EventHandler(this.eEPROMToolStripMenuItem_Click);
+            this.serialPortToolStripMenuItem.Name = "serialPortToolStripMenuItem";
+            this.serialPortToolStripMenuItem.Size = new System.Drawing.Size(69, 19);
+            this.serialPortToolStripMenuItem.Text = "SerialPort";
+            this.serialPortToolStripMenuItem.Click += new System.EventHandler(this.serialPortToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -319,6 +328,7 @@
         private System.Windows.Forms.ToolStripMenuItem intconToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eECON1RegisterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eEPROMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem serialPortToolStripMenuItem;
 
     }
 }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Timers;
 using System.Text.RegularExpressions;
+using Simulator_PIC16F84.Views;
 
 namespace Simulator_PIC16F84
 {
@@ -33,6 +34,9 @@ namespace Simulator_PIC16F84
         int runTimeCounter;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
+
+        public SerialPortCOM ComPort;
+        public SerialCOM ComView;
 
         /// <summary>
         /// Detailansicht spezieller Register
@@ -64,6 +68,8 @@ namespace Simulator_PIC16F84
 
             breakPoints = new List<int>();
             setupCrystalFrequency();
+
+            ComPort = new SerialPortCOM(RegisterMap);
         }
 
         private void setUpSpecialRegisterBoxes()
@@ -524,6 +530,16 @@ namespace Simulator_PIC16F84
         private void eEPROMToolStripMenuItem_Click(object sender, EventArgs e)
         {
             setupEEPROMView();
+        }
+
+        private void serialPortToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ComView == null)
+            {
+                ComView = new SerialCOM(this);
+            }
+            ComView.Show();
+            ComView.Focus();
         }
 
     }
