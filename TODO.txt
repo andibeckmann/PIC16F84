@@ -27,6 +27,8 @@
 21. - done -
 22. - done -
 23. Latchfunktion der Ausgaberegister (incl. Visualisierung)
+14. Laufzeitzähler bei F3 (Reset) zurück auf 0 stellen
+25. Laufzeitzähler - zeigt er die simulierte oder reale Zeit an (also Zykluszeit = 200ns egal wie die Simulation eingestellt ist?)
 
 
 Unter Bearbeitung:
