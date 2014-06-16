@@ -12,7 +12,7 @@ namespace Simulator_PIC16F84.Views
 {
     public partial class SerialCOM : Form
     {
-         private Main Pic;
+        private Main Pic;
 
         public SerialCOM(Main Pic)
         {
@@ -24,10 +24,10 @@ namespace Simulator_PIC16F84.Views
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if(Pic.ComPort.Active)
+            if (Pic.ComPort.Active)
             {
                 e.Cancel = true;
-                MessageBox.Show("Port still open!", "Error", MessageBoxButtons.OK);                
+                MessageBox.Show("Port still open!", "Error", MessageBoxButtons.OK);
             }
             base.OnClosing(e);
         }
