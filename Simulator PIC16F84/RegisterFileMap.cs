@@ -478,6 +478,16 @@ namespace Simulator_PIC16F84
         {
             return stack;
         }
+
+        public void setIOPortA()
+        {
+            getARegister().setIOPorts(getTRISA().Value);
+        }
+
+        public void setIOPortB()
+        {
+            getBRegister().setIOPorts(getTRISB().Value);
+        }
       
         /// <summary>
         /// Setzt ein bestimmtes Bit in einem Byte.

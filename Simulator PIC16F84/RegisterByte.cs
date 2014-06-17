@@ -9,6 +9,7 @@ namespace Simulator_PIC16F84
     public class RegisterByte
     {
         private byte value;
+        private byte permittedBits;
 
         public event EventHandler<int> RegisterChanged;
         public int Index { get; set; }
@@ -17,6 +18,11 @@ namespace Simulator_PIC16F84
         {
             Value = 0;
             this.Index = index;
+            //Prevent unimplemented bits in certain registers from being set
+            if (Index == 0x05 || Index == 0x0A || Index == 0x85 || Index == 0x88)
+                this.permittedBits = (byte)(value & 0x1F);
+            else
+                this.permittedBits = 0xff;
         }
 
         public byte Value
@@ -24,12 +30,17 @@ namespace Simulator_PIC16F84
             get { return value; }
             set
             {
-                this.value = value;
+                this.value = (byte)( value & permittedBits );
                 if (this.RegisterChanged != null)
                 {
                     this.RegisterChanged(this, Index);
                 }
             }
+        }
+
+        public void setIOPorts( byte newPermittedBits )
+        {
+            this.permittedBits = newPermittedBits;
         }
 
         public void ClearRegister()

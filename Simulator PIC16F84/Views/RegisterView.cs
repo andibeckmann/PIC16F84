@@ -176,6 +176,14 @@ namespace Simulator_PIC16F84
                 checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
                 registerMap.checkOptionRegisterSettings();
             }
+            else if (index == 0x85)
+            {
+                registerMap.setIOPortA();
+            }
+            else if (index == 0x86)
+            {
+                registerMap.setIOPortB();
+            }
             else if (index == 0x88)
             {
                 checkRegister(Eecon1RegisterBox, registerMap.getEECON1());
