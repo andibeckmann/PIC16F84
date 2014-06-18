@@ -18,9 +18,9 @@ namespace Simulator_PIC16F84
         {
             Value = 0;
             this.Index = index;
-            //Prevent unimplemented bits in certain registers from being set
+            ////Prevent unimplemented bits in certain registers from being set
             if (Index == 0x05 || Index == 0x0A || Index == 0x85 || Index == 0x88)
-                this.permittedBits = (byte)(value & 0x1F);
+                this.permittedBits = 0x1F;
             else
                 this.permittedBits = 0xff;
         }
@@ -36,11 +36,6 @@ namespace Simulator_PIC16F84
                     this.RegisterChanged(this, Index);
                 }
             }
-        }
-
-        public void setIOPorts( byte newPermittedBits )
-        {
-            this.permittedBits = newPermittedBits;
         }
 
         public void ClearRegister()
