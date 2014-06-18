@@ -176,10 +176,24 @@ namespace Simulator_PIC16F84
                 checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
                 registerMap.checkOptionRegisterSettings();
             }
+            else if (index == 0x85)
+            {
+                changeIOPortA();
+            }
+            else if (index == 0x86)
+            {
+
+            }
             else if (index == 0x88)
             {
                 checkRegister(Eecon1RegisterBox, registerMap.getEECON1());
             }
+        }
+
+        private void changeIOPortA()
+        {
+            byte inputBits = registerMap.getTRISA().Value;
+            byte outputBits = (byte)(~inputBits);
         }
 
         private void initSpecialRegisters()
