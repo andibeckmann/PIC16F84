@@ -38,7 +38,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(WorkingRegister W, RegisterFileMap Reg, ProgramCounter PC)
         {
-            var result = (byte) (Reg.getRegister(f).Value + 1);
+            var result = (byte) (Reg.getRegister(f,false).Value + 1);
 
             if (d)
             {
@@ -48,7 +48,7 @@ namespace Simulator_PIC16F84.Instruktionen
                     Reg.PC.Counter.Address = derivePCAddress(Reg).Address + 1;
                 }
                 else
-                Reg.getRegister(f).Value = result;   
+                Reg.getRegister(f,true).Value = result;   
             }
             else
             {

@@ -27,7 +27,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         private void execute(RegisterFileMap Reg)
         {
-            Reg.getRegister(f).Value = TurnBitOn(Reg.getRegister(f).Value, b);
+            Reg.getRegister(f, true).Value = TurnBitOn(Reg.getRegister(f, false).Value, b);
         }
 
         

@@ -35,7 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(134, 212);
-            this.Location = new System.Drawing.Point(945, 500);
+            this.Location = new System.Drawing.Point(1160, 500);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "StackView";

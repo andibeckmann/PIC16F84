@@ -124,7 +124,7 @@ namespace Simulator_PIC16F84.Instruktionen
         /// </summary>
         protected ProgramMemoryAddress derivePCAddress(RegisterFileMap Reg)
         {
-            int lower8Bits = Reg.getRegister(0x02).Value;
+            int lower8Bits = Reg.getRegister(0x02,false).Value;
             int upper5Bits = Reg.getPCLATH().Value & 0x1F;
             int combinedAddress = (upper5Bits << 8) + lower8Bits;
 

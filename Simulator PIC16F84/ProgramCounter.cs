@@ -24,7 +24,7 @@ namespace Simulator_PIC16F84
             set
             {
                 this.counter = value;
-                this.reg.getRegister(0x02).Value = getLower8Bits();
+                this.reg.getRegister(0x02, true).Value = getLower8Bits();
                 //TODO LATCH-Funktionalität
             }
         }
@@ -37,7 +37,7 @@ namespace Simulator_PIC16F84
         public void InkrementPC()
         {
             Counter.Address++;
-            this.reg.getRegister(0x02).Value = getLower8Bits();
+            this.reg.getRegister(0x02, true).Value = getLower8Bits();
         }
 
         public void Clear()

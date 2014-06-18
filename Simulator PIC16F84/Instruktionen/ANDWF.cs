@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = W.Value & Reg.getRegister(f).Value;
+            var result = W.Value & Reg.getRegister(f,false).Value;
 
             ///Zero-Bit Logik
             if (result == 0)
@@ -48,7 +48,7 @@ namespace Simulator_PIC16F84.Instruktionen
                     Reg.PC.Counter.Address = W.Value & derivePCAddress(Reg).Address;
                 }
                 else
-                Reg.getRegister(f).Value = (byte)result;
+                Reg.getRegister(f,true).Value = (byte)result;
             }
             else
                 W.Value = (byte)result;

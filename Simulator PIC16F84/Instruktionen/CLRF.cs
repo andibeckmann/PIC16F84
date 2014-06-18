@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(RegisterFileMap Reg)
         {
-            Reg.getRegister(f).ClearRegister();
+            Reg.getRegister(f,true).ClearRegister();
             Reg.SetZeroBit();
         }
 

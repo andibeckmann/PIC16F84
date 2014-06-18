@@ -56,9 +56,17 @@ namespace Simulator_PIC16F84
             else if (RegByte.Index == 3)
                 this.Text = "STATUS Register";
             else if (RegByte.Index == 5)
+            {
                 this.Text = "PORT A Register";
+                this.Height += marginSmall * 2 - 2;
+                createIOLabels();
+            }
             else if (RegByte.Index == 6)
+            {
                 this.Text = "PORT B Register";
+                this.Height += marginSmall * 2 - 2;
+                createIOLabels();
+            }
             else if (RegByte.Index == 0x81)
                 this.Text = "OPTION Register";
             else if (RegByte.Index == 0x0B)
@@ -91,7 +99,7 @@ namespace Simulator_PIC16F84
         private void createCheckBox(int index)
         {
             CheckBox checkbox = new CheckBox();
-            checkbox.Location = new System.Drawing.Point((sizeOfField + marginSmall) * index + marginSmall, marginTop + marginSmall);
+            setCheckboxLocation(index, checkbox);
             checkbox.Width = sizeOfField;
             checkbox.Name = "Bit " + (7 - index);
             checkbox.CheckedChanged += new System.EventHandler(CheckBoxChanged);
@@ -101,10 +109,35 @@ namespace Simulator_PIC16F84
             this.Controls.Add(checkbox);
         }
 
+        private void setCheckboxLocation(int index, CheckBox checkbox)
+        {
+            int xAxis = (sizeOfField + marginSmall) * index + marginSmall;
+            int yAxis = marginTop + marginSmall;
+            if (RegByte != null && (RegByte.Index == 5 || RegByte.Index == 6))
+                yAxis += marginSmall*2-2;
+            checkbox.Location = new System.Drawing.Point(xAxis, yAxis);
+        }
+
+        private void setLabelLocation(int index, Label label)
+        {
+            int xAxis = (sizeOfField + marginSmall) * index + 3;
+            int yAxis = marginTop * 2 + marginSmall;
+            if (RegByte != null && (RegByte.Index == 5 || RegByte.Index == 6))
+                yAxis += marginSmall*2-2;
+            label.Location = new System.Drawing.Point(xAxis, yAxis);
+        }
+
+        private void setIOLabelLocation(int index, Label label)
+        {
+            int xAxis = (sizeOfField + marginSmall) * index + 3;
+            int yAxis = marginTop + marginSmall;
+            label.Location = new System.Drawing.Point(xAxis, yAxis);
+        }
+
         private void createLabels(int index)
         {
             Label label = new Label();
-            label.Location = new System.Drawing.Point((sizeOfField + marginSmall) * index + 3, marginTop * 2 + marginSmall);
+            setLabelLocation(index, label);
             label.Width = sizeOfField;
             label.Font = new Font("Arial", 5);
             if (RegByte.Index == 3)
@@ -120,6 +153,44 @@ namespace Simulator_PIC16F84
             else if (RegByte.Index == 0x88)
                 getEecon1RegLabels(7 - index, label);
             this.Controls.Add(label);
+        }
+
+        private void createIOLabels()
+        {
+            for (int index = 0; index < 8; index++)
+            {
+                IOLabel(index);
+            }
+        }
+
+        private void IOLabel(int index)
+        {
+            Label label = new Label();
+            setIOLabelLocation(index, label);
+            label.Width = sizeOfField + marginSmall;
+            label.Name = "IO Bit " + (7 - index);
+            label.Font = new Font("Arial", 6);
+            label.Text = "IN";
+            this.Controls.Add(label);
+        }
+
+        
+        public void updateIOView(RegisterByte Tris)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                var labelArray = Controls.Find("IO Bit " + i, true);
+                if ( !Tris.isBitImplemented(i) )
+                    ((Label)labelArray[0]).Text = "-";
+                else if (Tris.isBitSet(i))
+                {
+                    ((Label)labelArray[0]).Text = "IN";
+                }
+                else
+                {
+                    ((Label)labelArray[0]).Text = "OUT";
+                }
+            }
         }
 
         /// <summary>

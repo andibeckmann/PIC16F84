@@ -74,10 +74,10 @@ namespace Simulator_PIC16F84
             }
 
            
-            registerMap.getRegister(0x05).RegisterChanged += SerialCom_DataChanged;
-            registerMap.getRegister(0x06).RegisterChanged += SerialCom_DataChanged;
-            registerMap.getRegister(0x85).RegisterChanged += SerialCom_DataChanged;
-            registerMap.getRegister(0x86).RegisterChanged += SerialCom_DataChanged;
+            registerMap.getRegister(0x05,false).RegisterChanged += SerialCom_DataChanged;
+            registerMap.getRegister(0x06, false).RegisterChanged += SerialCom_DataChanged;
+            registerMap.getRegister(0x85, false).RegisterChanged += SerialCom_DataChanged;
+            registerMap.getRegister(0x86, false).RegisterChanged += SerialCom_DataChanged;
         }
 
         /// <summary>
@@ -95,8 +95,8 @@ namespace Simulator_PIC16F84
                 BlockSend = 2;
                 if (Buffer[4] == 0xD) // Letztes bit ist CR -> Parsen von Daten
                 {
-                    registerMap.getRegister(0x05).Value = (byte)((registerMap.getRegister(0x06).Value & 0xE0) | (ParseByte(Buffer, 0) & 0x1F)); // Oberen 3 bits bleiben gleich!
-                    registerMap.getRegister(0x06).Value = ParseByte(Buffer, 2);
+                    registerMap.getRegister(0x05, true).Value = (byte)((registerMap.getRegister(0x06, false).Value & 0xE0) | (ParseByte(Buffer, 0) & 0x1F)); // Oberen 3 bits bleiben gleich!
+                    registerMap.getRegister(0x06,true).Value = ParseByte(Buffer, 2);
                 }
             }            
         }
@@ -137,10 +137,10 @@ namespace Simulator_PIC16F84
             if(Port.IsOpen)
                 Port.Close();
 
-            registerMap.getRegister(0x05).RegisterChanged -= SerialCom_DataChanged;
-            registerMap.getRegister(0x06).RegisterChanged -= SerialCom_DataChanged;
-            registerMap.getRegister(0x85).RegisterChanged -= SerialCom_DataChanged;
-            registerMap.getRegister(0x86).RegisterChanged -= SerialCom_DataChanged;
+            registerMap.getRegister(0x05, false).RegisterChanged -= SerialCom_DataChanged;
+            registerMap.getRegister(0x06, false).RegisterChanged -= SerialCom_DataChanged;
+            registerMap.getRegister(0x85, false).RegisterChanged -= SerialCom_DataChanged;
+            registerMap.getRegister(0x86, false).RegisterChanged -= SerialCom_DataChanged;
         }
 
         /// <summary>
@@ -165,19 +165,19 @@ namespace Simulator_PIC16F84
         {
             byte[] Packet = new byte[9];
 
-            byte Value = registerMap.getRegister(0x85).Value; // mit 0x1F verunden, da nur die ersten 6 bit gebraucht werden
+            byte Value = registerMap.getRegister(0x85, false).Value; // mit 0x1F verunden, da nur die ersten 6 bit gebraucht werden
             Packet[0] = (byte)((Value >> 4) + 0x30); // Oberes Halbbit
             Packet[1] = (byte)((Value & 0xF) + 0x30); // Unteres Halbbit
 
-            Value = registerMap.getRegister(0x05).Value;  // mit 0x1F verunden, da nur die ersten 6 bit gebraucht werden
+            Value = registerMap.getRegister(0x05, false).Value;  // mit 0x1F verunden, da nur die ersten 6 bit gebraucht werden
             Packet[2] = (byte)((Value >> 4) + 0x30);// Oberes Halbbit
             Packet[3] = (byte)((Value & 0xF) + 0x30); // Unteres Halbbit
 
-            Value = registerMap.getRegister(0x86).Value;
+            Value = registerMap.getRegister(0x86, false).Value;
             Packet[4] = (byte)((Value >> 4) + 0x30);// Oberes Halbbit
             Packet[5] = (byte)((Value & 0xF) + 0x30); // Unteres Halbbit
 
-            Value = registerMap.getRegister(0x06).Value;
+            Value = registerMap.getRegister(0x06, false).Value;
             Packet[6] = (byte)((Value >> 4) + 0x30);// Oberes Halbbit
             Packet[7] = (byte)((Value & 0xF) + 0x30); // Unteres Halbbit
             Packet[8] = 0xD; // CR

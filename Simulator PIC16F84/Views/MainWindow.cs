@@ -75,12 +75,12 @@ namespace Simulator_PIC16F84
         private void setUpSpecialRegisterBoxes()
         {
             WReg = setupWorkingRegisterBox(W, new Point(300, 500));
-            AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515, 500));
-            BReg = setupRegisterBox(RegisterMap.getBRegister(), new Point(730, 500));
-            Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(300, 610));
-            Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(515, 610));
-            Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(730, 610));
-            EECON1 = setupRegisterBox(RegisterMap.getEECON1(), new Point(300, 720));
+            AReg = setupRegisterBox(RegisterMap.getARegister(false), new Point(515, 500));
+            BReg = setupRegisterBox(RegisterMap.getBRegister(false), new Point(730, 500));
+            Status = setupRegisterBox(RegisterMap.getStatusRegister(), new Point(945, 500));
+            Option = setupRegisterBox(RegisterMap.getOptionRegister(), new Point(300, 618));
+            Intcon = setupRegisterBox(RegisterMap.getIntconRegister(), new Point(515, 618));
+            EECON1 = setupRegisterBox(RegisterMap.getEECON1(), new Point(730, 618));
         }
 
         private void setupCrystalFrequency()
@@ -499,12 +499,12 @@ namespace Simulator_PIC16F84
 
         private void aRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AReg = setupRegisterBox(RegisterMap.getARegister(), new Point(515, 500));
+            AReg = setupRegisterBox(RegisterMap.getARegister(false), new Point(515, 500));
         }
 
         private void bRegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BReg = setupRegisterBox(RegisterMap.getBRegister(), new Point(730, 500));
+            BReg = setupRegisterBox(RegisterMap.getBRegister(false), new Point(730, 500));
         }
 
         private void optionRegisterToolStripMenuItem_Click(object sender, EventArgs e)

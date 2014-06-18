@@ -35,7 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(264, 232);
-            this.Location = new System.Drawing.Point(1100, 500);
+            this.Location = new System.Drawing.Point(1160, 225);
             this.Name = "EEPROMView";
             this.Text = "EEPROMView";
             this.ResumeLayout(false);

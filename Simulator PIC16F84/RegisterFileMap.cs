@@ -18,6 +18,8 @@ namespace Simulator_PIC16F84
         private ProgramMemoryAddress ConfigurationBits;
         private EEPROM EepromMemory;
         public ProgramCounter PC { get; set; }
+        private RegisterByte portALatch;
+        private RegisterByte portBLatch;
 
         public RegisterFileMap()
         {
@@ -27,12 +29,16 @@ namespace Simulator_PIC16F84
             fillMappingArray();
             createRegisterMap();
             createEepromMemory();
-            this.interruptServiceRoutine = new InterruptService(getIntconRegister(), getBRegister(), getOptionRegister(), getEECON1(), getTRISB(), stack, PC);
+            this.interruptServiceRoutine = new InterruptService(getIntconRegister(), getBRegister(false), getOptionRegister(), getEECON1(), getTRISB(), stack, PC);
 
             //Timer0 MOdule, Watchdogtimer und Prescaler
             prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
             WDT = new WatchdogTimer(prescaler, getStatusRegister());
-            timer0 = new Timer0Module(getTMR0Register(), getARegister(), getOptionRegister(), getIntconRegister(), prescaler);
+            timer0 = new Timer0Module(getTMR0Register(), getARegister(false), getOptionRegister(), getIntconRegister(), prescaler);
+            portALatch = new RegisterByte(-0x05);
+            portALatch.RegisterChanged += portAIOFunction;
+            portBLatch = new RegisterByte(-0x06);
+            portBLatch.RegisterChanged += portBIOFunction;
         }
 
         /// <summary>
@@ -134,13 +140,13 @@ namespace Simulator_PIC16F84
             mappingArray[0x8B] = 0x0B;
         }
 
-        private RegisterByte readINDFReg()
+        private RegisterByte readINDFReg(bool write)
         {
             var address = getFSRReg();
             if (address == 0)
                 return registerList[0];
             else
-                return getRegister(address);
+                return getRegister(address,write);
         }
 
         private int getFSRReg()
@@ -158,10 +164,14 @@ namespace Simulator_PIC16F84
         /// </summary>
         /// <param name="index">Gibt die Speicherzelle des Byte an</param>
         /// <returns>gewählte Speicherzelle</returns>
-        public RegisterByte getRegister(int index, bool ignoreBankSelection)
+        public RegisterByte getRegister(int index, bool write, bool ignoreBankSelection)
         {
             if (index == 0)
-                return readINDFReg();
+                return readINDFReg(write);
+            else if (index == 0x05)
+                return getARegister(write);
+            else if (index == 0x06)
+                return getBRegister(write);
             else if (!ignoreBankSelection && isRegisterBankSelectBitSet() && index < 0x80)
                 index = mappingArray[index + 0x80];
             else
@@ -169,9 +179,9 @@ namespace Simulator_PIC16F84
             return this.registerList[index];
         }
 
-        public RegisterByte getRegister(int index)
+        public RegisterByte getRegister(int index, bool write)
         {
-            return getRegister(index, false);
+            return getRegister(index, write, false);
         }
 
         public bool timer0InCounterMode()
@@ -199,14 +209,32 @@ namespace Simulator_PIC16F84
             registerList[3].Value = (byte) (registerList[3].Value & 0x08);
         }
 
-        public RegisterByte getARegister()
+        public RegisterByte getARegister(bool write)
         {
-            return registerList[5];
+            if (write)
+                return portALatch;
+            else
+                return registerList[5];
         }
 
-        public RegisterByte getBRegister()
+        private void portAIOFunction(object sender, int index)
         {
-            return registerList[6];
+            byte output = (byte) (getTRISA().Value & portALatch.Value);
+            getARegister(false).Value = output;
+        }
+
+        private void portBIOFunction(object sender, int index)
+        {
+            byte output = (byte)(getTRISB().Value & portBLatch.Value);
+            getBRegister(false).Value = output;
+        }
+
+        public RegisterByte getBRegister(bool write)
+        {
+            if (write)
+                return portBLatch;
+            else
+                return registerList[0x06];
         }
 
         public RegisterByte getOptionRegister()
@@ -299,16 +327,16 @@ namespace Simulator_PIC16F84
 
         public void Init()
         {
-            this.getRegister(0x02).Value = 0x00; 
-            this.getRegister(0x03).Value = 0x18;
-            this.getRegister(0x07).Value = 0x00;
-            this.getRegister(0x0A).Value = 0x00;
-            this.getRegister(0x0B).Value = 0x00;
-            this.getRegister(0x81).Value = 0xFF;
-            this.getRegister(0x85).Value = 0x1F;
-            this.getRegister(0x86).Value = 0xFF;
-            this.getRegister(0x87).Value = 0x00;
-            this.getRegister(0x88).Value = 0x00;
+            this.getRegister(0x02,true).Value = 0x00;
+            this.getRegister(0x03, true).Value = 0x18;
+            this.getRegister(0x07, true).Value = 0x00;
+            this.getRegister(0x0A, true).Value = 0x00;
+            this.getRegister(0x0B, true).Value = 0x00;
+            this.getRegister(0x81, true).Value = 0xFF;
+            this.getRegister(0x85, true).Value = 0x1F;
+            this.getRegister(0x86, true).Value = 0xFF;
+            this.getRegister(0x87, true).Value = 0x00;
+            this.getRegister(0x88, true).Value = 0x00;
         }
 
         public void ClearRegister()

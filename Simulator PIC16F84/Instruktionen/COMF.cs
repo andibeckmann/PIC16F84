@@ -33,7 +33,7 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             Reg.SetZeroBit();
 
-            var reverseResult = ~(Reg.getRegister(f).Value);
+            var reverseResult = ~(Reg.getRegister(f,false).Value);
 
             if (d)
             {
@@ -43,7 +43,7 @@ namespace Simulator_PIC16F84.Instruktionen
                     Reg.PC.Counter.Address = ~derivePCAddress(Reg).Address;
                 }
                 else
-                Reg.getRegister(f).Value = (byte)reverseResult;
+                Reg.getRegister(f,true).Value = (byte)reverseResult;
             }
             else
             {

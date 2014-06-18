@@ -85,7 +85,7 @@ namespace Simulator_PIC16F84
             textBox.Name = "Byte " + (i * 8 + m);
             textBox.Size = new System.Drawing.Size(sizeOfField, sizeOfField);
             textBox.TabIndex = i * 8 + 8 + m;
-            textBox.Text = RegisterMap.getRegister(i * 8 + m).Value.ToString("X2");
+            textBox.Text = RegisterMap.getRegister(i * 8 + m,false).Value.ToString("X2");
             textBox.TextChanged += new System.EventHandler(textbox_TextChanged);
             this.Controls.Add(textBox);
         }
@@ -115,7 +115,7 @@ namespace Simulator_PIC16F84
                     try
                     {
                         content = Convert.ToInt32(textBox.Text, 16);
-                        registerMap.getRegister(id).Value = (byte)content;
+                        registerMap.getRegister(id,true).Value = (byte)content;
                     }
                     catch
                     {
@@ -157,7 +157,7 @@ namespace Simulator_PIC16F84
                 registerMap.checkTimerRegister();
             else if (index == 0x05)
             {
-                checkRegister(ARegRegisterBox, registerMap.getARegister());
+                checkRegister(ARegRegisterBox, registerMap.getARegister(false));
                 if ( registerMap.timer0InCounterMode())
                     registerMap.checkCountingConditions();
             }
@@ -165,7 +165,7 @@ namespace Simulator_PIC16F84
             {
                 registerMap.checkForIntInterrupt();
                 registerMap.checkForPortBInterrupt();
-                checkRegister(BRegRegisterBox, registerMap.getBRegister());
+                checkRegister(BRegRegisterBox, registerMap.getBRegister(false));
             }
             else if (index == 0x03)
                 checkRegister(StatusRegisterBox, registerMap.getStatusRegister());
@@ -178,11 +178,11 @@ namespace Simulator_PIC16F84
             }
             else if (index == 0x85)
             {
-                changeIOPortA();
+                ARegRegisterBox.updateIOView(registerMap.getTRISA());
             }
             else if (index == 0x86)
             {
-
+                BRegRegisterBox.updateIOView(registerMap.getTRISB());
             }
             else if (index == 0x88)
             {
@@ -190,17 +190,11 @@ namespace Simulator_PIC16F84
             }
         }
 
-        private void changeIOPortA()
-        {
-            byte inputBits = registerMap.getTRISA().Value;
-            byte outputBits = (byte)(~inputBits);
-        }
-
         private void initSpecialRegisters()
         {
             checkRegister(workingRegisterBox, W);
-            checkRegister(ARegRegisterBox, registerMap.getARegister());
-            checkRegister(BRegRegisterBox, registerMap.getBRegister());
+            checkRegister(ARegRegisterBox, registerMap.getARegister(false));
+            checkRegister(BRegRegisterBox, registerMap.getBRegister(false));
             checkRegister(StatusRegisterBox, registerMap.getStatusRegister());
             checkRegister(IntconRegisterBox, registerMap.getIntconRegister());
             checkRegister(OptionRegisterBox, registerMap.getOptionRegister());
@@ -245,7 +239,7 @@ namespace Simulator_PIC16F84
                         ///verbunden. Die getRegister-Methode greift auf das dafür erstellte Mappingarray zu und
                         ///berücksichtigt diese speziellen Register (allerdings auch eine evtl. indirekte Adressierung
                         ///via Bankumschaltung, deshalb wird das ignoreBankSelection-Bit gesetzt.
-                        textBoxArray[0].Text = registerMap.getRegister(i, true).Value.ToString("X2");
+                        textBoxArray[0].Text = registerMap.getRegister(i, false).Value.ToString("X2");
                         textBoxArray[0].BackColor = Color.Red;
                     }
                 }
@@ -256,7 +250,7 @@ namespace Simulator_PIC16F84
         {
             for (int i = 0; i < registerMap.getRegisterList.Length; i++)
             {
-                registerMap.getRegister(i).RegisterChanged += new EventHandler<int>(this.RegisterContentChanged);
+                registerMap.getRegister(i, false).RegisterChanged += new EventHandler<int>(this.RegisterContentChanged);
             }
         }
 

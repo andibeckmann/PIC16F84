@@ -19,7 +19,7 @@ namespace Simulator_PIC16F84
             Value = 0;
             this.Index = index;
             ////Prevent unimplemented bits in certain registers from being set
-            if (Index == 0x05 || Index == 0x0A || Index == 0x85 || Index == 0x88)
+            if (Index == 0x05 || Index == -0x05 || Index == 0x0A || Index == 0x85 || Index == 0x88)
                 this.permittedBits = 0x1F;
             else
                 this.permittedBits = 0xff;
@@ -61,6 +61,11 @@ namespace Simulator_PIC16F84
         public bool isBitSet(int pos)
         {
             return ( ( ( value >> pos ) & 0x1 ) == 0x1 );
+        }
+
+        public bool isBitImplemented(int pos)
+        {
+            return (((permittedBits >> pos) & 0x1) == 0x1);
         }
 
         public void clearBit(int pos)

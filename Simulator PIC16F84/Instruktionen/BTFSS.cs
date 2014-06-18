@@ -33,7 +33,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(RegisterFileMap Reg, ProgramCounter PC)
         {
-            if( IsBitSet(Reg.getRegister(f).Value, b))
+            if( IsBitSet(Reg.getRegister(f,false).Value, b))
             {
                 PC.Counter.Address++;
                 new NOP(Reg);

@@ -30,7 +30,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var result = Reg.getRegister(f).DecrementRegister();
+            var result = Reg.getRegister(f, false).DecrementRegister();
 
             if (d)
             {
@@ -40,7 +40,7 @@ namespace Simulator_PIC16F84.Instruktionen
                     Reg.PC.Counter.Address = derivePCAddress(Reg).Address - 1;
                 }
                 else
-               Reg.getRegister(f).Value = (byte) result;
+                    Reg.getRegister(f, true).Value = (byte) result;
             }
             else
             {

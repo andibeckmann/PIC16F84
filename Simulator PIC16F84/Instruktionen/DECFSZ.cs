@@ -36,7 +36,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected void execute(WorkingRegister W, RegisterFileMap Reg, ProgramCounter PC)
         {
-            var result = Reg.getRegister(f).DecrementRegister();
+            var result = Reg.getRegister(f,false).DecrementRegister();
             if (d)
             {
                 /// Sonderbehandlung PCL: Resultat muss auch auf den 13bit-Program Counter abgebildet werden, nicht nur auf PC-Reg
@@ -45,7 +45,7 @@ namespace Simulator_PIC16F84.Instruktionen
                     Reg.PC.Counter.Address = derivePCAddress(Reg).Address - 1;
                 }
                 else
-                Reg.getRegister(f).Value = (byte)result;
+                Reg.getRegister(f,true).Value = (byte)result;
             }
             else
                 W.Value = (byte)result;

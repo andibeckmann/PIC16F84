@@ -31,7 +31,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var alterWert = Reg.getRegister(f).Value;
+            var alterWert = Reg.getRegister(f, false).Value;
             var subtraktor = W.Value;
             var result = alterWert + ~subtraktor + 1;
 
@@ -62,7 +62,7 @@ namespace Simulator_PIC16F84.Instruktionen
                     Reg.PC.Counter.Address = derivePCAddress(Reg).Address - W.Value;
                 }
                 else
-                Reg.getRegister(f).Value = (byte)result;
+                Reg.getRegister(f,true).Value = (byte)result;
             }
             else
             {

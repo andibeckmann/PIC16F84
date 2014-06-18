@@ -36,10 +36,10 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            var content = Reg.getRegister(f).Value;
+            var content = Reg.getRegister(f,false).Value;
 
             if (d)
-               Reg.getRegister(f).Value = content;
+               Reg.getRegister(f,true).Value = content;
             else
                 W.Value = content;
 
