@@ -30,6 +30,9 @@
 14. Laufzeitzähler bei F3 (Reset) zurück auf 0 stellen - Anzeige refresht noch nicht beim Reset
 25. Laufzeitzähler - zeigt er die simulierte oder reale Zeit an (also Zykluszeit = 200ns egal wie die Simulation eingestellt ist?)
 26. SLEEP-Funktion
+27. externer Taktgenerator (mind. TMR0 und 1 anderer IO-Pin)
+28. PCLATH-TODO im Program Counter???
+
 
 
 Unter Bearbeitung:

@@ -33,14 +33,10 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            Reg.ResetPowerDownBit();
-            Reg.setTimeOutBit();
-
             Reg.clearWatchdogTimer();
             Reg.clearWatchdogPrescaler();
-
-            //TODO: Put processor into SLEEP mode and stop oscillator
-
+            Reg.clearPowerDownBit();
+            Reg.setTimeOutBit();
         }
     }
 }

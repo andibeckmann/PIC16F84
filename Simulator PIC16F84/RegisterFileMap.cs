@@ -344,14 +344,14 @@ namespace Simulator_PIC16F84
                 return false;
         }
 
-        public void SetPowerDownBit()
+        public void setPowerDownBit()
         {
-            registerList[3].Value = (byte) (registerList[3].Value | 0x08);
+            getStatusRegister().setBit(3);
         }
 
-        public void ResetPowerDownBit()
+        public void clearPowerDownBit()
         {
-            registerList[3].Value = (byte) (registerList[3].Value & 0xF7);
+            getStatusRegister().clearBit(3);
         }
 
         private void clearPCLATH()
@@ -539,6 +539,11 @@ namespace Simulator_PIC16F84
         public Stack getStack()
         {
             return stack;
+        }
+
+        public bool isInPowerDownMode()
+        {
+            return !getStatusRegister().isBitSet(3);
         }
       
         /// <summary>

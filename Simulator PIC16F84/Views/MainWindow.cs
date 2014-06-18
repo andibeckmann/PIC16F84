@@ -319,15 +319,18 @@ namespace Simulator_PIC16F84
 
         private void ExecuteCycle(object source, ElapsedEventArgs e)
         {
-            var index = FindRowForPC(RegisterMap.PC.Counter.Address);
-            if (breakPoints.Contains(index))
+            if (!RegisterMap.isInPowerDownMode())
             {
-                crystalFrequency.Stop();
-                return;
+                var index = FindRowForPC(RegisterMap.PC.Counter.Address);
+                if (breakPoints.Contains(index))
+                {
+                    crystalFrequency.Stop();
+                    return;
+                }
+                ExecuteSingleCycle(index);
+                runTimeCounter += frequency;
+                UpdateRunTimeCounter(runTimeCounter);
             }
-            ExecuteSingleCycle(index);
-            runTimeCounter += frequency;
-            UpdateRunTimeCounter(runTimeCounter);
         }
 
         private void ExecuteSingleCycle(int index)
