@@ -35,6 +35,7 @@ namespace Simulator_PIC16F84.Instruktionen
 
             execute(W, PC, stack);
             Reg.instructionCycleTimeElapsed();
+            Reg.checkWatchdogTimer();
         }
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)

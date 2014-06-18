@@ -70,6 +70,19 @@ namespace Simulator_PIC16F84
             setupCrystalFrequency();
 
             ComPort = new SerialPortCOM(RegisterMap);
+
+            Button MCLR = new Button();
+            MCLR.Location = new System.Drawing.Point(1160, 200);
+            MCLR.Text = "MCLR Pin";
+            MCLR.Click += MCLR_Click;
+            this.Controls.Add(MCLR);
+        }
+
+        private void MCLR_Click(object sender, System.EventArgs e)
+        {
+            Reset newReset = new Reset(RegisterMap);
+            newReset.resetMCLR();
+            RegisterMap.setPowerDownBit();
         }
 
         private void setUpSpecialRegisterBoxes()
@@ -319,8 +332,6 @@ namespace Simulator_PIC16F84
 
         private void ExecuteCycle(object source, ElapsedEventArgs e)
         {
-            if (!RegisterMap.isInPowerDownMode())
-            {
                 var index = FindRowForPC(RegisterMap.PC.Counter.Address);
                 if (breakPoints.Contains(index))
                 {
@@ -328,22 +339,23 @@ namespace Simulator_PIC16F84
                     return;
                 }
                 ExecuteSingleCycle(index);
-                runTimeCounter += frequency;
-                UpdateRunTimeCounter(runTimeCounter);
-            }
         }
 
         private void ExecuteSingleCycle(int index)
         {
             this.registerView.ClearColors();
-            UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, RegisterMap.getStack());
+            if (!RegisterMap.isInPowerDownMode())
+            {
+                UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, RegisterMap.getStack());
+                RegisterMap.PC.InkrementPC();
+                SetSelection(index);
+                runTimeCounter += frequency;
+                UpdateRunTimeCounter(runTimeCounter);
+            }
             checkForTimeOut();
             RegisterMap.checkForInterrupt();
             RegisterMap.checkEEPROMFunctionality();
-            RegisterMap.PC.InkrementPC();
-            SetSelection(index);
-            runTimeCounter += frequency;
-            UpdateRunTimeCounter(runTimeCounter);
+            RegisterMap.checkWatchdogTimer();
         }
 
         private void checkForTimeOut()
@@ -409,42 +421,11 @@ namespace Simulator_PIC16F84
             resetSimulation();
         }
 
-        /// <summary>
-        /// Power-on Reset (POR)
-        /// The PIC16F84A differentiates between various kinds of RESET, one of which is the POR.
-        /// Reset conditions for all registers during POR are:
-        /// W Register      : xxxx xxxx
-        /// INDF            : ---- ----
-        /// TMR0            : xxxx xxxx
-        /// PCL             : 0000 0000
-        /// STATUS          : 0001 1xxx
-        /// FSR             : xxxx xxxx
-        /// PORTA           : ---x xxxx
-        /// PORTB           : xxxx xxxx
-        /// EEDATA          : xxxx xxxx
-        /// EEADR           : xxxx xxxx
-        /// PCLATH          : ---0 0000
-        /// INTCON          : 0000 000x
-        /// INDF            : ---- ----
-        /// OPTION_REG      : 1111 1111
-        /// PCL             : 0000 0000
-        /// STATUS          : 0001 1xxx
-        /// FSR             : xxxx xxxx
-        /// TRISA           : ---1 1111
-        /// TRISB           : 1111 1111
-        /// EECON1          : ---0 x000
-        /// EECON2          : ---- ----
-        /// PCLATH          : ---0 0000
-        /// INTCON          : 0000 000x
-        /// </summary>
-        private void PowerOnReset()
-        {
-            //TODO: Implement!
-        }
-
         private void WatchDogTimerReset()
         {
-            RegisterMap.WatchDogTimerReset();
+            Reset newReset = new Reset(RegisterMap);
+            newReset.resetWDT();
+            RegisterMap.setPowerDownBit();
         }
 
         private void resetSimulation()

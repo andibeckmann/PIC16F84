@@ -29,7 +29,7 @@ namespace Simulator_PIC16F84
             fillMappingArray();
             createRegisterMap();
             createEepromMemory();
-            this.interruptServiceRoutine = new InterruptService(getIntconRegister(), getBRegister(false), getOptionRegister(), getEECON1(), getTRISB(), stack, PC);
+            this.interruptServiceRoutine = new InterruptService(this);
 
             //Timer0 MOdule, Watchdogtimer und Prescaler
             prescaler = new Prescaler(getTMR0Register(), getOptionRegister());
@@ -107,6 +107,14 @@ namespace Simulator_PIC16F84
         public void ClearWatchdogTimer()
         {
             WDT.ClearWatchdogTimer();
+        }
+
+        public void checkWatchdogTimer()
+        {
+            if (isWatchdogTimerEnabled())
+            {
+                incrementWatchdogTimer();
+            }
         }
 
         public void checkOptionRegisterSettings()
@@ -204,9 +212,9 @@ namespace Simulator_PIC16F84
             return registerList[3];
         }
 
-        private void setStatusToWDTReset()
+        public void clearProgramCounter()
         {
-            registerList[3].Value = (byte) (registerList[3].Value & 0x08);
+            PC.Clear();
         }
 
         public RegisterByte getARegister(bool write)
@@ -285,11 +293,6 @@ namespace Simulator_PIC16F84
             return registerList[0x0B];
         }
 
-        private void setIntconToWDTReset()
-        {
-            registerList[0x0B].Value = (byte)(registerList[0x0B].Value & 0x0E);
-        }
-
         internal void SetCarryBit()
         {
             registerList[3].Value = (byte) (registerList[3].Value | 0x01);
@@ -326,14 +329,14 @@ namespace Simulator_PIC16F84
                 return false;
         }
 
-        internal void SetZeroBit()
+        public void SetZeroBit()
         {
-            registerList[3].Value = (byte) (registerList[3].Value | 0x04);
+            getStatusRegister().setBit(2);
         }
 
-        internal void ResetZeroBit()
+        public void clearZeroBit()
         {
-            registerList[3].Value = (byte) (registerList[3].Value & 0xFB);
+            getStatusRegister().clearBit(2);
         }
 
         public bool getZeroBit()
@@ -352,11 +355,6 @@ namespace Simulator_PIC16F84
         public void clearPowerDownBit()
         {
             getStatusRegister().clearBit(3);
-        }
-
-        private void clearPCLATH()
-        {
-            registerList[0x0A].Value = 0x00;
         }
 
         public void Init()
@@ -398,14 +396,9 @@ namespace Simulator_PIC16F84
         {
             if ( !timer0.isInCounterMode() ) 
                 timer0.incrementInTimerMode();
-           
-            if (isWatchdogTimerEnabled())
-            {
-                incrementWatchdogTimer();
-            }
         }
 
-        private bool isWatchdogTimerEnabled()
+        public bool isWatchdogTimerEnabled()
         {
             return ConfigurationBits.isBitSet(1);
         }
@@ -434,46 +427,6 @@ namespace Simulator_PIC16F84
         public void incrementWatchdogTimer()
         {
             WDT.IncrementWatchdogTimer();
-        }
-
-        /// <summary>
-        /// Watchdog Timer Reset (during normal operation)
-        /// The PIC16F84A differentiates between various kinds of RESET, one of which is the WDT Reset.
-        /// Reset conditions for all registers during WDT Reset are:
-        /// W Register      : uuuu uuuu
-        /// INDF            : ---- ----
-        /// TMR0            : uuuu uuuu
-        /// PCL             : 0000 0000
-        /// STATUS          : 0000 1uuu
-        /// FSR             : uuuu uuuu
-        /// PORTA           : ---u uuuu
-        /// PORTB           : uuuu uuuu
-        /// EEDATA          : uuuu uuuu
-        /// EEADR           : uuuu uuuu
-        /// PCLATH          : ---0 0000
-        /// INTCON          : 0000 000u
-        /// INDF            : ---- ----
-        /// OPTION_REG      : 1111 1111
-        /// PCL             : 0000 0000
-        /// STATUS          : 0000 1uuu
-        /// FSR             : uuuu uuuu
-        /// TRISA           : ---1 1111
-        /// TRISB           : 1111 1111
-        /// EECON1          : ---0 q000
-        /// EECON2          : ---- ----
-        /// PCLATH          : ---0 0000
-        /// INTCON          : 0000 000u
-        /// </summary>
-        public void WatchDogTimerReset()
-        {
-            PC.Clear();
-            setStatusToWDTReset();
-            clearPCLATH();
-            setIntconToWDTReset();
-            getOptionRegister().Value = 0xFF;
-            getTRISA().Value = 0x1F;
-            getTRISB().Value = 0xFF;
-            getEECON1().Value = 0x00;
         }
 
         public RegisterByte getTRISA()
@@ -514,6 +467,11 @@ namespace Simulator_PIC16F84
         public void checkForInterrupt()
         {
             interruptServiceRoutine.executeRoutine();
+        }
+
+        public bool isThereAnInterruptRequest()
+        {
+            return interruptServiceRoutine.isThereAnInterruptRequest();
         }
 
         public void checkForIntInterrupt()

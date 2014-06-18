@@ -43,6 +43,11 @@ namespace Simulator_PIC16F84
             this.Value = 0;
         }
 
+        public void fillRegister()
+        {
+            this.Value = 0xFF;
+        }
+
         public int DecrementRegister()
         {
             return --Value;

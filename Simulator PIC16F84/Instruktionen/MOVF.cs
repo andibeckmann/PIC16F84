@@ -46,7 +46,7 @@ namespace Simulator_PIC16F84.Instruktionen
             if (content == 0)
                 Reg.SetZeroBit();
             else
-                Reg.ResetZeroBit();
+                Reg.clearZeroBit();
         }
     }
 }

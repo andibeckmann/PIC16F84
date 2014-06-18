@@ -33,10 +33,15 @@ namespace Simulator_PIC16F84.Instruktionen
 
         protected override void execute(WorkingRegister W, RegisterFileMap Reg)
         {
-            Reg.clearWatchdogTimer();
-            Reg.clearWatchdogPrescaler();
-            Reg.clearPowerDownBit();
-            Reg.setTimeOutBit();
+            if(Reg.isThereAnInterruptRequest())
+                return;
+            else
+            {
+                Reg.clearWatchdogTimer();
+                Reg.clearWatchdogPrescaler();
+                Reg.clearPowerDownBit();
+                Reg.setTimeOutBit();
+            }
         }
     }
 }

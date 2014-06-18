@@ -29,15 +29,17 @@
 23. - done -
 14. Laufzeitzähler bei F3 (Reset) zurück auf 0 stellen - Anzeige refresht noch nicht beim Reset
 25. Laufzeitzähler - zeigt er die simulierte oder reale Zeit an (also Zykluszeit = 200ns egal wie die Simulation eingestellt ist?)
-26. SLEEP-Funktion
+26. - done -
 27. externer Taktgenerator (mind. TMR0 und 1 anderer IO-Pin)
 28. PCLATH-TODO im Program Counter???
-
+29. Problem: Was soll der WTD-Wakeup im Sleep-Modus bewirken? Laut Reset-Anweisung wird TO-Bit und PD-Bit auf 0 gesetzt, was bedeutet, dass die CPU im Sleep bleibt! Trickse im Moment, indem ich nach dem Reset trotzdem WTD und PD Bits auf 1 setze. Selbes Problem für andere Resets und damit Sleep-Wakeups.
+30. WTD-Zeiteinstellung ist 5 mal höher als Lehmanns Wert - der Timer soll nicht die 200ns-Instruktionszyklen zählen sondern 5 davon? Macht das Sinn, bilden die irgendwie eine Einheit?
+31. Instuktionszyklusabläufe stimmen nicht wirklich mit der Beschreibung überein - zBsp. Ablauf der PC.Inkrementierung und Befehlsausführung beim Sleep
 
 
 Unter Bearbeitung:
 14. + 25. Laufzeitzähler - Olli
-26. SLEEP-Funktion- Andi
+27. externer Taktgenerator (mind. TMR0 und 1 anderer IO-Pin) - Andi
 
 
 
@@ -48,3 +50,4 @@ Done:
 21. Bug: EEPROM Read ist in der RegisterView nicht sichtbar. Stattdessen taucht immer der Wert 0x10 oder 0x11 auf... - anm: Fehler lag in der RegView. Bei Bankumschaltung laß auch die View nur noch Werte aus Bank1
 22. EEPROM Interrupts und EECON1 RegisterBox
 23. Latchfunktion der Ausgaberegister (incl. Visualisierung)
+16. SLEEP-Funktion

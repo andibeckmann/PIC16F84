@@ -8,52 +8,46 @@ namespace Simulator_PIC16F84
 {
     public class InterruptService
     {
-        private RegisterByte intCon;
-        private RegisterByte portB;
-        private RegisterByte option;
-        private RegisterByte eeCon1;
-        private RegisterByte trisB;
-        private Stack stack;
-        private ProgramCounter PC;
+        private RegisterFileMap Reg;
         private byte intInterruptOldValue;
         private byte portBInterruptOldValue;
 
 
-        public InterruptService(RegisterByte intCon, RegisterByte portB, RegisterByte option, RegisterByte eeCon1, RegisterByte trisB, Stack stack, ProgramCounter PC)
+        public InterruptService(RegisterFileMap Reg)
         {
-            this.intCon = intCon;
-            this.portB = portB;
-            this.option = option;
-            this.eeCon1 = eeCon1;
-            this.trisB = trisB;
-            this.stack = stack;
-            this.PC = PC;
+            this.Reg = Reg;
             this.intInterruptOldValue = 0;
             this.portBInterruptOldValue = 0;
         }
 
         public void executeRoutine()
         {
-            if (!isGlobalInterruptEnableBitSet())
-                return;
-
             if (isThereAnInterruptRequest())
-                executeInterruptServiceRoutine();
+            {
+                if (Reg.isInPowerDownMode())
+                {
+                    Reset newReset = new Reset(Reg);
+                    newReset.resetInterruptWakeUp();
+                    Reg.setPowerDownBit();
+                }
+                if (isGlobalInterruptEnableBitSet())
+                    executeInterruptServiceRoutine();
+            }
         }
 
         private void executeInterruptServiceRoutine()
         {
             clearGlobalInterruptEnableBit();
-            stack.PushOntoStack(new ProgramMemoryAddress(PC.DeriveReturnAddress()));
-            PC.Counter.Address = 0x04 - 1;
+            Reg.getStack().PushOntoStack(new ProgramMemoryAddress(Reg.PC.DeriveReturnAddress()));
+            Reg.PC.Counter.Address = 0x04 - 1;
         }
 
         private bool isGlobalInterruptEnableBitSet()
         {
-            return intCon.isBitSet(7);
+            return Reg.getIntconRegister().isBitSet(7);
         }
 
-        private bool isThereAnInterruptRequest()
+        public bool isThereAnInterruptRequest()
         {
             return (isThereAnIntInterruptRequest() || isThereATimer0InterruptRequest() || isThereAPortBInterruptRequest() || isThereAPDataEEPROMInterruptRequest());
         }
@@ -80,62 +74,62 @@ namespace Simulator_PIC16F84
 
         private bool isEEPROMInterruptFlagSet()
         {
-            return eeCon1.isBitSet(4);
+            return Reg.getEECON1().isBitSet(4);
         }
 
         private bool isTimer0InterruptFlagSet()
         {
-            return intCon.isBitSet(2);
+            return Reg.getIntconRegister().isBitSet(2);
         }
 
         private bool isEEPROMInterruptEnabled()
         {
-            return intCon.isBitSet(6);
+            return Reg.getIntconRegister().isBitSet(6);
         }
 
         private bool isTimer0OverflowInterruptEnabled()
         {
-            return intCon.isBitSet(5);
+            return Reg.getIntconRegister().isBitSet(5);
         }
 
         private bool isIntInterruptEnabled()
         {
-            return intCon.isBitSet(4);
+            return Reg.getIntconRegister().isBitSet(4);
         }
 
         private bool isIntEdgBitSet()
         {
-            return option.isBitSet(6);
+            return Reg.getOptionRegister().isBitSet(6);
         }
 
         private bool isIntInterruptFlagBitSet()
         {
-            return intCon.isBitSet(1);
+            return Reg.getIntconRegister().isBitSet(1);
         }
 
         private bool isRBInterruptEnabled()
         {
-            return intCon.isBitSet(3);
+            return Reg.getIntconRegister().isBitSet(3);
         }
 
         private bool isRBInterruptFlagSet()
         {
-            return intCon.isBitSet(0);
+            return Reg.getIntconRegister().isBitSet(0);
         }
 
         private void setRBInterruptFlag()
         {
-            intCon.setBit(0);
+            Reg.getIntconRegister().setBit(0);
         }
 
         public void setGlobalInterruptEnableBit()
         {
-            intCon.setBit(7);
+            Reg.getIntconRegister().setBit(7);
         }
 
         private void clearGlobalInterruptEnableBit()
         {
-            intCon.clearBit(7);
+            Reg.getIntconRegister().clearBit(7);
         }
 
         /// <summary>
@@ -151,20 +145,20 @@ namespace Simulator_PIC16F84
         /// </summary>
         public void checkForIntInterrupt()
         {
-            if (isIntInterruptEnabled() && isGlobalInterruptEnableBitSet())
+            if (isIntInterruptEnabled())
             {
                 if (isIntEdgBitSet())
                 {
-                    if (portB.checkForRisingEdge(intInterruptOldValue, 0))
+                    if (Reg.getBRegister(false).checkForRisingEdge(intInterruptOldValue, 0))
                         setIntFBit();
                 }
                 else
                 {
-                    if (portB.checkForFallingEdge(intInterruptOldValue, 0))
+                    if (Reg.getBRegister(false).checkForFallingEdge(intInterruptOldValue, 0))
                         setIntFBit();
                 }
             }
-            intInterruptOldValue = portB.Value;
+            intInterruptOldValue = Reg.getBRegister(false).Value;
         }
 
         /// <summary>
@@ -177,7 +171,7 @@ namespace Simulator_PIC16F84
         /// </summary>
         public void checkForPortBInterrupt()
         {
-            if (isGlobalInterruptEnableBitSet() && isRBInterruptEnabled())
+            if (isRBInterruptEnabled())
                 if (checkForPortBInterruptInputChange())
                     setRBInterruptFlag();
         }
@@ -193,11 +187,11 @@ namespace Simulator_PIC16F84
         /// <returns></returns>
         private bool checkForPortBInterruptInputChange()
         {
-            byte changedBits = (byte)(portBInterruptOldValue ^ portB.Value);
-            byte inputChange = (byte)(changedBits & trisB.Value);
+            byte changedBits = (byte)(portBInterruptOldValue ^ Reg.getBRegister(false).Value);
+            byte inputChange = (byte)(changedBits & Reg.getTRISB().Value);
             if ((inputChange & 0xF0) != 0x00)
             {
-                portBInterruptOldValue = portB.Value;
+                portBInterruptOldValue = Reg.getBRegister(false).Value;
                 return true;
             }
             return false;
@@ -205,12 +199,12 @@ namespace Simulator_PIC16F84
 
         private void setIntFBit()
         {
-            intCon.setBit(1);
+            Reg.getIntconRegister().setBit(1);
         }
 
         private void clearIntFBit()
         {
-            intCon.clearBit(1);
+            Reg.getIntconRegister().clearBit(1);
         }
     }
 }

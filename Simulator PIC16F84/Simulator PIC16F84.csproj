@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EEPROM.cs" />
+    <Compile Include="Reset.cs" />
     <Compile Include="SerialPortCOM.cs" />
     <Compile Include="Views\EEPROMView.cs">
       <SubType>Form</SubType>

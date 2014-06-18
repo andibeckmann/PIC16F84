@@ -34,7 +34,7 @@ namespace Simulator_PIC16F84.Instruktionen
             if (result == 0 || result == 256)
                 Reg.SetZeroBit();
             else
-                Reg.ResetZeroBit();
+                Reg.clearZeroBit();
 
             /// Carry-Bit Logik
             if (result < k && result >= 0)

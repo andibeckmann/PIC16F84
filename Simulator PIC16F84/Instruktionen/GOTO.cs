@@ -27,6 +27,7 @@ namespace Simulator_PIC16F84.Instruktionen
         {
             this.k = k;
             Reg.instructionCycleTimeElapsed();
+            Reg.checkWatchdogTimer();
 
             execute(PC, Reg);
         }

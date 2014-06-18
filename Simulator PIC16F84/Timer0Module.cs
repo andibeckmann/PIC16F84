@@ -100,7 +100,7 @@ namespace Simulator_PIC16F84
 
         private void checkOverflowcondition()
         {
-            if ( tmr0Reg.Value == 255 && intconReg.isBitSet(7) && intconReg.isBitSet(5))
+            if ( tmr0Reg.Value == 255 && intconReg.isBitSet(5))
                 setTimer0InterruptFlagBit();
         }
 

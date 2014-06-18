@@ -37,7 +37,7 @@ namespace Simulator_PIC16F84.Instruktionen
             if (result == 0)
                 Reg.SetZeroBit();
             else
-                Reg.ResetZeroBit();
+                Reg.clearZeroBit();
 
             ///Unterscheidung Working Reg oder File Reg
             if (d)
