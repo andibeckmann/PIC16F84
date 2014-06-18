@@ -3,7 +3,7 @@
 ##############################
 
 
-0. Laufzeitzähler
+0. - done -
 1. Breakpoints: Breakpoints auf erste und letzte Zeile funktionieren nicht
 2. Anweisung (Start, Einzelschritt, etc.) ohne geladenes Programm wirft Exception
 3. Exception fliegt falls man das Programm zu schließen versucht, während Schritte ausgeführt werden
@@ -26,19 +26,22 @@
 20. - done -
 21. - done -
 22. - done -
-23. Latchfunktion der Ausgaberegister (incl. Visualisierung)
-14. Laufzeitzähler bei F3 (Reset) zurück auf 0 stellen
+23. - done -
+14. Laufzeitzähler bei F3 (Reset) zurück auf 0 stellen - Anzeige refresht noch nicht beim Reset
 25. Laufzeitzähler - zeigt er die simulierte oder reale Zeit an (also Zykluszeit = 200ns egal wie die Simulation eingestellt ist?)
+26. SLEEP-Funktion
 
 
 Unter Bearbeitung:
-0. Laufzeitzähler - Olli
-23. Latches - Andi
+14. + 25. Laufzeitzähler - Olli
+26. SLEEP-Funktion- Andi
 
 
 
 Done:
+0. Laufzeitzähler
 19. Richtige Funktionsweise PCL und PCLATH (SimTest07)
 20. EEPROM - 5 Punkte
 21. Bug: EEPROM Read ist in der RegisterView nicht sichtbar. Stattdessen taucht immer der Wert 0x10 oder 0x11 auf... - anm: Fehler lag in der RegView. Bei Bankumschaltung laß auch die View nur noch Werte aus Bank1
 22. EEPROM Interrupts und EECON1 RegisterBox
+23. Latchfunktion der Ausgaberegister (incl. Visualisierung)
