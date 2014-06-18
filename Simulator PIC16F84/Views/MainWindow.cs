@@ -456,7 +456,7 @@ namespace Simulator_PIC16F84
             RegisterMap.getStack().ClearStack();
             W.ClearRegister();
             RegisterMap.getEepromMemory().clearEEPROM();
-            //          runTimeCounter = 0;
+            runTimeCounter = 0;
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)

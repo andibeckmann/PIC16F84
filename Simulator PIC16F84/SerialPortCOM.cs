@@ -177,7 +177,7 @@ namespace Simulator_PIC16F84
             Packet[4] = (byte)((Value >> 4) + 0x30);// Oberes Halbbit
             Packet[5] = (byte)((Value & 0xF) + 0x30); // Unteres Halbbit
 
-            Value = registerMap.getRegister(0x05).Value;
+            Value = registerMap.getRegister(0x06).Value;
             Packet[6] = (byte)((Value >> 4) + 0x30);// Oberes Halbbit
             Packet[7] = (byte)((Value & 0xF) + 0x30); // Unteres Halbbit
             Packet[8] = 0xD; // CR
