@@ -168,12 +168,12 @@ namespace Simulator_PIC16F84
         {
             if (index == 0)
                 return readINDFReg(write);
+            else if (!ignoreBankSelection && isRegisterBankSelectBitSet() && index < 0x80)
+                index = mappingArray[index + 0x80];
             else if (index == 0x05)
                 return getARegister(write);
             else if (index == 0x06)
                 return getBRegister(write);
-            else if (!ignoreBankSelection && isRegisterBankSelectBitSet() && index < 0x80)
-                index = mappingArray[index + 0x80];
             else
                 index = mappingArray[index];
             return this.registerList[index];
@@ -219,14 +219,48 @@ namespace Simulator_PIC16F84
 
         private void portAIOFunction(object sender, int index)
         {
-            byte output = (byte) (getTRISA().Value & portALatch.Value);
-            getARegister(false).Value = output;
+            RegisterByte output = new RegisterByte(-2);
+            for (int position = 0; position < 8; position++)
+            {
+                if (!getARegister(false).isBitImplemented(position))
+                    continue;
+                if (!getTRISA().isBitSet(position))
+                    writeFromLatchIntoPort(getARegister(false), output, position);
+                else
+                    showInput(portALatch, output, position);
+            }
+            getARegister(false).Value = output.Value;
+        }
+
+        private void showInput(RegisterByte register, RegisterByte output, int position)
+        {
+            if (register.isBitSet(position))
+                output.setBit(position);
+            else
+                output.clearBit(position);
+        }
+
+        private void writeFromLatchIntoPort(RegisterByte latch, RegisterByte output, int position)
+        {
+            if (latch.isBitSet(position))
+                output.setBit(position);
+            else
+                output.clearBit(position);
         }
 
         private void portBIOFunction(object sender, int index)
         {
-            byte output = (byte)(getTRISB().Value & portBLatch.Value);
-            getBRegister(false).Value = output;
+            RegisterByte output = new RegisterByte(-2);
+            for (int position = 0; position < 8; position++)
+            {
+                if (!getBRegister(false).isBitImplemented(position))
+                    continue;
+                if (!getTRISB().isBitSet(position))
+                    writeFromLatchIntoPort(getBRegister(false), output, position);
+                else
+                    showInput(portBLatch, output, position);
+            }
+            getBRegister(false).Value = output.Value;
         }
 
         public RegisterByte getBRegister(bool write)
@@ -234,7 +268,7 @@ namespace Simulator_PIC16F84
             if (write)
                 return portBLatch;
             else
-                return registerList[0x06];
+                return this.registerList[0x06];
         }
 
         public RegisterByte getOptionRegister()
