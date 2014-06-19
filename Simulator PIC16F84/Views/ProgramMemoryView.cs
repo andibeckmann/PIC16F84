@@ -26,18 +26,21 @@ namespace Simulator_PIC16F84
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MinimizeBox = false;
             this.MaximizeBox = false;
-           this.StartPosition = FormStartPosition.Manual;
-           this.dataGridView1.SelectionChanged += SelectionChangedEvent;
-           this.dataGridView1.CellDoubleClick += HandleBreakPoints;
-           HandleBreakpoint += MainView.HandleBreakpoint;
+            this.StartPosition = FormStartPosition.Manual;
+            this.dataGridView1.SelectionChanged += SelectionChangedEvent;
+            this.dataGridView1.CellDoubleClick += HandleBreakPoints;
+            HandleBreakpoint += MainView.HandleBreakpoint;
         }
 
         private void SelectionChangedEvent(object sender, EventArgs e)
         {
-            var index = dataGridView1.CurrentCell.RowIndex;
-            if (index != -1)
+            if (dataGridView1.CurrentCell != null)
             {
-                dataGridView1.Rows[index].Selected = true;
+                var index = dataGridView1.CurrentCell.RowIndex;
+                if (index != -1)
+                {
+                    dataGridView1.Rows[index].Selected = true;
+                }
             }
         }
 
@@ -77,16 +80,18 @@ namespace Simulator_PIC16F84
 
         private void ClearDataGrid()
         {
+            this.dataGridView1.DataSource = null;
             this.dataGridView1.Rows.Clear();
+            this.dataGridView1.Refresh();
         }
 
         private List<string> splitIntoRows(string fileContent)
         {
-            string[] lines = fileContent.Split( new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            string[] lines = fileContent.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
             return new List<string>(lines);
         }
 
-        private void extractBinaryCode ()
+        private void extractBinaryCode()
         {
             int memoryAdress;
             int binaryCode;
@@ -101,7 +106,7 @@ namespace Simulator_PIC16F84
                     binaryCode = Convert.ToInt32(item.Substring(5, 4), 16);
                     memoryKopie.ProgramMemory[memoryAdress].Value = binaryCode;
                 }
-            } 
+            }
         }
 
         public ProgramMemoryMap getBinaryCode()
@@ -173,7 +178,7 @@ namespace Simulator_PIC16F84
 
         private static void ExtractComments(DataGridViewRow row, string temp)
         {
-            if (temp != null )
+            if (temp != null)
                 row.Cells[6].Value = temp;
         }
 

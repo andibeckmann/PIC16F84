@@ -27,10 +27,12 @@ namespace Simulator_PIC16F84
         StackView StackView;
         RegisterView registerView;
         EEPROMView eepromView;
-        Label runTimeCounterView;
-        System.Timers.Timer crystalFrequency;
+        Label realTimeCounterView;
+        System.Timers.Timer SimulationTimerFrequency;
         List<int> breakPoints;
-        int frequency = 10;
+        int SimulationFrequency = 10;
+        int realTimeCounter;
+        int crystalFrequency = 200;
         int runTimeCounter;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
@@ -98,8 +100,8 @@ namespace Simulator_PIC16F84
 
         private void setupCrystalFrequency()
         {
-            crystalFrequency = new System.Timers.Timer(10);
-            crystalFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
+            SimulationTimerFrequency = new System.Timers.Timer(10);
+            SimulationTimerFrequency.Elapsed += new System.Timers.ElapsedEventHandler(ExecuteCycle);
         }
 
         private void setupProgramView()
@@ -155,7 +157,7 @@ namespace Simulator_PIC16F84
         {
             this.textBoxSlider = new System.Windows.Forms.TextBox();
             this.frequencySlider = new System.Windows.Forms.TrackBar();
-            this.runTimeCounterView = new System.Windows.Forms.Label();
+            this.realTimeCounterView = new System.Windows.Forms.Label();
 
             // TextBox for TrackBar.Value update.
             this.textBoxSlider.Location = new System.Drawing.Point(1180, 45 + 25);
@@ -164,13 +166,13 @@ namespace Simulator_PIC16F84
             this.textBoxSlider.TextChanged += new System.EventHandler(this.textBoxSlider_Changed);
 
             // Setup RunTimeCounter
-            runTimeCounterView.Location = new System.Drawing.Point(1180, 45 + 25 + 20);
-            runTimeCounterView.Size = new System.Drawing.Size(60, 20);
-            runTimeCounterView.TextAlign = ContentAlignment.MiddleRight;
-            UpdateRunTimeCounter(runTimeCounter);
+            realTimeCounterView.Location = new System.Drawing.Point(1180, 45 + 25 + 20);
+            realTimeCounterView.Size = new System.Drawing.Size(60, 20);
+            realTimeCounterView.TextAlign = ContentAlignment.MiddleRight;
+            UpdateRunTimeCounter(realTimeCounter);
 
             // Set up how the form should be displayed and add the controls to the form.
-            this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider, this.runTimeCounterView });
+            this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider, this.realTimeCounterView });
 
             // Set up the TrackBar.
             this.frequencySlider.Location = new System.Drawing.Point(1180, 25);
@@ -209,7 +211,7 @@ namespace Simulator_PIC16F84
             {
                 var seconds = newValue / 1000;
                 var milliseconds = newValue % 1000;
-                runTimeCounterView.Text = seconds + "." + milliseconds + " s";
+                realTimeCounterView.Text = seconds + "." + milliseconds + " s";
             }
         }
 
@@ -224,12 +226,12 @@ namespace Simulator_PIC16F84
         {
             get
             {
-                return frequency;
+                return SimulationFrequency;
             }
             set
             {
-                frequency = value;
-                crystalFrequency.Interval = frequency;
+                SimulationFrequency = value;
+                SimulationTimerFrequency.Interval = SimulationFrequency;
             }
         }
 
@@ -293,6 +295,7 @@ namespace Simulator_PIC16F84
 
         private void programmLadenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            SimulationTimerFrequency.Stop();
             OpenFileDialog programmLaden = new OpenFileDialog();
 
             //TODO: Programm Laden Auswahl wieder einfügen
@@ -308,6 +311,7 @@ namespace Simulator_PIC16F84
                     System.IO.StreamReader sr = new System.IO.StreamReader(programmLaden.FileName);
                     string fileContent = sr.ReadToEnd();
                     sr.Close();
+                    resetSimulation();
                     ProgramView.loadProgram(fileContent);
                     UserMemorySpace = ProgramView.getBinaryCode();
                     RegisterMap.PC.Clear();
@@ -315,7 +319,7 @@ namespace Simulator_PIC16F84
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error: Could not read file" + ex.Message);
+                    MessageBox.Show("Error: Could not read file\n" + ex.Message);
                 }
             }
 
@@ -335,7 +339,7 @@ namespace Simulator_PIC16F84
                 var index = FindRowForPC(RegisterMap.PC.Counter.Address);
                 if (breakPoints.Contains(index))
                 {
-                    crystalFrequency.Stop();
+                    SimulationTimerFrequency.Stop();
                     return;
                 }
                 ExecuteSingleCycle(index);
@@ -349,8 +353,8 @@ namespace Simulator_PIC16F84
                 UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, RegisterMap.getStack());
                 RegisterMap.PC.InkrementPC();
                 SetSelection(index);
-                runTimeCounter += frequency;
-                UpdateRunTimeCounter(runTimeCounter);
+                realTimeCounter += SimulationFrequency;
+                UpdateRunTimeCounter(realTimeCounter);
             }
             checkForTimeOut();
             RegisterMap.checkForInterrupt();
@@ -413,7 +417,7 @@ namespace Simulator_PIC16F84
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            crystalFrequency.Start();
+            SimulationTimerFrequency.Start();
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -430,7 +434,7 @@ namespace Simulator_PIC16F84
 
         private void resetSimulation()
         {
-            crystalFrequency.Stop();
+            SimulationTimerFrequency.Stop();
             RegisterMap.ClearWatchdogTimer();
             RegisterMap.PC.Clear();
             SetSelection(0);
@@ -440,12 +444,13 @@ namespace Simulator_PIC16F84
             RegisterMap.getStack().ClearStack();
             W.ClearRegister();
             RegisterMap.getEepromMemory().clearEEPROM();
-            runTimeCounter = 0;
+            realTimeCounter = 0;
+            UpdateRunTimeCounter(realTimeCounter);
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            crystalFrequency.Stop();
+            SimulationTimerFrequency.Stop();
         }
 
         private void einzelschrittToolStripMenuItem_Click(object sender, EventArgs e)
