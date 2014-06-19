@@ -28,17 +28,19 @@ namespace Simulator_PIC16F84
         RegisterView registerView;
         EEPROMView eepromView;
         Label realTimeCounterView;
+        Label runTimeCounterView;
         System.Timers.Timer SimulationTimerFrequency;
         List<int> breakPoints;
         int SimulationFrequency = 10;
         int realTimeCounter;
-        int crystalFrequency = 200;
+        public int crystalFrequency = 200;
         int runTimeCounter;
         private System.Windows.Forms.TrackBar frequencySlider;
         private System.Windows.Forms.TextBox textBoxSlider;
 
         public SerialPortCOM ComPort;
         public SerialCOM ComView;
+        public CrystalFrequenceView CrystalFrequenceView;
 
         /// <summary>
         /// Detailansicht spezieller Register
@@ -60,7 +62,7 @@ namespace Simulator_PIC16F84
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
 
             W = new WorkingRegister(-1);
-            RegisterMap = new RegisterFileMap();
+            RegisterMap = new RegisterFileMap(this);
 
             setUpSpecialRegisterBoxes();
             setupRegisterView();
@@ -158,6 +160,7 @@ namespace Simulator_PIC16F84
             this.textBoxSlider = new System.Windows.Forms.TextBox();
             this.frequencySlider = new System.Windows.Forms.TrackBar();
             this.realTimeCounterView = new System.Windows.Forms.Label();
+            this.runTimeCounterView = new System.Windows.Forms.Label();
 
             // TextBox for TrackBar.Value update.
             this.textBoxSlider.Location = new System.Drawing.Point(1180, 45 + 25);
@@ -165,14 +168,20 @@ namespace Simulator_PIC16F84
             this.textBoxSlider.Text = Frequency + " ms";
             this.textBoxSlider.TextChanged += new System.EventHandler(this.textBoxSlider_Changed);
 
-            // Setup RunTimeCounter
+            // Setup RealTimeCounter
             realTimeCounterView.Location = new System.Drawing.Point(1180, 45 + 25 + 20);
             realTimeCounterView.Size = new System.Drawing.Size(60, 20);
             realTimeCounterView.TextAlign = ContentAlignment.MiddleRight;
-            UpdateRunTimeCounter(realTimeCounter);
+            UpdateRealTimeCounter(realTimeCounter);
+
+            // Setup RunTimeCounter
+            runTimeCounterView.Location = new System.Drawing.Point(1180, 120);
+            runTimeCounterView.Size = new System.Drawing.Size(100, 20);
+            runTimeCounterView.TextAlign = ContentAlignment.MiddleRight;
+            UpdateRunTimeCounter(runTimeCounter);
 
             // Set up how the form should be displayed and add the controls to the form.
-            this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider, this.realTimeCounterView });
+            this.Controls.AddRange(new System.Windows.Forms.Control[] { this.textBoxSlider, this.frequencySlider, this.realTimeCounterView, this.runTimeCounterView });
 
             // Set up the TrackBar.
             this.frequencySlider.Location = new System.Drawing.Point(1180, 25);
@@ -201,6 +210,20 @@ namespace Simulator_PIC16F84
 
         }
 
+        private void UpdateRealTimeCounter(int newValue)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke((MethodInvoker)delegate { UpdateRealTimeCounter(newValue); });
+            }
+            else
+            {
+                var seconds = newValue / 1000;
+                var milliseconds = newValue % 1000;
+                realTimeCounterView.Text = seconds + "." + milliseconds + " s";
+            }
+        }
+
         private void UpdateRunTimeCounter(int newValue)
         {
             if (InvokeRequired)
@@ -209,9 +232,9 @@ namespace Simulator_PIC16F84
             }
             else
             {
-                var seconds = newValue / 1000;
-                var milliseconds = newValue % 1000;
-                realTimeCounterView.Text = seconds + "." + milliseconds + " s";
+                var milliseconds = newValue / 1000;
+                var nanoseconds = newValue % 1000;
+                runTimeCounterView.Text = milliseconds + "." + nanoseconds + " ms";
             }
         }
 
@@ -354,7 +377,8 @@ namespace Simulator_PIC16F84
                 RegisterMap.PC.InkrementPC();
                 SetSelection(index);
                 realTimeCounter += SimulationFrequency;
-                UpdateRunTimeCounter(realTimeCounter);
+                UpdateRealTimeCounter(realTimeCounter);
+                UpdateRunTimeCounter(runTimeCounter);
             }
             checkForTimeOut();
             RegisterMap.checkForInterrupt();
@@ -445,7 +469,9 @@ namespace Simulator_PIC16F84
             W.ClearRegister();
             RegisterMap.getEepromMemory().clearEEPROM();
             realTimeCounter = 0;
-            UpdateRunTimeCounter(realTimeCounter);
+            UpdateRealTimeCounter(realTimeCounter);
+            runTimeCounter = 0;
+            UpdateRunTimeCounter(runTimeCounter);
         }
 
         private void unterbrechenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -531,5 +557,20 @@ namespace Simulator_PIC16F84
             ComView.Focus();
         }
 
+
+        internal void incrementRunTimeCounter()
+        {
+            runTimeCounter += crystalFrequency;
+        }
+
+        private void crystalFrequenceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CrystalFrequenceView == null)
+            {
+                CrystalFrequenceView = new CrystalFrequenceView(this, crystalFrequency);
+            }
+            CrystalFrequenceView.Show();
+            CrystalFrequenceView.Focus();
+        }
     }
 }

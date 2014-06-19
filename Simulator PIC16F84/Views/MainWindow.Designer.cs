@@ -55,6 +55,8 @@
             this.datenblattPIC16C84ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projektToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.serialPortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.einstellungenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.crystalFrequenceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,7 +67,8 @@
             this.ansichtToolStripMenuItem,
             this.anweisungenToolStripMenuItem,
             this.hilfeToolStripMenuItem,
-            this.serialPortToolStripMenuItem});
+            this.serialPortToolStripMenuItem,
+            this.einstellungenToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 3, 0, 3);
@@ -280,6 +283,21 @@
             this.serialPortToolStripMenuItem.Text = "SerialPort";
             this.serialPortToolStripMenuItem.Click += new System.EventHandler(this.serialPortToolStripMenuItem_Click);
             // 
+            // einstellungenToolStripMenuItem
+            // 
+            this.einstellungenToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.crystalFrequenceToolStripMenuItem});
+            this.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem";
+            this.einstellungenToolStripMenuItem.Size = new System.Drawing.Size(90, 19);
+            this.einstellungenToolStripMenuItem.Text = "Einstellungen";
+            // 
+            // crystalFrequenceToolStripMenuItem
+            // 
+            this.crystalFrequenceToolStripMenuItem.Name = "crystalFrequenceToolStripMenuItem";
+            this.crystalFrequenceToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.crystalFrequenceToolStripMenuItem.Text = "Crystal Frequence";
+            this.crystalFrequenceToolStripMenuItem.Click += new System.EventHandler(this.crystalFrequenceToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -329,6 +347,8 @@
         private System.Windows.Forms.ToolStripMenuItem eECON1RegisterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eEPROMToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem serialPortToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem einstellungenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem crystalFrequenceToolStripMenuItem;
 
     }
 }

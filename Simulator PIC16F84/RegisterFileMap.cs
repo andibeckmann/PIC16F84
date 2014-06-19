@@ -21,8 +21,11 @@ namespace Simulator_PIC16F84
         private RegisterByte portALatch;
         private RegisterByte portBLatch;
 
-        public RegisterFileMap()
+        public Main PIC;
+
+        public RegisterFileMap(Main PIC)
         {
+            this.PIC = PIC;
             InitConfigurationBits();
             this.PC = new ProgramCounter(this);
             stack = new Stack();
@@ -394,6 +397,7 @@ namespace Simulator_PIC16F84
 
         public void instructionCycleTimeElapsed()
         {
+            PIC.incrementRunTimeCounter();
             if ( !timer0.isInCounterMode() ) 
                 timer0.incrementInTimerMode();
         }
