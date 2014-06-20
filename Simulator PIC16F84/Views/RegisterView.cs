@@ -204,9 +204,16 @@ namespace Simulator_PIC16F84
 
         private void checkRegister(RegisterBox box, RegisterByte Reg)
         {
-            var textBoxArray = box.Controls.Find("Value", true);
-            textBoxArray[0].Text = Reg.Value.ToString("X2");
-            updateCheckBoxes(box, Reg);
+            try
+            {
+                var textBoxArray = box.Controls.Find("Value", true);
+                textBoxArray[0].Text = Reg.Value.ToString("X2");
+                updateCheckBoxes(box, Reg);
+            }
+            catch
+            {
+                return;
+            }
         }
 
         private void updateCheckBoxes(RegisterBox box, RegisterByte Reg)

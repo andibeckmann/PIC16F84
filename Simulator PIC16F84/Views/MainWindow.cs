@@ -403,9 +403,16 @@ namespace Simulator_PIC16F84
             }
             else
             {
-                this.ProgramView.dataGridView1.CurrentCell = this.ProgramView.dataGridView1[0, index];
-                this.ProgramView.dataGridView1.ClearSelection();
-                this.ProgramView.dataGridView1.Rows[index].Selected = true;
+                try
+                {
+                    this.ProgramView.dataGridView1.CurrentCell = this.ProgramView.dataGridView1[0, index];
+                    this.ProgramView.dataGridView1.ClearSelection();
+                    this.ProgramView.dataGridView1.Rows[index].Selected = true;
+                }
+                catch
+                {
+                    return;
+                }
             }
         }
 
