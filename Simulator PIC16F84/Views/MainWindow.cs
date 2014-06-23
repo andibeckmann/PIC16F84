@@ -41,6 +41,7 @@ namespace Simulator_PIC16F84
         public SerialPortCOM ComPort;
         public SerialCOM ComView;
         public CrystalFrequenceView CrystalFrequenceView;
+        private bool idle;
 
         /// <summary>
         /// Detailansicht spezieller Register
@@ -80,6 +81,7 @@ namespace Simulator_PIC16F84
             MCLR.Text = "MCLR Pin";
             MCLR.Click += MCLR_Click;
             this.Controls.Add(MCLR);
+            this.idle = true;
         }
 
         private void MCLR_Click(object sender, System.EventArgs e)
@@ -370,20 +372,25 @@ namespace Simulator_PIC16F84
 
         private void ExecuteSingleCycle(int index)
         {
-            this.registerView.ClearColors();
-            if (!RegisterMap.isInPowerDownMode())
+            if (idle)
             {
-                UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, RegisterMap.getStack());
-                RegisterMap.PC.InkrementPC();
-                SetSelection(index);
-                realTimeCounter += SimulationFrequency;
-                UpdateRealTimeCounter(realTimeCounter);
-                UpdateRunTimeCounter(runTimeCounter);
+                idle = false;
+                this.registerView.ClearColors();
+                if (!RegisterMap.isInPowerDownMode())
+                {
+                    UserMemorySpace.ProgramMemory[RegisterMap.PC.Counter.Address].DecodeInstruction(RegisterMap, W, RegisterMap.PC, RegisterMap.getStack());
+                    RegisterMap.PC.InkrementPC();
+                    SetSelection(index);
+                    realTimeCounter += SimulationFrequency;
+                    UpdateRealTimeCounter(realTimeCounter);
+                    UpdateRunTimeCounter(runTimeCounter);
+                }
+                checkForTimeOut();
+                RegisterMap.checkForInterrupt();
+                RegisterMap.checkEEPROMFunctionality();
+                RegisterMap.checkWatchdogTimer();
+                idle = true;
             }
-            checkForTimeOut();
-            RegisterMap.checkForInterrupt();
-            RegisterMap.checkEEPROMFunctionality();
-            RegisterMap.checkWatchdogTimer();
         }
 
         private void checkForTimeOut()
